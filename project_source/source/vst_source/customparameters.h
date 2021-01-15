@@ -39,8 +39,7 @@ The PeakParameter object encapsulates a uni-polar parameter such as a metering v
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class PeakParameter : public Parameter
-{
+class PeakParameter : public Parameter {
 public:
     PeakParameter (int32 flags, int32 id, const TChar* title);
 
@@ -60,8 +59,7 @@ The LogParameter object encapsulates a log parameter. Note that the standard log
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class LogParameter : public Parameter
-{
+class LogParameter : public Parameter {
 public:
     LogParameter(const TChar* title, ParamID tag, const TChar* units = 0,
                  ParamValue minPlain = 0., ParamValue maxPlain = 1., ParamValue defaultValuePlain = 0.,
@@ -71,10 +69,18 @@ public:
     virtual bool fromString (const TChar* string, ParamValue& normValue) const;
     virtual ParamValue toPlain(ParamValue _valueNormalized) const;
     virtual ParamValue toNormalized(ParamValue plainValue) const;
-    virtual ParamValue getMin () const {return minPlain;}
-    virtual void setMin (ParamValue value) {minPlain = value;}
-    virtual ParamValue getMax () const {return maxPlain;}
-    virtual void setMax (ParamValue value) {maxPlain = value;}
+    virtual ParamValue getMin () const {
+        return minPlain;
+    }
+    virtual void setMin (ParamValue value) {
+        minPlain = value;
+    }
+    virtual ParamValue getMax () const {
+        return maxPlain;
+    }
+    virtual void setMax (ParamValue value) {
+        maxPlain = value;
+    }
 
 protected:
     ParamValue minPlain;
@@ -82,8 +88,7 @@ protected:
 
     // fNormalizedParam = 0->1
     // returns anti-log scaled 0->1 value
-    inline float calcLogParameter(float fNormalizedParam) const
-    {
+    inline float calcLogParameter(float fNormalizedParam) const {
         if(fNormalizedParam <= 0.0) return 0.0;
         if(fNormalizedParam >= 1.0) return 1.0;
 
@@ -93,8 +98,7 @@ protected:
 
     // fPluginValue = 0->1 log scaled value
     // returns normal 0->1 value
-    inline float calcLogPluginValue(float fPluginValue) const
-    {
+    inline float calcLogPluginValue(float fPluginValue) const {
         if(fPluginValue <= 0.0) return 0.0;
         if(fPluginValue >= 1.0) return 1.0;
 
@@ -116,45 +120,50 @@ The AntiLogParameter object encapsulates an anti-log parameter. Note that the st
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class AntiLogParameter : public Parameter
-{
+class AntiLogParameter : public Parameter {
 public:
-	AntiLogParameter(const TChar* title, ParamID tag, const TChar* units = 0,
-					ParamValue minPlain = 0., ParamValue maxPlain = 1., ParamValue defaultValuePlain = 0.,
-					int32 stepCount = 0, int32 flags = ParameterInfo::kCanAutomate, UnitID unitID = kRootUnitId);
+    AntiLogParameter(const TChar* title, ParamID tag, const TChar* units = 0,
+                     ParamValue minPlain = 0., ParamValue maxPlain = 1., ParamValue defaultValuePlain = 0.,
+                     int32 stepCount = 0, int32 flags = ParameterInfo::kCanAutomate, UnitID unitID = kRootUnitId);
 
-	virtual void toString (ParamValue normValue, String128 string) const;
-	virtual bool fromString (const TChar* string, ParamValue& normValue) const;
-	virtual ParamValue toPlain(ParamValue _valueNormalized) const;
-	virtual ParamValue toNormalized(ParamValue plainValue) const;
-	virtual ParamValue getMin () const {return minPlain;}
-	virtual void setMin (ParamValue value) {minPlain = value;}
-	virtual ParamValue getMax () const {return maxPlain;}
-	virtual void setMax (ParamValue value) {maxPlain = value;}
+    virtual void toString (ParamValue normValue, String128 string) const;
+    virtual bool fromString (const TChar* string, ParamValue& normValue) const;
+    virtual ParamValue toPlain(ParamValue _valueNormalized) const;
+    virtual ParamValue toNormalized(ParamValue plainValue) const;
+    virtual ParamValue getMin () const {
+        return minPlain;
+    }
+    virtual void setMin (ParamValue value) {
+        minPlain = value;
+    }
+    virtual ParamValue getMax () const {
+        return maxPlain;
+    }
+    virtual void setMax (ParamValue value) {
+        maxPlain = value;
+    }
 
 protected:
-	ParamValue minPlain;
-	ParamValue maxPlain;
+    ParamValue minPlain;
+    ParamValue maxPlain;
 
-	// fNormalizedParam = 0->1
-	// returns anti-log scaled 0->1 value
-	inline float calcAntiLogParameter(float fNormalizedParam) const
-	{
+    // fNormalizedParam = 0->1
+    // returns anti-log scaled 0->1 value
+    inline float calcAntiLogParameter(float fNormalizedParam) const {
         if(fNormalizedParam <= 0.0) return 0.0;
         if(fNormalizedParam >= 1.0) return 1.0;
 
-		// --- MMA Concave Transform Inverse
+        // --- MMA Concave Transform Inverse
         return (kCTCorrFactorAntiUnity)*(-pow(10.0, (-fNormalizedParam / kCTCoefficient)) + 1.0);
-	}
+    }
 
-	// fPluginValue = 0->1 log scaled value
-	// returns normal 0->1 value
-	inline float calcAntiLogPluginValue(float fPluginValue) const
-	{
+    // fPluginValue = 0->1 log scaled value
+    // returns normal 0->1 value
+    inline float calcAntiLogPluginValue(float fPluginValue) const {
         if(fPluginValue <= 0.0) return 0.0;
         if(fPluginValue >= 1.0) return 1.0;
 
-		// --- MMA Concave Transform
+        // --- MMA Concave Transform
         float transformed = -kCTCoefficient*kCTCorrFactorAntiLogScale*log10(1.0 - fPluginValue + kCTCorrFactorZero) + kCTCorrFactorAntiLog;
         if(transformed >= 1.0) transformed = 1.0;
         return transformed;
@@ -173,8 +182,7 @@ Also provide a smooth linear-in-octave control for any Frequency type of continu
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class VoltOctaveParameter : public Parameter
-{
+class VoltOctaveParameter : public Parameter {
 public:
     VoltOctaveParameter(const TChar* title, ParamID tag, const TChar* units = 0,
                         ParamValue minPlain = 0., ParamValue maxPlain = 1., ParamValue defaultValuePlain = 0.,
@@ -184,26 +192,32 @@ public:
     virtual bool fromString (const TChar* string, ParamValue& normValue) const;
     virtual ParamValue toPlain(ParamValue _valueNormalized) const;
     virtual ParamValue toNormalized(ParamValue plainValue) const;
-    virtual ParamValue getMin () const {return minPlain;}
-    virtual void setMin (ParamValue value) {minPlain = value;}
-    virtual ParamValue getMax () const {return maxPlain;}
-    virtual void setMax (ParamValue value) {maxPlain = value;}
+    virtual ParamValue getMin () const {
+        return minPlain;
+    }
+    virtual void setMin (ParamValue value) {
+        minPlain = value;
+    }
+    virtual ParamValue getMax () const {
+        return maxPlain;
+    }
+    virtual void setMax (ParamValue value) {
+        maxPlain = value;
+    }
 
 protected:
     ParamValue minPlain;
     ParamValue maxPlain;
 
     // cooked to VA Scaled 0->1 param
-    inline float calcVoltOctaveParameter(float fCookedParam) const
-    {
+    inline float calcVoltOctaveParameter(float fCookedParam) const {
         double dOctaves = log2(getMax()/getMin());
         return log2( fCookedParam/getMin() )/dOctaves;
     }
 
     // fPluginValue = 0->1
     // returns VA scaled version 0->1
-    inline float calcVoltOctavePluginValue(float fPluginValue) const
-    {
+    inline float calcVoltOctavePluginValue(float fPluginValue) const {
         double dOctaves = log2(getMax()/getMin());
         float fDisplay = getMin()*exp2(fPluginValue*dOctaves);
         float fDiff = getMax() - getMin();
@@ -212,4 +226,6 @@ protected:
 };
 
 
-}}}
+}
+}
+}

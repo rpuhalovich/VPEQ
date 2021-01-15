@@ -94,57 +94,71 @@ AAX_Result GetEffectDescriptions(AAX_ICollection * outDescriptions);
  - see Designing Audio Effects in C++ 2nd Ed. by Will Pirkle for more information and an AAX Programming Guide
  - see AAX SDK for more information on this function and its parameters
  */
-inline AAX_EStemFormat getAAXStemFormatForChannelFormat(uint32_t format)
-{
-    switch(format)
-    {
-        case kCFNone: {
-            return AAX_eStemFormat_None; }
+inline AAX_EStemFormat getAAXStemFormatForChannelFormat(uint32_t format) {
+    switch(format) {
+    case kCFNone: {
+        return AAX_eStemFormat_None;
+    }
 
-        case kCFMono: {
-            return AAX_eStemFormat_Mono; }
+    case kCFMono: {
+        return AAX_eStemFormat_Mono;
+    }
 
-        case kCFStereo: {
-            return AAX_eStemFormat_Stereo; }
+    case kCFStereo: {
+        return AAX_eStemFormat_Stereo;
+    }
 
-        case kCFLCR: {
-            return AAX_eStemFormat_LCR; }
+    case kCFLCR: {
+        return AAX_eStemFormat_LCR;
+    }
 
-        case kCFLCRS: {
-            return AAX_eStemFormat_LCRS; }
+    case kCFLCRS: {
+        return AAX_eStemFormat_LCRS;
+    }
 
-        case kCFQuad: {
-            return AAX_eStemFormat_Quad; }
+    case kCFQuad: {
+        return AAX_eStemFormat_Quad;
+    }
 
-        case kCF5p0: {
-            return AAX_eStemFormat_5_0; }
+    case kCF5p0: {
+        return AAX_eStemFormat_5_0;
+    }
 
-        case kCF5p1: {
-            return AAX_eStemFormat_5_1; }
+    case kCF5p1: {
+        return AAX_eStemFormat_5_1;
+    }
 
-        case kCF6p0: {
-            return AAX_eStemFormat_6_0; }
+    case kCF6p0: {
+        return AAX_eStemFormat_6_0;
+    }
 
-        case kCF6p1: {
-            return AAX_eStemFormat_6_1; }
+    case kCF6p1: {
+        return AAX_eStemFormat_6_1;
+    }
 
-        case kCF7p0Sony: {
-            return AAX_eStemFormat_7_0_SDDS; }
+    case kCF7p0Sony: {
+        return AAX_eStemFormat_7_0_SDDS;
+    }
 
-        case kCF7p0DTS: {
-            return AAX_eStemFormat_7_0_DTS; }
+    case kCF7p0DTS: {
+        return AAX_eStemFormat_7_0_DTS;
+    }
 
-        case kCF7p1Sony: {
-            return AAX_eStemFormat_7_1_SDDS; }
+    case kCF7p1Sony: {
+        return AAX_eStemFormat_7_1_SDDS;
+    }
 
-        case kCF7p1DTS: {
-            return AAX_eStemFormat_7_1_DTS; }
+    case kCF7p1DTS: {
+        return AAX_eStemFormat_7_1_DTS;
+    }
 
-        case kCF7p1Proximity: {
-            return AAX_eStemFormat_7_1_2; }
+    case kCF7p1Proximity: {
+        return AAX_eStemFormat_7_1_2;
+    }
 
-        default: {
-            return AAX_eStemFormat_None; }
+    default: {
+        return AAX_eStemFormat_None;
+    }
     }
     return AAX_eStemFormat_None;
 }

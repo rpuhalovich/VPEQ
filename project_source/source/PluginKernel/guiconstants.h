@@ -46,12 +46,11 @@ enum { tinyGUI, verySmallGUI, smallGUI, normalGUI, largeGUI, veryLargeGUI };	///
 \param tag - the tag to check
 \return true if is reserved, false otherwise
 */
-inline bool isReservedTag(int tag)
-{
-	// --- these are reserved
-	if (tag >= 131072 && tag <= 131999)
-		return true;
-	return false;
+inline bool isReservedTag(int tag) {
+    // --- these are reserved
+    if (tag >= 131072 && tag <= 131999)
+        return true;
+    return false;
 }
 
 /**
@@ -64,17 +63,16 @@ NOTE: PLUGIN_SIDE_BYPASS is not a bonus; it is used in VST3 as the bypass flag
 \param tag - the tag to check
 \return true if is Bonus Parameter, false otherwise
 */
-inline bool isBonusParameter(int tag)
-{
-	// --- these are reserved
-	if (tag == XY_TRACKPAD || 
-		tag == VECTOR_JOYSTICK ||
-		tag == PRESET_NAME || 
-		tag == WRITE_PRESET_FILE || 
-		tag == SCALE_GUI_SIZE)
-		return true;
+inline bool isBonusParameter(int tag) {
+    // --- these are reserved
+    if (tag == XY_TRACKPAD ||
+            tag == VECTOR_JOYSTICK ||
+            tag == PRESET_NAME ||
+            tag == WRITE_PRESET_FILE ||
+            tag == SCALE_GUI_SIZE)
+        return true;
 
-	return false;
+    return false;
 }
 
 // --- typed enumeration helpers
@@ -316,109 +314,102 @@ The ParamSmoother object performs parameter smoothing on GUI control information
 \date Date : 2018 / 09 / 7
 */
 template <class T>
-class ParamSmoother
-{
+class ParamSmoother {
 public:
-	ParamSmoother() { a = 0.0; b = 0.0; z = 0.0; z2 = 0.0; }
+    ParamSmoother() {
+        a = 0.0;
+        b = 0.0;
+        z = 0.0;
+        z2 = 0.0;
+    }
 
-	/** set a new sample rate; this recalculates internal coefficients
-	\param samplingRate the new sampling rate
-	*/
-	void setSampleRate(T samplingRate)
-	{
-		sampleRate = samplingRate;
+    /** set a new sample rate; this recalculates internal coefficients
+    \param samplingRate the new sampling rate
+    */
+    void setSampleRate(T samplingRate) {
+        sampleRate = samplingRate;
 
-		// --- for LPF smoother
-		a = exp(-kTwoPi / (smoothingTimeInMSec * 0.001 * sampleRate));
-		b = 1.0 - a;
+        // --- for LPF smoother
+        a = exp(-kTwoPi / (smoothingTimeInMSec * 0.001 * sampleRate));
+        b = 1.0 - a;
 
-		// --- for linear smoother
-		linInc = (maxVal - minVal) / (smoothingTimeInMSec * 0.001 * sampleRate);
-	}
+        // --- for linear smoother
+        linInc = (maxVal - minVal) / (smoothingTimeInMSec * 0.001 * sampleRate);
+    }
 
-	/** initialize the smoother; this recalculates internal coefficients
-	\param smoothingTimeInMs the smoothing time in mSec to move from the two control extrema (min and max values)
-	\param samplingRate the new sampling rate
-	\param initValue initial (pre-smoothed) value
-	\param minControlValue minimum numerical value control takes
-	\param maxControlValue maximum numerical value control takes
-	\param smoother type of smoothing
-	*/
-	void initParamSmoother(T smoothingTimeInMs,
-		T samplingRate,
-		T initValue,
-		T minControlValue,
-		T maxControlValue,
-		smoothingMethod smoother = smoothingMethod::kLPFSmoother)
-	{
-		minVal = minControlValue;
-		maxVal = maxControlValue;
-		sampleRate = samplingRate;
-		smoothingTimeInMSec = smoothingTimeInMs;
+    /** initialize the smoother; this recalculates internal coefficients
+    \param smoothingTimeInMs the smoothing time in mSec to move from the two control extrema (min and max values)
+    \param samplingRate the new sampling rate
+    \param initValue initial (pre-smoothed) value
+    \param minControlValue minimum numerical value control takes
+    \param maxControlValue maximum numerical value control takes
+    \param smoother type of smoothing
+    */
+    void initParamSmoother(T smoothingTimeInMs,
+                           T samplingRate,
+                           T initValue,
+                           T minControlValue,
+                           T maxControlValue,
+                           smoothingMethod smoother = smoothingMethod::kLPFSmoother) {
+        minVal = minControlValue;
+        maxVal = maxControlValue;
+        sampleRate = samplingRate;
+        smoothingTimeInMSec = smoothingTimeInMs;
 
-		setSampleRate(samplingRate);
+        setSampleRate(samplingRate);
 
-		// --- storage
-		z = initValue;
-		z2 = initValue;
-	}
+        // --- storage
+        z = initValue;
+        z2 = initValue;
+    }
 
-	/**perform smoothing operation
-	\param in input sample
-	\param out smoothed value
-	\return true if smoothing occurred, false otherwise (e.g. once control has assumed final value, smoothing is turned off)
-	*/
-	inline bool smoothParameter(T in, T& out)
-	{
-		if (smootherType == smoothingMethod::kLPFSmoother)
-		{
-			z = (in * b) + (z * a);
-			if (z == z2)
-			{
-				out = in;
-				return false;
-			}
-			z2 = z;
-			out = z2;
-			return true;
-		}
-		else // if (smootherType == smoothingMethod::kLinearSmoother)
-		{
-			if (in == z)
-			{
-				out = in;
-				return false;
-			}
-			if (in > z)
-			{
-				z += linInc;
-				if (z > in) z = in;
-			}
-			else if (in < z)
-			{
-				z -= linInc;
-				if (z < in) z = in;
-			}
-			out = z;
-			return true;
-		}
-	}
+    /**perform smoothing operation
+    \param in input sample
+    \param out smoothed value
+    \return true if smoothing occurred, false otherwise (e.g. once control has assumed final value, smoothing is turned off)
+    */
+    inline bool smoothParameter(T in, T& out) {
+        if (smootherType == smoothingMethod::kLPFSmoother) {
+            z = (in * b) + (z * a);
+            if (z == z2) {
+                out = in;
+                return false;
+            }
+            z2 = z;
+            out = z2;
+            return true;
+        } else { // if (smootherType == smoothingMethod::kLinearSmoother)
+            if (in == z) {
+                out = in;
+                return false;
+            }
+            if (in > z) {
+                z += linInc;
+                if (z > in) z = in;
+            } else if (in < z) {
+                z -= linInc;
+                if (z < in) z = in;
+            }
+            out = z;
+            return true;
+        }
+    }
 
 private:
-	T a = 0.0;		///< a coefficient for smoothing
-	T b = 0.0;		///< b coefficient for smoothing
-	T z = 0.0;		///< storage register
-	T z2 = 0.0;		///< storage register
+    T a = 0.0;		///< a coefficient for smoothing
+    T b = 0.0;		///< b coefficient for smoothing
+    T z = 0.0;		///< storage register
+    T z2 = 0.0;		///< storage register
 
-	T linInc = 0.0;	///< linear stepping value
+    T linInc = 0.0;	///< linear stepping value
 
-	T minVal = 0.0;	///< min extrema
-	T maxVal = 1.0;	///< max exrema
+    T minVal = 0.0;	///< min extrema
+    T maxVal = 1.0;	///< max exrema
 
-	T sampleRate = 44100;	///< fs
-	T smoothingTimeInMSec = 100.0; ///< tafget min-max smoothing time
+    T sampleRate = 44100;	///< fs
+    T smoothingTimeInMSec = 100.0; ///< tafget min-max smoothing time
 
-	smoothingMethod smootherType = smoothingMethod::kLPFSmoother; ///< smoothing type
+    smoothingMethod smootherType = smoothingMethod::kLPFSmoother; ///< smoothing type
 };
 
 

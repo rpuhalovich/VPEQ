@@ -48,8 +48,7 @@ static AUPreset kPresets[kNumberPresets] = {
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AUFXPlugin::AUFXPlugin(AudioUnit component) : AUMIDIEffectBase(component, false) // false = do not use Process(), use ProcessBufferList() instead
-{
+AUFXPlugin::AUFXPlugin(AudioUnit component) : AUMIDIEffectBase(component, false) { // false = do not use Process(), use ProcessBufferList() instead
     CreateElements(); // --- create input, output ports, groups and parts
 
     // Create the PluginCore
@@ -60,13 +59,11 @@ AUFXPlugin::AUFXPlugin(AudioUnit component) : AUMIDIEffectBase(component, false)
     //     Currently, this only passes the folder location of the DLL to the core for storage and use
     //     for example to load samples or other non-internal plugin stuff
     const char* bundleIDStr = pluginCore->getAUBundleID();
-    if(bundleIDStr)
-    {
+    if(bundleIDStr) {
         CFStringRef bundleID = CFStringCreateWithCString(NULL, bundleIDStr, kCFStringEncodingASCII);
         PluginInfo initInfo;
         initInfo.pathToDLL = getMyComponentDirectory(bundleID);
-        if(initInfo.pathToDLL)
-        {
+        if(initInfo.pathToDLL) {
             pluginCore->initialize(initInfo);
             delete[] initInfo.pathToDLL;
         }
@@ -80,8 +77,7 @@ AUFXPlugin::AUFXPlugin(AudioUnit component) : AUMIDIEffectBase(component, false)
     pluginCore->setPluginHostConnector(pluginHostConnector);
     presetsArrayData = nullptr;
 
-    if(pluginCore->getPresetCount() > 0)
-    {
+    if(pluginCore->getPresetCount() > 0) {
         // --- create space for the presets array
         presetsArrayData = malloc(pluginCore->getPresetCount()*sizeof(AUPreset));
         memset(presetsArrayData, 0, pluginCore->getPresetCount()*sizeof(AUPreset));
@@ -106,12 +102,11 @@ AUFXPlugin::AUFXPlugin(AudioUnit component) : AUMIDIEffectBase(component, false)
 
     // --- NOTE: there is a known bug (feature?) in Logic 9 and Pro X: if the sidechain is set to No Input
     //           then the sidechain buffers will point to the same buffers as the audio input!
-    if(hasSidechain)
-    {
+    if(hasSidechain) {
         SetBusCount(kAudioUnitScope_Input, 2);
         SafeGetElement(kAudioUnitScope_Input, 0)->SetName(CFSTR("Main Input"));
         SafeGetElement(kAudioUnitScope_Input, 1)->SetName(CFSTR("Sidechain"));
-     }
+    }
 
     // --- final init
     initAUParametersWithPluginCore();
@@ -130,54 +125,45 @@ AUFXPlugin::AUFXPlugin(AudioUnit component) : AUMIDIEffectBase(component, false)
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AUFXPlugin::~AUFXPlugin()
-{
+AUFXPlugin::~AUFXPlugin() {
     // --- fixes reaper bug that destroys AU before closing GUI for final time
-    if(pluginGUI)
-    {
+    if(pluginGUI) {
         pluginGUI->clearGUIPluginConnector();
         pluginGUI->close();
     }
-    
-    if(presetsArrayData)
-    {
+
+    if(presetsArrayData) {
         free(presetsArrayData);
         presetsArrayData = nullptr;
     }
 
     // -- cio
-    if(auChannelInfo)
-    {
+    if(auChannelInfo) {
         delete [] auChannelInfo;
         auChannelInfo = nullptr;
     }
 
-    if(pluginCore)
-    {
+    if(pluginCore) {
         delete pluginCore;
         pluginCore = nullptr;
     }
-    
-    if(guiPluginConnector)
-    {
+
+    if(guiPluginConnector) {
         delete guiPluginConnector;
         guiPluginConnector = nullptr;
     }
 
-    if(inputBuffers)
-    {
+    if(inputBuffers) {
         delete [] inputBuffers;
         inputBuffers = nullptr;
     }
 
-    if(outputBuffers)
-    {
+    if(outputBuffers) {
         delete [] outputBuffers;
         inputBuffers = nullptr;
     }
 
-    if(sidechainInputBuffers)
-    {
+    if(sidechainInputBuffers) {
         delete [] sidechainInputBuffers;
         sidechainInputBuffers = nullptr;
     }
@@ -199,13 +185,11 @@ AUFXPlugin::~AUFXPlugin()
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ComponentResult	AUFXPlugin::Reset(AudioUnitScope 	 inScope,
-                                  AudioUnitElement   inElement)
-{
+                                  AudioUnitElement   inElement) {
     // --- reset the base class
     AUBase::Reset(inScope, inElement);
 
-    if(pluginCore)
-    {
+    if(pluginCore) {
         ResetInfo info;
         info.sampleRate = GetOutput(0)->GetStreamFormat().mSampleRate;
         info.bitDepth = GetOutput(0)->GetStreamFormat().SampleWordSize() * 8;
@@ -234,8 +218,7 @@ ComponentResult	AUFXPlugin::Reset(AudioUnitScope 	 inScope,
  \return the number of AUChannelInfo structures in the array
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-UInt32 AUFXPlugin::SupportedNumChannels (const AUChannelInfo** outInfo)
-{
+UInt32 AUFXPlugin::SupportedNumChannels (const AUChannelInfo** outInfo) {
     // --- set an array of arrays of different combinations of supported numbers
     //     of ins and outs
     if(!pluginCore) return 0;
@@ -244,8 +227,7 @@ UInt32 AUFXPlugin::SupportedNumChannels (const AUChannelInfo** outInfo)
         delete [] auChannelInfo;
 
     auChannelInfo = new AUChannelInfo[pluginCore->getNumSupportedIOCombinations()];
-    for(int i=0; i<pluginCore->getNumSupportedIOCombinations(); i++)
-    {
+    for(int i=0; i<pluginCore->getNumSupportedIOCombinations(); i++) {
         auChannelInfo[i].inChannels = pluginCore->getInputChannelCount(i);
         auChannelInfo[i].outChannels = pluginCore->getOutputChannelCount(i);
     }
@@ -272,10 +254,8 @@ UInt32 AUFXPlugin::SupportedNumChannels (const AUChannelInfo** outInfo)
  \return the number of AUChannelInfo structures in the array
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ComponentResult	AUFXPlugin::Initialize()
-{
-    if(pluginCore)
-    {
+ComponentResult	AUFXPlugin::Initialize() {
+    if(pluginCore) {
         ResetInfo info;
         info.sampleRate = GetOutput(0)->GetStreamFormat().mSampleRate;
         info.bitDepth = GetOutput(0)->GetStreamFormat().SampleWordSize() * 8;
@@ -306,8 +286,7 @@ ComponentResult	AUFXPlugin::Initialize()
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ComponentResult	AUFXPlugin::RestoreState(CFPropertyListRef inData)
-{
+ComponentResult	AUFXPlugin::RestoreState(CFPropertyListRef inData) {
     ComponentResult result = AUBase::RestoreState(inData);
     return result;
 }
@@ -324,8 +303,7 @@ ComponentResult	AUFXPlugin::RestoreState(CFPropertyListRef inData)
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AUFXPlugin::setAUParameterChangeEvent(unsigned int controlID, double actualValue)
-{
+void AUFXPlugin::setAUParameterChangeEvent(unsigned int controlID, double actualValue) {
     AudioUnitParameter param = {this->GetComponentInstance(), static_cast<AudioUnitParameterID>(controlID), kAudioUnitScope_Global, 0};
     AUParameterSet(NULL, this, &param, actualValue, 0);
 }
@@ -343,8 +321,7 @@ void AUFXPlugin::setAUParameterChangeEvent(unsigned int controlID, double actual
  \return the actual value of the parameter
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double AUFXPlugin::getAUParameter(unsigned int controlID)
-{
+double AUFXPlugin::getAUParameter(unsigned int controlID) {
     return Globals()->GetParameter(controlID);
 }
 
@@ -356,16 +333,13 @@ double AUFXPlugin::getAUParameter(unsigned int controlID)
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AUFXPlugin::initAUParametersWithPluginCore()
-{
+void AUFXPlugin::initAUParametersWithPluginCore() {
     if(!pluginCore) return;
 
-    for(int32_t i = 0; i < pluginCore->getPluginParameterCount(); i++)
-    {
+    for(int32_t i = 0; i < pluginCore->getPluginParameterCount(); i++) {
         PluginParameter* piParam = pluginCore->getPluginParameterByIndex(i);
 
-        if(piParam)
-        {
+        if(piParam) {
             // --- AudioUnitParameterID = piParam->getControlID()
             //     AudioUnitParameterValue piParam->getControlValue()
             Globals()->SetParameter(piParam->getControlID(), piParam->getControlValue());
@@ -382,19 +356,16 @@ void AUFXPlugin::initAUParametersWithPluginCore()
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AUFXPlugin::updatePluginCoreParameters()
-{
+void AUFXPlugin::updatePluginCoreParameters() {
     if(!pluginCore) return;
 
     ParameterUpdateInfo paramInfo;
     paramInfo.bufferProcUpdate = true;
 
-    for(int32_t i = 0; i < pluginCore->getPluginParameterCount(); i++)
-    {
+    for(int32_t i = 0; i < pluginCore->getPluginParameterCount(); i++) {
         PluginParameter* piParam = pluginCore->getPluginParameterByIndex(i);
 
-        if(piParam)
-        {
+        if(piParam) {
             // --- get the threadsafe global parameter
             AudioUnitParameterValue inValue = Globals()->GetParameter(piParam->getControlID());
 
@@ -414,13 +385,11 @@ void AUFXPlugin::updatePluginCoreParameters()
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AUFXPlugin::updateAUParametersWithPluginCore() // outbound
-{
+void AUFXPlugin::updateAUParametersWithPluginCore() { // outbound
     if(!pluginCore) return;
 
     int32_t startIndex = 0;
-    while(startIndex >= 0)
-    {
+    while(startIndex >= 0) {
         PluginParameter* piParam = pluginCore->getNextParameterOfType(startIndex, controlVariableType::kMeter);
 
         if(piParam)
@@ -444,45 +413,37 @@ void AUFXPlugin::updateAUParametersWithPluginCore() // outbound
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus AUFXPlugin::Render(AudioUnitRenderActionFlags &		ioActionFlags,
-                                  const AudioTimeStamp &            inTimeStamp,
-                                  UInt32                            inNumberFrames)
-{
+                            const AudioTimeStamp &            inTimeStamp,
+                            UInt32                            inNumberFrames) {
     // --- this is only for sidechain support!
     bool bSCAvailable;
-    try {bSCAvailable = HasInput(1);}
-    catch (...) {bSCAvailable = false;}
+    try {
+        bSCAvailable = HasInput(1);
+    } catch (...) {
+        bSCAvailable = false;
+    }
 
-    if(!hasSidechain || !bSCAvailable)
-    {
+    if(!hasSidechain || !bSCAvailable) {
         sidechainBufferList = nullptr;
         sidechainChannelCount = 0;
 
         return  AUMIDIEffectBase::Render(ioActionFlags, inTimeStamp, inNumberFrames);
     }
 
-    if(bSCAvailable)
-    {
+    if(bSCAvailable) {
         AUInputElement* SCInput = GetInput(1);
-        if(SCInput != NULL)
-        {
+        if(SCInput != NULL) {
             OSStatus status = SCInput->PullInput(ioActionFlags, inTimeStamp, 1, inNumberFrames);
-            if(status == noErr)
-            {
+            if(status == noErr) {
                 sidechainChannelCount = SCInput->NumberChannels();
                 sidechainBufferList = &(SCInput->GetBufferList());
+            } else {
+                sidechainBufferList = nullptr;
             }
-            else
-            {
-                 sidechainBufferList = nullptr;
-            }
-        }
-        else
-        {
+        } else {
             sidechainBufferList = nullptr;
         }
-    }
-    else
-    {
+    } else {
         sidechainBufferList = nullptr;
     }
 
@@ -504,10 +465,9 @@ OSStatus AUFXPlugin::Render(AudioUnitRenderActionFlags &		ioActionFlags,
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus AUFXPlugin::ProcessBufferLists(AudioUnitRenderActionFlags& ioActionFlags,
-                                              const AudioBufferList&	  inBuffer,
-                                              AudioBufferList&			  outBuffer,
-                                              UInt32					  inFramesToProcess )
-{
+                                        const AudioBufferList&	  inBuffer,
+                                        AudioBufferList&			  outBuffer,
+                                        UInt32					  inFramesToProcess ) {
     if(!pluginCore) return noErr;
 
     // --- threadsafe sync to globals
@@ -523,16 +483,13 @@ OSStatus AUFXPlugin::ProcessBufferLists(AudioUnitRenderActionFlags& ioActionFlag
     size_t numOutputChannels = (size_t) GetOutput(0)->GetStreamFormat().mChannelsPerFrame;
     size_t numAuxInputChannels = sidechainChannelCount;
 
-    for(int i=0; i<numInputChannels; i++)
-    {
+    for(int i=0; i<numInputChannels; i++) {
         inputBuffers[i] = (float*)inBuffer.mBuffers[i].mData;
     }
-    for(int i=0; i<numOutputChannels; i++)
-    {
+    for(int i=0; i<numOutputChannels; i++) {
         outputBuffers[i] = (float*)outBuffer.mBuffers[i].mData;
     }
-    for(int i=0; i<numAuxInputChannels; i++)
-    {
+    for(int i=0; i<numAuxInputChannels; i++) {
         sidechainInputBuffers[i] = (float*)sidechainBufferList->mBuffers[i].mData;
     }
 
@@ -583,8 +540,7 @@ OSStatus AUFXPlugin::ProcessBufferLists(AudioUnitRenderActionFlags& ioActionFlag
  \param hostInfo a HostInfo structure to fill with incoming data
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AUFXPlugin::updateHostInfo(HostInfo* hostInfo)
-{
+void AUFXPlugin::updateHostInfo(HostInfo* hostInfo) {
     if(!hostInfo) return;
     memset(hostInfo, 0, sizeof(HostInfo));
 
@@ -602,15 +558,13 @@ void AUFXPlugin::updateHostInfo(HostInfo* hostInfo)
     Float64 outCycleEndBeat = 0.0;
 
     OSStatus status = CallHostBeatAndTempo(&outCurrentBeat, &outCurrentTempo);
-    if(status == noErr)
-    {
+    if(status == noErr) {
         hostInfo->dBPM = outCurrentTempo;
         hostInfo->dCurrentBeat = outCurrentBeat;
     }
 
     status = CallHostMusicalTimeLocation(&outDeltaSampleOffsetToNextBeat, &outTimeSig_Numerator, &outTimeSig_Denominator, &outCurrentMeasureDownBeat);
-    if(status == noErr)
-    {
+    if(status == noErr) {
         hostInfo->dCurrentMeasureDownBeat = outCurrentMeasureDownBeat;
         hostInfo->nDeltaSampleOffsetToNextBeat = outDeltaSampleOffsetToNextBeat;
         hostInfo->fTimeSigNumerator = outTimeSig_Numerator;
@@ -645,11 +599,10 @@ void AUFXPlugin::updateHostInfo(HostInfo* hostInfo)
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ComponentResult AUFXPlugin::SetParameter(AudioUnitParameterID	   inID,
-                                               AudioUnitScope 		   inScope,
-                                               AudioUnitElement 	   inElement,
-                                               AudioUnitParameterValue inValue,
-                                               UInt32				   inBufferOffsetInFrames)
-{
+        AudioUnitScope 		   inScope,
+        AudioUnitElement 	   inElement,
+        AudioUnitParameterValue inValue,
+        UInt32				   inBufferOffsetInFrames) {
     return AUBase::SetParameter(inID, inScope, inElement, inValue, inBufferOffsetInFrames);
 }
 
@@ -668,9 +621,8 @@ ComponentResult AUFXPlugin::SetParameter(AudioUnitParameterID	   inID,
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ComponentResult	AUFXPlugin::GetParameterInfo(AudioUnitScope		   inScope,
-                                                   AudioUnitParameterID    inParameterID,
-                                                   AudioUnitParameterInfo& outParameterInfo )
-{
+        AudioUnitParameterID    inParameterID,
+        AudioUnitParameterInfo& outParameterInfo ) {
     // --- here, the client is querying us for each of our controls. It wants a description
     //     (name) and I have set it up for custom units since that's the most general so
     //     we also give it units.
@@ -681,8 +633,7 @@ ComponentResult	AUFXPlugin::GetParameterInfo(AudioUnitScope		   inScope,
 
     outParameterInfo.flags = kAudioUnitParameterFlag_IsWritable + kAudioUnitParameterFlag_IsReadable;
 
-    if(inScope == kAudioUnitScope_Global)
-    {
+    if(inScope == kAudioUnitScope_Global) {
         PluginParameter* piParam = pluginCore->getPluginParameterByControlID(inParameterID);
         if(!piParam) return kAudioUnitErr_InvalidParameter;
 
@@ -698,8 +649,7 @@ ComponentResult	AUFXPlugin::GetParameterInfo(AudioUnitScope		   inScope,
         //     enum string for that control
         if(piParam->getControlVariableType() == controlVariableType::kTypedEnumStringList)
             outParameterInfo.unit = kAudioUnitParameterUnit_Indexed;
-        else
-        {
+        else {
             // --- custom, set units
             outParameterInfo.unit = kAudioUnitParameterUnit_CustomUnit;
             outParameterInfo.unitName = units;
@@ -731,13 +681,11 @@ ComponentResult	AUFXPlugin::GetParameterInfo(AudioUnitScope		   inScope,
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ComponentResult	AUFXPlugin::GetParameterValueStrings(AudioUnitScope       inScope,
-                                                           AudioUnitParameterID	inParameterID,
-                                                           CFArrayRef *			outStrings)
-{
+        AudioUnitParameterID	inParameterID,
+        CFArrayRef *			outStrings) {
     if(!pluginCore) return kAudioUnitErr_InvalidParameter;
 
-    if(inScope == kAudioUnitScope_Global)
-    {
+    if(inScope == kAudioUnitScope_Global) {
         if (outStrings == NULL)
             return noErr;
 
@@ -773,38 +721,32 @@ ComponentResult	AUFXPlugin::GetParameterValueStrings(AudioUnitScope       inScop
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ComponentResult	AUFXPlugin::GetPropertyInfo(AudioUnitPropertyID inID,
-                                                  AudioUnitScope      inScope,
-                                                  AudioUnitElement    inElement,
-                                                  UInt32&             outDataSize,
-                                                  Boolean&            outWritable)
-{
+        AudioUnitScope      inScope,
+        AudioUnitElement    inElement,
+        UInt32&             outDataSize,
+        Boolean&            outWritable) {
     if(!pluginCore) return kAudioUnitErr_InvalidParameter;
 
-    if (inScope == kAudioUnitScope_Global)
-    {
-        switch(inID)
-        {
-            // --- we have a Cocoa GUI
-            case kAudioUnitProperty_CocoaUI:
-            {
-                if(pluginCore->hasCustomGUI())
-                {
-                    outWritable = false;
-                    outDataSize = sizeof(AudioUnitCocoaViewInfo);
-                    return noErr;
-                }
-            }
-            case kOpenGUI:
-            {
-                #if __LP64__
-                outDataSize = sizeof(uint64_t);
-                #else
-                outDataSize = sizeof(uint32_t);
-                #endif
-
+    if (inScope == kAudioUnitScope_Global) {
+        switch(inID) {
+        // --- we have a Cocoa GUI
+        case kAudioUnitProperty_CocoaUI: {
+            if(pluginCore->hasCustomGUI()) {
                 outWritable = false;
+                outDataSize = sizeof(AudioUnitCocoaViewInfo);
                 return noErr;
             }
+        }
+        case kOpenGUI: {
+#if __LP64__
+            outDataSize = sizeof(uint64_t);
+#else
+            outDataSize = sizeof(uint32_t);
+#endif
+
+            outWritable = false;
+            return noErr;
+        }
         }
     }
     return AUMIDIEffectBase::GetPropertyInfo(inID, inScope, inElement, outDataSize, outWritable);
@@ -824,38 +766,34 @@ ComponentResult	AUFXPlugin::GetPropertyInfo(AudioUnitPropertyID inID,
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ComponentResult	AUFXPlugin::GetProperty(AudioUnitPropertyID       inID,
-                                              AudioUnitScope      inScope,
-                                              AudioUnitElement    inElement,
-                                              void*               outData)
-{
-    if (inScope == kAudioUnitScope_Global)
-    {
-        switch(inID)
-        {
-            // --- This property allows the host application to find the UI associated with this
-            case kAudioUnitProperty_CocoaUI:
-            {
-                // --- Look for a resource in the main bundle by name and type.
-                 CFBundleRef bundle = CFBundleGetBundleWithIdentifier(CFStringCreateWithCString(nullptr, pluginCore->getAUBundleID(), kCFStringEncodingASCII));
+                                        AudioUnitScope      inScope,
+                                        AudioUnitElement    inElement,
+                                        void*               outData) {
+    if (inScope == kAudioUnitScope_Global) {
+        switch(inID) {
+        // --- This property allows the host application to find the UI associated with this
+        case kAudioUnitProperty_CocoaUI: {
+            // --- Look for a resource in the main bundle by name and type.
+            CFBundleRef bundle = CFBundleGetBundleWithIdentifier(CFStringCreateWithCString(nullptr, pluginCore->getAUBundleID(), kCFStringEncodingASCII));
 
-                if(bundle == NULL) return fnfErr;
-                
-                CFURLRef bundleURL = CFBundleCopyResourceURL(bundle,
-                                                              CFStringCreateWithCString(nullptr, pluginCore->getAUBundleName(), kCFStringEncodingASCII),
-                                                              CFSTR("bundle"),
-                                                              NULL);
+            if(bundle == NULL) return fnfErr;
 
-                if(bundleURL == NULL) return fnfErr;
+            CFURLRef bundleURL = CFBundleCopyResourceURL(bundle,
+                                 CFStringCreateWithCString(nullptr, pluginCore->getAUBundleName(), kCFStringEncodingASCII),
+                                 CFSTR("bundle"),
+                                 NULL);
 
-                CFStringRef className = CFStringCreateWithCString(nullptr, pluginCore->getAUCocoaViewFactoryName(), kCFStringEncodingASCII);
+            if(bundleURL == NULL) return fnfErr;
 
-                AudioUnitCocoaViewInfo cocoaInfo = { bundleURL, {className} };
-                *((AudioUnitCocoaViewInfo *)outData) = cocoaInfo;
+            CFStringRef className = CFStringCreateWithCString(nullptr, pluginCore->getAUCocoaViewFactoryName(), kCFStringEncodingASCII);
 
-                return noErr;
-            }
+            AudioUnitCocoaViewInfo cocoaInfo = { bundleURL, {className} };
+            *((AudioUnitCocoaViewInfo *)outData) = cocoaInfo;
 
-            return kAudioUnitErr_InvalidProperty;
+            return noErr;
+        }
+
+        return kAudioUnitErr_InvalidProperty;
         }
     }
     return AUMIDIEffectBase::GetProperty(inID, inScope, inElement, outData);
@@ -874,97 +812,87 @@ ComponentResult	AUFXPlugin::GetProperty(AudioUnitPropertyID       inID,
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus	AUFXPlugin::SetProperty(AudioUnitPropertyID inID,
-                                          AudioUnitScope 	  inScope,
-                                          AudioUnitElement 	  inElement,
-                                          const void*		  inData,
-                                          UInt32 			  inDataSize)
-{
-   	if (inScope == kAudioUnitScope_Global)
-    {
+                                    AudioUnitScope 	  inScope,
+                                    AudioUnitElement 	  inElement,
+                                    const void*		  inData,
+                                    UInt32 			  inDataSize) {
+    if (inScope == kAudioUnitScope_Global) {
         if(!pluginCore) return kAudioUnitErr_InvalidParameter;
 
-        switch (inID)
-        {
-            case kOpenGUI:
-            {
-                VIEW_STRUCT* pVS = (VIEW_STRUCT*)inData;
-                void* createdCustomGUI = NULL;
-                if(!createdCustomGUI)
-                {
-                    // --- Look for a resource in the main bundle by name and type.
-                    CFBundleRef bundle = CFBundleGetBundleWithIdentifier(CFStringCreateWithCString(nullptr, pluginCore->getAUBundleID(), kCFStringEncodingASCII));
-                    if (bundle == nullptr) return fnfErr;
+        switch (inID) {
+        case kOpenGUI: {
+            VIEW_STRUCT* pVS = (VIEW_STRUCT*)inData;
+            void* createdCustomGUI = NULL;
+            if(!createdCustomGUI) {
+                // --- Look for a resource in the main bundle by name and type.
+                CFBundleRef bundle = CFBundleGetBundleWithIdentifier(CFStringCreateWithCString(nullptr, pluginCore->getAUBundleID(), kCFStringEncodingASCII));
+                if (bundle == nullptr) return fnfErr;
 
-                    // --- get .uidesc file
-                    CFURLRef bundleURL = CFBundleCopyResourceURL(bundle,CFSTR("PluginGUI"),CFSTR("uidesc"),NULL);
-                    CFStringRef xmlPath = CFURLCopyPath(bundleURL);
-                    int nSize = CFStringGetLength(xmlPath);
-                    char* path = new char[nSize+1];
-                    memset(path, 0, (nSize+1)*sizeof(char));
-                    CFStringGetCString(xmlPath, path, nSize+1, kCFStringEncodingASCII);
-                    CFRelease(xmlPath);
+                // --- get .uidesc file
+                CFURLRef bundleURL = CFBundleCopyResourceURL(bundle,CFSTR("PluginGUI"),CFSTR("uidesc"),NULL);
+                CFStringRef xmlPath = CFURLCopyPath(bundleURL);
+                int nSize = CFStringGetLength(xmlPath);
+                char* path = new char[nSize+1];
+                memset(path, 0, (nSize+1)*sizeof(char));
+                CFStringGetCString(xmlPath, path, nSize+1, kCFStringEncodingASCII);
+                CFRelease(xmlPath);
 
-                    std::vector<PluginParameter*>* PluginParameterPtr = pluginCore->makePluginParameterVectorCopy();
+                std::vector<PluginParameter*>* PluginParameterPtr = pluginCore->makePluginParameterVectorCopy();
 
-                    // --- create GUI
-                    pluginGUI = new VSTGUI::PluginGUI(path);
-                    pluginGUI->setGUIWindowFrame(pVS->pGUIFrame);
+                // --- create GUI
+                pluginGUI = new VSTGUI::PluginGUI(path);
+                pluginGUI->setGUIWindowFrame(pVS->pGUIFrame);
 
-                    if(pluginGUI)
-                    {
-                        bool openedGUI = pluginGUI->open("Editor", pVS->pWindow, PluginParameterPtr, VSTGUI::kNSView, guiPluginConnector, pVS->au);
+                if(pluginGUI) {
+                    bool openedGUI = pluginGUI->open("Editor", pVS->pWindow, PluginParameterPtr, VSTGUI::kNSView, guiPluginConnector, pVS->au);
 
-                        // --- delete the PluginParameterPtr guts, and pointer too...
-                        for(std::vector<PluginParameter*>::iterator it = PluginParameterPtr->begin(); it !=  PluginParameterPtr->end(); ++it)
-                        {
-                            delete *it;
-                        }
-                        delete PluginParameterPtr;
-
-                        if(openedGUI)
-                        {
-                            pluginGUI->getSize(pVS->width, pVS->height);
-                            pluginGUI->setAU(pVS->au);
-
-                            // --- frame -> view notifications
-                            pVS->pGUIView = pluginGUI;
-
-                            // --- let plugin core know
-                            if(guiPluginConnector)
-                                guiPluginConnector->guiDidOpen();
-                        }
-
-                        delete [] path;
-                        return noErr;
+                    // --- delete the PluginParameterPtr guts, and pointer too...
+                    for(std::vector<PluginParameter*>::iterator it = PluginParameterPtr->begin(); it !=  PluginParameterPtr->end(); ++it) {
+                        delete *it;
                     }
+                    delete PluginParameterPtr;
+
+                    if(openedGUI) {
+                        pluginGUI->getSize(pVS->width, pVS->height);
+                        pluginGUI->setAU(pVS->au);
+
+                        // --- frame -> view notifications
+                        pVS->pGUIView = pluginGUI;
+
+                        // --- let plugin core know
+                        if(guiPluginConnector)
+                            guiPluginConnector->guiDidOpen();
+                    }
+
+                    delete [] path;
+                    return noErr;
                 }
-
-                break;
             }
-            case kCloseGUI:
-            {
-                if(guiPluginConnector)
-                    guiPluginConnector->guiWillClose();
 
-                // --- destroy GUI
-                if(pluginGUI)
-                {
-                    // --- close it
-                    pluginGUI->close();
+            break;
+        }
+        case kCloseGUI: {
+            if(guiPluginConnector)
+                guiPluginConnector->guiWillClose();
 
-                    // --- ref count should be exactly 1
-                    if(pluginGUI->getNbReference() != 1)
-                        Assert(true, "ASSERT FAILED: pluginGUI->getNbReference() != 1");
+            // --- destroy GUI
+            if(pluginGUI) {
+                // --- close it
+                pluginGUI->close();
 
-                    // --- self-destruct
-                    VSTGUI::PluginGUI* oldGUI = pluginGUI;
-                    pluginGUI = 0;
-                    oldGUI->forget();
+                // --- ref count should be exactly 1
+                if(pluginGUI->getNbReference() != 1)
+                    Assert(true, "ASSERT FAILED: pluginGUI->getNbReference() != 1");
 
-                }
-                return noErr;
-                break;
+                // --- self-destruct
+                VSTGUI::PluginGUI* oldGUI = pluginGUI;
+                pluginGUI = 0;
+                oldGUI->forget();
+
             }
+            return noErr;
+            break;
+        }
         }
     }
 
@@ -984,21 +912,18 @@ OSStatus	AUFXPlugin::SetProperty(AudioUnitPropertyID inID,
  - https://developer.apple.com/documentation/audiounit
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ComponentResult	AUFXPlugin::GetPresets(CFArrayRef *outData) const
-{
+ComponentResult	AUFXPlugin::GetPresets(CFArrayRef *outData) const {
     // --- this is used to determine if presets are supported
     //     which in this unit they are so we implement this method!
     if(outData == NULL) return noErr;
     if(!pluginCore) return noErr;
 
-    if(pluginCore->getPresetCount() <= 0)
-    {
+    if(pluginCore->getPresetCount() <= 0) {
         // make the array
         CFMutableArrayRef theArray = CFArrayCreateMutable (NULL, kNumberPresets, NULL);
 
         // copy our preset names
-        for (int i = 0; i < kNumberPresets; ++i)
-        {
+        for (int i = 0; i < kNumberPresets; ++i) {
             CFArrayAppendValue (theArray, &kPresets[i]);
         }
 
@@ -1010,8 +935,7 @@ ComponentResult	AUFXPlugin::GetPresets(CFArrayRef *outData) const
     CFMutableArrayRef theArray = CFArrayCreateMutable (NULL, pluginCore->getPresetCount(), NULL);
 
     // copy our preset names
-    for (int i = 0; i < pluginCore->getPresetCount(); ++i)
-    {
+    for (int i = 0; i < pluginCore->getPresetCount(); ++i) {
         // --- presetsArrayData is a void*-ed block of raw bytes; will be freed in destructor
         ((AUPreset*)presetsArrayData)[i].presetNumber = i;
         ((AUPreset*)presetsArrayData)[i].presetName = CFStringCreateWithCString(NULL, pluginCore->getPresetName(i), kCFStringEncodingASCII);
@@ -1037,8 +961,7 @@ ComponentResult	AUFXPlugin::GetPresets(CFArrayRef *outData) const
  - https://developer.apple.com/documentation/audiounit
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-OSStatus AUFXPlugin::NewFactoryPresetSet(const AUPreset & inNewFactoryPreset)
-{
+OSStatus AUFXPlugin::NewFactoryPresetSet(const AUPreset & inNewFactoryPreset) {
     if(!pluginCore) return noErr;
 
     SInt32 chosenPreset = inNewFactoryPreset.presetNumber;
@@ -1053,8 +976,7 @@ OSStatus AUFXPlugin::NewFactoryPresetSet(const AUPreset & inNewFactoryPreset)
     // --- Sync Preset Name
     AUPreset auPreset = { 0, CFSTR("Factory Preset") };
 
-    if(pluginCore->getPresetCount() > 0)
-    {
+    if(pluginCore->getPresetCount() > 0) {
         auPreset.presetNumber = currentPreset;
         auPreset.presetName = CFStringCreateWithCString(NULL, pluginCore->getPresetName(currentPreset), kCFStringEncodingASCII);
     }
@@ -1063,10 +985,8 @@ OSStatus AUFXPlugin::NewFactoryPresetSet(const AUPreset & inNewFactoryPreset)
     SetAFactoryPresetAsCurrent(auPreset);
 
     PresetInfo* preset = pluginCore->getPreset(currentPreset);
-    if(preset)
-    {
-        for(int j=0; j<preset->presetParameters.size(); j++)
-        {
+    if(preset) {
+        for(int j=0; j<preset->presetParameters.size(); j++) {
             PresetParameter preParam = preset->presetParameters[j];
             Globals()->SetParameter(preParam.controlID, preParam.actualValue);
         }
@@ -1089,10 +1009,9 @@ OSStatus AUFXPlugin::NewFactoryPresetSet(const AUPreset & inNewFactoryPreset)
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus AUFXPlugin::HandleNoteOn(UInt8 	inChannel,
-                                        UInt8 	inNoteNumber,
-                                        UInt8 	inVelocity,
-                                        UInt32  inStartFrame)
-{
+                                  UInt8 	inNoteNumber,
+                                  UInt8 	inVelocity,
+                                  UInt32  inStartFrame) {
     return noErr;
 }
 
@@ -1109,10 +1028,9 @@ OSStatus AUFXPlugin::HandleNoteOn(UInt8 	inChannel,
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus AUFXPlugin::HandleNoteOff(UInt8 	inChannel,
-                                         UInt8 	inNoteNumber,
-                                         UInt8 	inVelocity,
-                                         UInt32 inStartFrame)
-{
+                                   UInt8 	inNoteNumber,
+                                   UInt8 	inVelocity,
+                                   UInt32 inStartFrame) {
     return noErr;
 }
 
@@ -1129,10 +1047,9 @@ OSStatus AUFXPlugin::HandleNoteOff(UInt8 	inChannel,
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus AUFXPlugin::HandlePitchWheel(UInt8  inChannel,
-                                            UInt8  inPitch1,
-                                            UInt8  inPitch2,
-                                            UInt32 inStartFrame)
-{
+                                      UInt8  inPitch1,
+                                      UInt8  inPitch2,
+                                      UInt32 inStartFrame) {
     return noErr;
 }
 
@@ -1159,10 +1076,9 @@ OSStatus AUFXPlugin::HandlePitchWheel(UInt8  inChannel,
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OSStatus AUFXPlugin::HandleControlChange(UInt8  inChannel,
-                                               UInt8  inController,
-                                               UInt8  inValue,
-                                               UInt32 inStartFrame)
-{
+        UInt8  inController,
+        UInt8  inValue,
+        UInt32 inStartFrame) {
 
     return noErr;
 }
@@ -1181,13 +1097,11 @@ OSStatus AUFXPlugin::HandleControlChange(UInt8  inChannel,
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OSStatus AUFXPlugin::HandleMidiEvent(UInt8  status,
-                                           UInt8  channel,
-                                           UInt8  data1,
-                                           UInt8  data2,
-                                           UInt32 inStartFrame)
-{
-    if(midiEventQueue)
-    {
+                                     UInt8  channel,
+                                     UInt8  data1,
+                                     UInt8  data2,
+                                     UInt32 inStartFrame) {
+    if(midiEventQueue) {
         midiEvent event;
         event.midiMessage = (unsigned int)status;
         event.midiChannel = (unsigned int)channel;

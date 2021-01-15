@@ -44,26 +44,28 @@ template <typename T, int32_t RealPrecision=1000>
  \version Revision : 1.0
  \date Date : 2018 / 09 / 7
 */
-class AntiLogTaperDelegate : public AAX_ITaperDelegate<T>
-{
+class AntiLogTaperDelegate : public AAX_ITaperDelegate<T> {
 public:
-	AntiLogTaperDelegate(T minValue=0, T maxValue=1);
+    AntiLogTaperDelegate(T minValue=0, T maxValue=1);
 
-	// --- Virtual Overrides
-	AntiLogTaperDelegate<T, RealPrecision>*	Clone() const;
-	T		GetMinimumValue() const { return mMinValue; }
-	T		GetMaximumValue() const	{ return mMaxValue; }
-	T		ConstrainRealValue(T value)	const;
-	T		NormalizedToReal(double normalizedValue) const;
-	double	RealToNormalized(T realValue) const;
+    // --- Virtual Overrides
+    AntiLogTaperDelegate<T, RealPrecision>*	Clone() const;
+    T		GetMinimumValue() const {
+        return mMinValue;
+    }
+    T		GetMaximumValue() const	{
+        return mMaxValue;
+    }
+    T		ConstrainRealValue(T value)	const;
+    T		NormalizedToReal(double normalizedValue) const;
+    double	RealToNormalized(T realValue) const;
 
 protected:
-	T	Round(double iValue) const;
+    T	Round(double iValue) const;
 
-	// --- fNormalizedParam = 0->1
-	//     returns antilog scaled 0->1 value
-	inline double calcAntiLogParameter(double fNormalizedParam) const
-	{
+    // --- fNormalizedParam = 0->1
+    //     returns antilog scaled 0->1 value
+    inline double calcAntiLogParameter(double fNormalizedParam) const {
         if(fNormalizedParam <= 0.0) return 0.0;
         if(fNormalizedParam >= 1.0) return 1.0;
 
@@ -71,10 +73,9 @@ protected:
         return (kCTCorrFactorAntiUnity)*(-pow(10.0, (-fNormalizedParam / kCTCoefficient)) + 1.0);
     }
 
-	// --- fPluginValue = 0->1 antilog scaled value
-	//     returns normal 0-> value
-	inline double calcAntiLogPluginValue(double fPluginValue) const
-	{
+    // --- fPluginValue = 0->1 antilog scaled value
+    //     returns normal 0-> value
+    inline double calcAntiLogPluginValue(double fPluginValue) const {
         if(fPluginValue <= 0.0) return 0.0;
         if(fPluginValue >= 1.0) return 1.0;
 
@@ -82,65 +83,59 @@ protected:
         float transformed = -kCTCoefficient*kCTCorrFactorAntiLogScale*log10(1.0 - fPluginValue + kCTCorrFactorZero) + kCTCorrFactorAntiLog;
         if(transformed >= 1.0) transformed = 1.0;
         return transformed;
-	}
+    }
 
 private:
-	T	mMinValue;
-	T	mMaxValue;
+    T	mMinValue;
+    T	mMaxValue;
 };
 
 template <typename T, int32_t RealPrecision>
-T	AntiLogTaperDelegate<T, RealPrecision>::Round(double iValue) const
-{
-	double precision = RealPrecision;
-	if (precision > 0)
-		return static_cast<T>(floor(iValue * precision + 0.5) / precision);
+T	AntiLogTaperDelegate<T, RealPrecision>::Round(double iValue) const {
+    double precision = RealPrecision;
+    if (precision > 0)
+        return static_cast<T>(floor(iValue * precision + 0.5) / precision);
     return static_cast<T>(iValue);
 }
 
 template <typename T, int32_t RealPrecision>
 AntiLogTaperDelegate<T, RealPrecision>::AntiLogTaperDelegate(T minValue, T maxValue)  :  AAX_ITaperDelegate<T>(),
-	mMinValue(minValue),
-	mMaxValue(maxValue)
-{
+    mMinValue(minValue),
+    mMaxValue(maxValue) {
 
 }
 
 template <typename T, int32_t RealPrecision>
-AntiLogTaperDelegate<T, RealPrecision>*		AntiLogTaperDelegate<T, RealPrecision>::Clone() const
-{
-	return new AntiLogTaperDelegate(*this);
+AntiLogTaperDelegate<T, RealPrecision>*		AntiLogTaperDelegate<T, RealPrecision>::Clone() const {
+    return new AntiLogTaperDelegate(*this);
 }
 
 template <typename T, int32_t RealPrecision>
-T		AntiLogTaperDelegate<T, RealPrecision>::ConstrainRealValue(T value)	const
-{
-	if (RealPrecision)
-		value = Round(value);		//reduce the precision to get proper rounding behavior with integers.
+T		AntiLogTaperDelegate<T, RealPrecision>::ConstrainRealValue(T value)	const {
+    if (RealPrecision)
+        value = Round(value);		//reduce the precision to get proper rounding behavior with integers.
 
-	if (value > mMaxValue)
-		return mMaxValue;
-	if (value < mMinValue)
-		return mMinValue;
-	return value;
+    if (value > mMaxValue)
+        return mMaxValue;
+    if (value < mMinValue)
+        return mMinValue;
+    return value;
 }
 
 template <typename T, int32_t RealPrecision>
-T		AntiLogTaperDelegate<T, RealPrecision>::NormalizedToReal(double normalizedValue) const
-{
-	normalizedValue = calcAntiLogPluginValue(normalizedValue);
-	double doubleRealValue = normalizedValue*(mMaxValue - mMinValue) + mMinValue;
+T		AntiLogTaperDelegate<T, RealPrecision>::NormalizedToReal(double normalizedValue) const {
+    normalizedValue = calcAntiLogPluginValue(normalizedValue);
+    double doubleRealValue = normalizedValue*(mMaxValue - mMinValue) + mMinValue;
 
-	T realValue = (T) doubleRealValue;
+    T realValue = (T) doubleRealValue;
 
     return ConstrainRealValue(realValue);
 }
 
 template <typename T, int32_t RealPrecision>
-double	AntiLogTaperDelegate<T, RealPrecision>::RealToNormalized(T realValue) const
-{
-	double normValue = (realValue - mMinValue)/(mMaxValue - mMinValue);
-	return calcAntiLogParameter(normValue);
+double	AntiLogTaperDelegate<T, RealPrecision>::RealToNormalized(T realValue) const {
+    double normValue = (realValue - mMinValue)/(mMaxValue - mMinValue);
+    return calcAntiLogParameter(normValue);
 }
 
 #endif // __ANTILOGTAPERDELEGATE_H

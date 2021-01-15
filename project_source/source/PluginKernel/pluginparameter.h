@@ -48,15 +48,14 @@ PluginParameter Operations:
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class PluginParameter
-{
+class PluginParameter {
 public:
     /** constructor for continuous controls */
     PluginParameter(int _controlID, const char* _controlName, const char* _controlUnits,
                     controlVariableType _controlType, double _minValue, double _maxValue, double _defaultValue,
                     taper _controlTaper = taper::kLinearTaper, uint32_t _displayPrecision = 2);
 
-	/** constructor 1 for string-list controls */
+    /** constructor 1 for string-list controls */
     PluginParameter(int _controlID, const char* _controlName, std::vector<std::string> _stringList, std::string _defaultString);
 
     /** constructor 2 for string-list controls */
@@ -72,306 +71,405 @@ public:
     /** empty constructor */
     PluginParameter();
 
-   /** copy constructor */
+    /** copy constructor */
     PluginParameter(const PluginParameter& initGuiControl);
 
-	/** D-TOR */
+    /** D-TOR */
     virtual ~PluginParameter();
 
-    uint32_t getControlID() { return controlID; }			///< get ID value
-    void setControlID(uint32_t cid) { controlID = cid; }	///< set ID value
+    uint32_t getControlID() {
+        return controlID;    ///< get ID value
+    }
+    void setControlID(uint32_t cid) {
+        controlID = cid;    ///< set ID value
+    }
 
-    const char* getControlName() { return controlName.c_str(); }			///< get name as const char*
-    void setControlName(const char* name) { controlName.assign(name); }		///< set name as const char*
+    const char* getControlName() {
+        return controlName.c_str();    ///< get name as const char*
+    }
+    void setControlName(const char* name) {
+        controlName.assign(name);    ///< set name as const char*
+    }
 
-    const char* getControlUnits() { return controlUnits.c_str(); }			///< get units as const char*
-    void setControlUnits(const char* units) { controlUnits.assign(units); }	///< set units as const char*
+    const char* getControlUnits() {
+        return controlUnits.c_str();    ///< get units as const char*
+    }
+    void setControlUnits(const char* units) {
+        controlUnits.assign(units);    ///< set units as const char*
+    }
 
-    controlVariableType getControlVariableType() { return controlType; }						///< get variable type associated with parameter
-    void setControlVariableType(controlVariableType ctrlVarType) { controlType = ctrlVarType; }	///< set variable type associated with parameter
+    controlVariableType getControlVariableType() {
+        return controlType;    ///< get variable type associated with parameter
+    }
+    void setControlVariableType(controlVariableType ctrlVarType) {
+        controlType = ctrlVarType;    ///< set variable type associated with parameter
+    }
 
-    double getMinValue() { return minValue; }				///< get minimum value
-    void setMinValue(double value) { minValue = value; }	///< set minimum value
+    double getMinValue() {
+        return minValue;    ///< get minimum value
+    }
+    void setMinValue(double value) {
+        minValue = value;    ///< set minimum value
+    }
 
-    double getMaxValue() { return maxValue; }				///< get maximum value
-    void setMaxValue(double value) { maxValue = value; }	///< set maximum value
+    double getMaxValue() {
+        return maxValue;    ///< get maximum value
+    }
+    void setMaxValue(double value) {
+        maxValue = value;    ///< set maximum value
+    }
 
-    double getDefaultValue() { return defaultValue; }				///< get default value
-    void setDefaultValue(double value) { defaultValue = value; }	///< set default value
+    double getDefaultValue() {
+        return defaultValue;    ///< get default value
+    }
+    void setDefaultValue(double value) {
+        defaultValue = value;    ///< set default value
+    }
 
-	bool getIsDiscreteSwitch() { return isDiscreteSwitch; }										///< set is switch (not used)
-	void setIsDiscreteSwitch(bool _isDiscreteSwitch) { isDiscreteSwitch = _isDiscreteSwitch; }	///< get is switch (not used)
+    bool getIsDiscreteSwitch() {
+        return isDiscreteSwitch;    ///< set is switch (not used)
+    }
+    void setIsDiscreteSwitch(bool _isDiscreteSwitch) {
+        isDiscreteSwitch = _isDiscreteSwitch;    ///< get is switch (not used)
+    }
 
-	taper getControlTaper() { return controlTaper; }					///< get taper
-	void setControlTaper(taper ctrlTaper) { controlTaper = ctrlTaper; }	///< set taper
+    taper getControlTaper() {
+        return controlTaper;    ///< get taper
+    }
+    void setControlTaper(taper ctrlTaper) {
+        controlTaper = ctrlTaper;    ///< set taper
+    }
 
     // -- taper getters
-    bool isLinearTaper() { return controlTaper == taper::kLinearTaper ? true : false; }		///< query: linear taper
-    bool isLogTaper() { return controlTaper == taper::kLogTaper ? true : false; }			///< query: log taper
-    bool isAntiLogTaper() { return controlTaper == taper::kAntiLogTaper ? true : false; }		///< query: antilog taper
-    bool isVoltOctaveTaper() { return controlTaper == taper::kVoltOctaveTaper ? true : false; }	///< query: volt/octave taper
+    bool isLinearTaper() {
+        return controlTaper == taper::kLinearTaper ? true : false;    ///< query: linear taper
+    }
+    bool isLogTaper() {
+        return controlTaper == taper::kLogTaper ? true : false;    ///< query: log taper
+    }
+    bool isAntiLogTaper() {
+        return controlTaper == taper::kAntiLogTaper ? true : false;    ///< query: antilog taper
+    }
+    bool isVoltOctaveTaper() {
+        return controlTaper == taper::kVoltOctaveTaper ? true : false;    ///< query: volt/octave taper
+    }
 
     // --- control type getters
-    bool isMeterParam() { return controlType == controlVariableType::kMeter ? true : false; }					///< query: meter param?
-    bool isStringListParam() { return controlType == controlVariableType::kTypedEnumStringList ? true : false; }///< query: string list para,?
-    bool isFloatParam() { return controlType == controlVariableType::kFloat ? true : false; }					///< query: float param?
-    bool isDoubleParam() { return controlType == controlVariableType::kDouble ? true : false; }					///< query: double param?
-    bool isIntParam() { return controlType == controlVariableType::kInt ? true : false; }						///< query: int param?
-    bool isNonVariableBoundParam() { return controlType == controlVariableType::kNonVariableBoundControl ? true : false; }///< query: non-bound param?
+    bool isMeterParam() {
+        return controlType == controlVariableType::kMeter ? true : false;    ///< query: meter param?
+    }
+    bool isStringListParam() {
+        return controlType == controlVariableType::kTypedEnumStringList ? true : false;    ///< query: string list para,?
+    }
+    bool isFloatParam() {
+        return controlType == controlVariableType::kFloat ? true : false;    ///< query: float param?
+    }
+    bool isDoubleParam() {
+        return controlType == controlVariableType::kDouble ? true : false;    ///< query: double param?
+    }
+    bool isIntParam() {
+        return controlType == controlVariableType::kInt ? true : false;    ///< query: int param?
+    }
+    bool isNonVariableBoundParam() {
+        return controlType == controlVariableType::kNonVariableBoundControl ? true : false;    ///< query: non-bound param?
+    }
 
-    uint32_t getDisplayPrecision() { return displayPrecision; }						///< get sig digits
-    void setDisplayPrecision(uint32_t precision) { displayPrecision = precision; }	///< set sig digits
+    uint32_t getDisplayPrecision() {
+        return displayPrecision;    ///< get sig digits
+    }
+    void setDisplayPrecision(uint32_t precision) {
+        displayPrecision = precision;    ///< set sig digits
+    }
 
-    double getMeterAttack_ms() { return meterAttack_ms;}				///< get meter attack time (ballistics)
-    void setMeterAttack_ms(double value) { meterAttack_ms = value; }	///< set meter attack time (ballistics)
+    double getMeterAttack_ms() {
+        return meterAttack_ms;   ///< get meter attack time (ballistics)
+    }
+    void setMeterAttack_ms(double value) {
+        meterAttack_ms = value;    ///< set meter attack time (ballistics)
+    }
 
-    double getMeterRelease_ms() { return meterRelease_ms; }				///< get meter release time (ballistics)
-    void setMeterRelease_ms(double value) { meterRelease_ms = value; }	///< set meter release time (ballistics)
+    double getMeterRelease_ms() {
+        return meterRelease_ms;    ///< get meter release time (ballistics)
+    }
+    void setMeterRelease_ms(double value) {
+        meterRelease_ms = value;    ///< set meter release time (ballistics)
+    }
 
-    uint32_t getDetectorMode() { return detectorMode; }					///< get meter detect mode
-    void setMeterDetectorMode(uint32_t value) { detectorMode = value; }	///< set meter detect mode
+    uint32_t getDetectorMode() {
+        return detectorMode;    ///< get meter detect mode
+    }
+    void setMeterDetectorMode(uint32_t value) {
+        detectorMode = value;    ///< set meter detect mode
+    }
 
-	bool getLogMeter() { return logMeter; }				///< query log meter flag
-	void setLogMeter(bool value) { logMeter = value; }	///< set log meter flag
+    bool getLogMeter() {
+        return logMeter;    ///< query log meter flag
+    }
+    void setLogMeter(bool value) {
+        logMeter = value;    ///< set log meter flag
+    }
 
-	bool getInvertedMeter() { return invertedMeter; }				///< query inverted meter flag
-	void setInvertedMeter(bool value) { invertedMeter = value; }	///< set inverted meter flag
+    bool getInvertedMeter() {
+        return invertedMeter;    ///< query inverted meter flag
+    }
+    void setInvertedMeter(bool value) {
+        invertedMeter = value;    ///< set inverted meter flag
+    }
 
-	bool isProtoolsGRMeter() { return protoolsGRMeter; }				///< query pro tools GR meter flag
-	void setIsProtoolsGRMeter(bool value) { protoolsGRMeter = value; }	///< set inverted meter flag
+    bool isProtoolsGRMeter() {
+        return protoolsGRMeter;    ///< query pro tools GR meter flag
+    }
+    void setIsProtoolsGRMeter(bool value) {
+        protoolsGRMeter = value;    ///< set inverted meter flag
+    }
 
-	bool getParameterSmoothing() { return useParameterSmoothing; }				///< query parameter smoothing flag
-    void setParameterSmoothing(bool value) { useParameterSmoothing = value; }	///< set inverted meter flag
+    bool getParameterSmoothing() {
+        return useParameterSmoothing;    ///< query parameter smoothing flag
+    }
+    void setParameterSmoothing(bool value) {
+        useParameterSmoothing = value;    ///< set inverted meter flag
+    }
 
-    double getSmoothingTimeMsec() { return smoothingTimeMsec;}					///< query smoothing time
-    void setSmoothingTimeMsec(double value) { smoothingTimeMsec = value; }		///< set inverted meter flag
+    double getSmoothingTimeMsec() {
+        return smoothingTimeMsec;   ///< query smoothing time
+    }
+    void setSmoothingTimeMsec(double value) {
+        smoothingTimeMsec = value;    ///< set inverted meter flag
+    }
 
-    smoothingMethod getSmoothingMethod() { return smoothingType; }									///< query smoothing method
-    void setSmoothingMethod(smoothingMethod smoothingMethod) { smoothingType = smoothingMethod; }	///< set smoothing method
+    smoothingMethod getSmoothingMethod() {
+        return smoothingType;    ///< query smoothing method
+    }
+    void setSmoothingMethod(smoothingMethod smoothingMethod) {
+        smoothingType = smoothingMethod;    ///< set smoothing method
+    }
 
-    bool getIsWritable() { return isWritable; }				///< query writable control (meter)
-    void setIsWritable(bool value) { isWritable = value; }	///< set writable control (meter)
+    bool getIsWritable() {
+        return isWritable;    ///< query writable control (meter)
+    }
+    void setIsWritable(bool value) {
+        isWritable = value;    ///< set writable control (meter)
+    }
 
-    bool getEnableVSTSampleAccurateAutomation() { return enableVSTSampleAccurateAutomation; }			///< query VST3 sample accurate automation
-    void setEnableVSTSampleAccurateAutomation(bool value) { enableVSTSampleAccurateAutomation = value; }///< set VST3 sample accurate automation
+    bool getEnableVSTSampleAccurateAutomation() {
+        return enableVSTSampleAccurateAutomation;    ///< query VST3 sample accurate automation
+    }
+    void setEnableVSTSampleAccurateAutomation(bool value) {
+        enableVSTSampleAccurateAutomation = value;    ///< set VST3 sample accurate automation
+    }
 
-	// --- for aux attributes
-	AuxParameterAttribute* getAuxAttribute(uint32_t attributeID);										///< get aux data
-	uint32_t setAuxAttribute(uint32_t attributeID, const AuxParameterAttribute& auxParameterAtribute);	///< set aux data
+    // --- for aux attributes
+    AuxParameterAttribute* getAuxAttribute(uint32_t attributeID);										///< get aux data
+    uint32_t setAuxAttribute(uint32_t attributeID, const AuxParameterAttribute& auxParameterAtribute);	///< set aux data
 
-	/**
-	\brief the main function to access the underlying atomic double value
+    /**
+    \brief the main function to access the underlying atomic double value
 
-	\return the value as a regular double
-	*/
-    inline double getControlValue() { return getAtomicControlValueDouble(); }
+    \return the value as a regular double
+    */
+    inline double getControlValue() {
+        return getAtomicControlValueDouble();
+    }
 
-	/**
-	\brief the main function to set the underlying atomic double value
+    /**
+    \brief the main function to set the underlying atomic double value
 
-	\param actualParamValue parameter value as a regular double
-	\param ignoreSmoothing flag to ignore smoothing operation and write directly to atomic double
-	*/
-	inline void setControlValue(double actualParamValue, bool ignoreSmoothing = false)
-	{
-		if (controlType == controlVariableType::kDouble ||
-			controlType == controlVariableType::kFloat)
-		{
-			if (useParameterSmoothing && !ignoreSmoothing)
-				setSmoothedTargetValue(actualParamValue);
-			else
-				setAtomicControlValueDouble(actualParamValue);
-		}
-		else
-			setAtomicControlValueDouble(actualParamValue);
-	}
+    \param actualParamValue parameter value as a regular double
+    \param ignoreSmoothing flag to ignore smoothing operation and write directly to atomic double
+    */
+    inline void setControlValue(double actualParamValue, bool ignoreSmoothing = false) {
+        if (controlType == controlVariableType::kDouble ||
+                controlType == controlVariableType::kFloat) {
+            if (useParameterSmoothing && !ignoreSmoothing)
+                setSmoothedTargetValue(actualParamValue);
+            else
+                setAtomicControlValueDouble(actualParamValue);
+        } else
+            setAtomicControlValueDouble(actualParamValue);
+    }
 
-	/**
-	\brief the main function to set the underlying atomic double value using a normalized value; this is the operation in VST3 and RAFX2
+    /**
+    \brief the main function to set the underlying atomic double value using a normalized value; this is the operation in VST3 and RAFX2
 
-	\param normalizedValue parameter value as a regular double
-	\param applyTaper add the control taper during the operation
-	\param ignoreParameterSmoothing flag to ignore smoothing operation and write directly to atomic double
-	*/
-	inline double setControlValueNormalized(double normalizedValue, bool applyTaper = true, bool ignoreParameterSmoothing = false)
-	{
-		// --- set according to smoothing option
-		double actualParamValue = getControlValueWithNormalizedValue(normalizedValue, applyTaper);
+    \param normalizedValue parameter value as a regular double
+    \param applyTaper add the control taper during the operation
+    \param ignoreParameterSmoothing flag to ignore smoothing operation and write directly to atomic double
+    */
+    inline double setControlValueNormalized(double normalizedValue, bool applyTaper = true, bool ignoreParameterSmoothing = false) {
+        // --- set according to smoothing option
+        double actualParamValue = getControlValueWithNormalizedValue(normalizedValue, applyTaper);
 
-		if (controlType == controlVariableType::kDouble ||
-			controlType == controlVariableType::kFloat)
-		{
-			if (useParameterSmoothing && !ignoreParameterSmoothing)
-				setSmoothedTargetValue(actualParamValue);
-			else
-				setAtomicControlValueDouble(actualParamValue);
-		}
-		else
-			setAtomicControlValueDouble(actualParamValue);
+        if (controlType == controlVariableType::kDouble ||
+                controlType == controlVariableType::kFloat) {
+            if (useParameterSmoothing && !ignoreParameterSmoothing)
+                setSmoothedTargetValue(actualParamValue);
+            else
+                setAtomicControlValueDouble(actualParamValue);
+        } else
+            setAtomicControlValueDouble(actualParamValue);
 
-		return actualParamValue;
-	}
+        return actualParamValue;
+    }
 
-	/**
-	\brief the main function to access the underlying atomic double value as a string
+    /**
+    \brief the main function to access the underlying atomic double value as a string
 
-	\return the value as a std::string
-	*/
-	std::string getControlValueAsString();
+    \return the value as a std::string
+    */
+    std::string getControlValueAsString();
 
-	/**
-	\brief get the number of individual strings in a string-list control
+    /**
+    \brief get the number of individual strings in a string-list control
 
-	\return number of strings
-	*/
-	size_t getStringCount(){return stringList.size();}
+    \return number of strings
+    */
+    size_t getStringCount() {
+        return stringList.size();
+    }
 
-	/**
-	\brief get the strings in a string-list control as a comma separated list
+    /**
+    \brief get the strings in a string-list control as a comma separated list
 
-	\return comma separated list as a const char*
-	*/
-	const char* getCommaSeparatedStringList() {return commaSeparatedStringList.c_str();}
+    \return comma separated list as a const char*
+    */
+    const char* getCommaSeparatedStringList() {
+        return commaSeparatedStringList.c_str();
+    }
 
-	/**
-	\brief convert the string-list into a comma-separated list (during construction)
-	*/
-	void setCommaSeparatedStringList();
+    /**
+    \brief convert the string-list into a comma-separated list (during construction)
+    */
+    void setCommaSeparatedStringList();
 
-	/**
-	\brief set the string-list using a vector of strings
-	*/
-	void setStringList(std::vector<std::string> _stringList) {stringList = _stringList;}
+    /**
+    \brief set the string-list using a vector of strings
+    */
+    void setStringList(std::vector<std::string> _stringList) {
+        stringList = _stringList;
+    }
 
-	/** get a string-list string using the index */
-	std::string getStringByIndex(uint32_t index);
+    /** get a string-list string using the index */
+    std::string getStringByIndex(uint32_t index);
 
-	/**
-	\brief get default value as normalied value
-	\return default value in normalized form
-	*/
-	inline double getDefaultValueNormalized()
-    {
+    /**
+    \brief get default value as normalied value
+    \return default value in normalized form
+    */
+    inline double getDefaultValueNormalized() {
         // --- apply taper as needed
-        switch (controlTaper)
-        {
-            case taper::kLinearTaper:
-                return getNormalizedDefaultValue();
+        switch (controlTaper) {
+        case taper::kLinearTaper:
+            return getNormalizedDefaultValue();
 
-            case taper::kLogTaper:
-                return getNormalizedLogDefaultValue();
+        case taper::kLogTaper:
+            return getNormalizedLogDefaultValue();
 
-            case taper::kAntiLogTaper:
-                return getNormalizedAntiLogDefaultValue();
+        case taper::kAntiLogTaper:
+            return getNormalizedAntiLogDefaultValue();
 
-            case taper::kVoltOctaveTaper:
-                return getNormalizedVoltOctaveDefaultValue();
+        case taper::kVoltOctaveTaper:
+            return getNormalizedVoltOctaveDefaultValue();
 
-            default:
-                return 0.0;
+        default:
+            return 0.0;
         }
     }
 
-	/**
-	\brief get control value as normalied value
-	\return control value in normalized form
-	*/
-	inline double getControlValueNormalized(bool applyTaper = true)
-    {
-		// --- for edit controls specifically
-		if(!applyTaper)
-			return getNormalizedControlValue();
+    /**
+    \brief get control value as normalied value
+    \return control value in normalized form
+    */
+    inline double getControlValueNormalized(bool applyTaper = true) {
+        // --- for edit controls specifically
+        if(!applyTaper)
+            return getNormalizedControlValue();
 
         // --- apply taper as needed
-        switch (controlTaper)
-        {
-            case taper::kLinearTaper:
-                return getNormalizedControlValue();
+        switch (controlTaper) {
+        case taper::kLinearTaper:
+            return getNormalizedControlValue();
 
-            case taper::kLogTaper:
-                return getNormalizedLogControlValue();
+        case taper::kLogTaper:
+            return getNormalizedLogControlValue();
 
-            case taper::kAntiLogTaper:
-                return getNormalizedAntiLogControlValue();
+        case taper::kAntiLogTaper:
+            return getNormalizedAntiLogControlValue();
 
-            case taper::kVoltOctaveTaper:
-                return getNormalizedVoltOctaveControlValue();
+        case taper::kVoltOctaveTaper:
+            return getNormalizedVoltOctaveControlValue();
 
-            default:
-                return 0.0;
+        default:
+            return 0.0;
         }
     }
 
-	/**
-	\brief get the new control value *as if* it were set with a normalized value
-	\return control value *as if* it were set with a normalized value
-	*/
-    inline double getControlValueWithNormalizedValue(double normalizedValue, bool applyTaper = true)
-    {
+    /**
+    \brief get the new control value *as if* it were set with a normalized value
+    \return control value *as if* it were set with a normalized value
+    */
+    inline double getControlValueWithNormalizedValue(double normalizedValue, bool applyTaper = true) {
         if(!applyTaper)
             return getControlValueFromNormalizedValue(normalizedValue);
 
         double newValue = 0;
 
         // --- apply taper as needed
-        switch (controlTaper)
-        {
-            case taper::kLinearTaper:
-                newValue = getControlValueFromNormalizedValue(normalizedValue);
-                break;
+        switch (controlTaper) {
+        case taper::kLinearTaper:
+            newValue = getControlValueFromNormalizedValue(normalizedValue);
+            break;
 
-            case taper::kLogTaper:
-                newValue = getControlValueFromNormalizedValue(normToLogNorm(normalizedValue));
-                break;
+        case taper::kLogTaper:
+            newValue = getControlValueFromNormalizedValue(normToLogNorm(normalizedValue));
+            break;
 
-            case taper::kAntiLogTaper:
-                newValue = getControlValueFromNormalizedValue(normToAntiLogNorm(normalizedValue));
-                break;
+        case taper::kAntiLogTaper:
+            newValue = getControlValueFromNormalizedValue(normToAntiLogNorm(normalizedValue));
+            break;
 
-            case taper::kVoltOctaveTaper:
-                newValue = getVoltOctaveControlValueFromNormValue(normalizedValue);
-                break;
+        case taper::kVoltOctaveTaper:
+            newValue = getVoltOctaveControlValueFromNormValue(normalizedValue);
+            break;
 
-            default:
-                break; // --- no update
+        default:
+            break; // --- no update
         }
 
         return newValue;
     }
 
-	/**
-	\brief get the new normalized control value *as if* it were set with an actual value
-	\return control value *as if* it were set with a normalized value
-	*/
-	inline double getNormalizedControlValueWithActualValue(double actualValue) { return getNormalizedControlValueWithActual(actualValue); }
+    /**
+    \brief get the new normalized control value *as if* it were set with an actual value
+    \return control value *as if* it were set with a normalized value
+    */
+    inline double getNormalizedControlValueWithActualValue(double actualValue) {
+        return getNormalizedControlValueWithActual(actualValue);
+    }
 
-	/** get the minimum GUI value - this is ALWAYS 0.0 for VSTGUI4*/
-	double getGUIMin() { return 0.0; }
+    /** get the minimum GUI value - this is ALWAYS 0.0 for VSTGUI4*/
+    double getGUIMin() {
+        return 0.0;
+    }
 
-	/** get the maximum GUI value for string-list params */
-	double getGUIMax()
-    {
+    /** get the maximum GUI value for string-list params */
+    double getGUIMax() {
         if(controlType == controlVariableType::kTypedEnumStringList)
             return (double)getStringCount() - 1;
 
         return 1.0;
     }
 
-	/**
-	\brief find a string in the list of a string-list parameter
+    /**
+    \brief find a string in the list of a string-list parameter
 
-	\return index of string in list
-	*/
-	int findStringIndex(std::string searchString)
-    {
+    \return index of string in list
+    */
+    int findStringIndex(std::string searchString) {
         auto it = std::find(stringList.begin (), stringList.end (), searchString);
 
-        if (it == stringList.end())
-        {
+        if (it == stringList.end()) {
             return -1;
-        }
-        else
-        {
+        } else {
             return (int)std::distance(stringList.begin(), it);
         }
 
@@ -379,46 +477,41 @@ public:
     }
 
     /** normalized to Log-normalized version (convex transform) */
-    inline double normToLogNorm(double normalizedValue)
-    {
-		if (normalizedValue <= 0.0) return 0.0;
-		if (normalizedValue >= 1.0) return 1.0;
-		return kCTCorrFactorUnity*(1.0 + kCTCoefficient*log10(normalizedValue + kCTCorrFactorZero));
+    inline double normToLogNorm(double normalizedValue) {
+        if (normalizedValue <= 0.0) return 0.0;
+        if (normalizedValue >= 1.0) return 1.0;
+        return kCTCorrFactorUnity*(1.0 + kCTCoefficient*log10(normalizedValue + kCTCorrFactorZero));
     }
 
-	/** Log-normalized to normalized version (reverse-convex transform) */
-    inline double logNormToNorm(double logNormalizedValue)
-    {
-		if (logNormalizedValue <= 0.0) return 0.0;
-		if (logNormalizedValue >= 1.0) return 1.0;
-		return kCTCorrFactorAnitZero * (pow(10.0, (logNormalizedValue - 1.0) / kCTCoefficient) - kCTCorrFactorZero);
+    /** Log-normalized to normalized version (reverse-convex transform) */
+    inline double logNormToNorm(double logNormalizedValue) {
+        if (logNormalizedValue <= 0.0) return 0.0;
+        if (logNormalizedValue >= 1.0) return 1.0;
+        return kCTCorrFactorAnitZero * (pow(10.0, (logNormalizedValue - 1.0) / kCTCoefficient) - kCTCorrFactorZero);
     }
 
-     /** normalized to AntiLog-normalized version */
-    inline double normToAntiLogNorm(double normalizedValue)
-    {
-		if (normalizedValue <= 0.0) return 0.0;
-		if (normalizedValue >= 1.0) return 1.0;
-		double transformed = -kCTCoefficient*kCTCorrFactorAntiLogScale*log10(1.0 - normalizedValue + kCTCorrFactorZero) + kCTCorrFactorAntiLog;
-		if (transformed >= 1.0) transformed = 1.0;
-		return transformed;
-	}
-
-     /** AntiLog-normalized to normalized version */
-    inline double antiLogNormToNorm(double aLogNormalizedValue)
-    {
-		if (aLogNormalizedValue <= 0.0) return 0.0;
-		if (aLogNormalizedValue >= 1.0) return 1.0;
-		return (kCTCorrFactorAntiUnity)*(-pow(10.0, (-aLogNormalizedValue / kCTCoefficient)) + 1.0);
+    /** normalized to AntiLog-normalized version */
+    inline double normToAntiLogNorm(double normalizedValue) {
+        if (normalizedValue <= 0.0) return 0.0;
+        if (normalizedValue >= 1.0) return 1.0;
+        double transformed = -kCTCoefficient*kCTCorrFactorAntiLogScale*log10(1.0 - normalizedValue + kCTCorrFactorZero) + kCTCorrFactorAntiLog;
+        if (transformed >= 1.0) transformed = 1.0;
+        return transformed;
     }
 
-	/**
-	\brief initialize or reset the parameter smoother object
+    /** AntiLog-normalized to normalized version */
+    inline double antiLogNormToNorm(double aLogNormalizedValue) {
+        if (aLogNormalizedValue <= 0.0) return 0.0;
+        if (aLogNormalizedValue >= 1.0) return 1.0;
+        return (kCTCorrFactorAntiUnity)*(-pow(10.0, (-aLogNormalizedValue / kCTCoefficient)) + 1.0);
+    }
 
-	\param sampleRate fs (needed for coefficient calc)
-	*/
-	void initParamSmoother(double sampleRate)
-    {
+    /**
+    \brief initialize or reset the parameter smoother object
+
+    \param sampleRate fs (needed for coefficient calc)
+    */
+    void initParamSmoother(double sampleRate) {
         paramSmoother.initParamSmoother(smoothingTimeMsec,
                                         sampleRate,
                                         getAtomicControlValueDouble(),
@@ -427,40 +520,37 @@ public:
                                         smoothingType);
     }
 
-	/**
-	\brief change any sample-rate dependent members
+    /**
+    \brief change any sample-rate dependent members
 
-	\param sampleRate fs (needed for coefficient calc)
-	*/
-	void updateSampleRate(double sampleRate)
-    {
+    \param sampleRate fs (needed for coefficient calc)
+    */
+    void updateSampleRate(double sampleRate) {
         paramSmoother.setSampleRate(sampleRate);
     }
 
-	/**
-	\brief perform smoothing operation on data
+    /**
+    \brief perform smoothing operation on data
 
-	\return true if data was actually smoothed, false otherwise (data that has reached its terminal value will not be smoothed any further)
-	*/
-	bool smoothParameterValue()
-    {
+    \return true if data was actually smoothed, false otherwise (data that has reached its terminal value will not be smoothed any further)
+    */
+    bool smoothParameterValue() {
         if(!useParameterSmoothing) return false;
         double smoothedValue = 0.0;
         bool smoothed = paramSmoother.smoothParameter(getSmoothedTargetValue(), smoothedValue);
         if(smoothed)
-			setAtomicControlValueDouble(smoothedValue);
+            setAtomicControlValueDouble(smoothedValue);
         return smoothed;
     }
 
-	/**
-	\brief save the variable for binding operation
+    /**
+    \brief save the variable for binding operation
 
-	\param boundVariable naked pointer to bound variable
-	\param dataType data type for casting
-	*/
-	void setBoundVariable(void* boundVariable, boundVariableType dataType)
-    {
-		boundVariableDataType = dataType;
+    \param boundVariable naked pointer to bound variable
+    \param dataType data type for casting
+    */
+    void setBoundVariable(void* boundVariable, boundVariableType dataType) {
+        boundVariableDataType = dataType;
 
         if(dataType == boundVariableType::kDouble)
             boundVariableDouble = (double*)boundVariable;
@@ -471,122 +561,111 @@ public:
         else if(dataType == boundVariableType::kUInt)
             boundVariableUInt = (uint32_t*)boundVariableUInt;
 
-		// --- initialize it
-		updateInBoundVariable();
+        // --- initialize it
+        updateInBoundVariable();
     }
 
-	/**
-	\brief get the datatype of the bound variable
+    /**
+    \brief get the datatype of the bound variable
 
-	\return boundVariableType
-	*/
-	boundVariableType getBoundVariableType() { return boundVariableDataType; }
+    \return boundVariableType
+    */
+    boundVariableType getBoundVariableType() {
+        return boundVariableDataType;
+    }
 
-	/**
-	\brief perform the variable binding update (change the value)
+    /**
+    \brief perform the variable binding update (change the value)
 
-	\return boundVariableType
-	*/
-	bool updateInBoundVariable()
-	{
-		if (boundVariableUInt)
-		{
-			*boundVariableUInt = (uint32_t)getControlValue();
-			return true;
-		}
-		else if (boundVariableInt)
-		{
-			*boundVariableInt = (int)getControlValue();
-			return true;
-		}
-		else if (boundVariableFloat)
-		{
-			*boundVariableFloat = (float)getControlValue();
-			return true;
-		}
-		else if (boundVariableDouble)
-		{
-			*boundVariableDouble = getControlValue();
-			return true;
-		}
-		return false;
-	}
+    \return boundVariableType
+    */
+    bool updateInBoundVariable() {
+        if (boundVariableUInt) {
+            *boundVariableUInt = (uint32_t)getControlValue();
+            return true;
+        } else if (boundVariableInt) {
+            *boundVariableInt = (int)getControlValue();
+            return true;
+        } else if (boundVariableFloat) {
+            *boundVariableFloat = (float)getControlValue();
+            return true;
+        } else if (boundVariableDouble) {
+            *boundVariableDouble = getControlValue();
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	\brief perform the variable binding update on meter data
+    /**
+    \brief perform the variable binding update on meter data
 
-	\return true if variable was udpated, false otherwise
-	*/
-	bool updateOutBoundVariable()
-	{
-		if (boundVariableUInt)
-		{
-			setControlValue((double)*boundVariableUInt);
-			return true;
-		}
-		else if (boundVariableInt)
-		{
-			setControlValue((double)*boundVariableInt);
-			return true;
-		}
-		else if (boundVariableFloat)
-		{
-			setControlValue((double)*boundVariableFloat);
-			return true;
-		}
-		else if (boundVariableDouble)
-		{
-			setControlValue(*boundVariableDouble);
-			return true;
-		}
-		return false;
-	}
+    \return true if variable was udpated, false otherwise
+    */
+    bool updateOutBoundVariable() {
+        if (boundVariableUInt) {
+            setControlValue((double)*boundVariableUInt);
+            return true;
+        } else if (boundVariableInt) {
+            setControlValue((double)*boundVariableInt);
+            return true;
+        } else if (boundVariableFloat) {
+            setControlValue((double)*boundVariableFloat);
+            return true;
+        } else if (boundVariableDouble) {
+            setControlValue(*boundVariableDouble);
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	\brief stores the update queue for VST3 sample accuate automation; note this is only used during actual DAW runs with automation engaged
+    /**
+    \brief stores the update queue for VST3 sample accuate automation; note this is only used during actual DAW runs with automation engaged
 
-	\param _parameterUpdateQueue the update queue to store
-	*/
-    void setParameterUpdateQueue(IParameterUpdateQueue* _parameterUpdateQueue) { parameterUpdateQueue = _parameterUpdateQueue; }
+    \param _parameterUpdateQueue the update queue to store
+    */
+    void setParameterUpdateQueue(IParameterUpdateQueue* _parameterUpdateQueue) {
+        parameterUpdateQueue = _parameterUpdateQueue;
+    }
 
-	/**
-	\brief retrieves the update queue for VST3 sample accuate automation; note this is only used during actual DAW runs with automation engaged
+    /**
+    \brief retrieves the update queue for VST3 sample accuate automation; note this is only used during actual DAW runs with automation engaged
 
-	\return IParameterUpdateQueue*
-	*/
-	IParameterUpdateQueue* getParameterUpdateQueue() { return parameterUpdateQueue; } // may be NULL - that is OK
+    \return IParameterUpdateQueue*
+    */
+    IParameterUpdateQueue* getParameterUpdateQueue() {
+        return parameterUpdateQueue;    // may be NULL - that is OK
+    }
 
-	/** overloaded = operator (standard C++ fare) */
-	PluginParameter& operator=(const PluginParameter& aPluginParameter)	// need this override for collections to work
-	{
-		if (this == &aPluginParameter)
-			return *this;
+    /** overloaded = operator (standard C++ fare) */
+    PluginParameter& operator=(const PluginParameter& aPluginParameter) {	// need this override for collections to work
+        if (this == &aPluginParameter)
+            return *this;
 
-		controlID = aPluginParameter.controlID;
-		controlName = aPluginParameter.controlName;
-		controlUnits = aPluginParameter.controlUnits;
-		commaSeparatedStringList = aPluginParameter.commaSeparatedStringList;
-		controlType = aPluginParameter.controlType;
-		minValue = aPluginParameter.minValue;
-		maxValue = aPluginParameter.maxValue;
-		defaultValue = aPluginParameter.defaultValue;
-		controlTaper = aPluginParameter.controlTaper;
-		controlValueAtomic = aPluginParameter.getAtomicControlValueFloat();
-		displayPrecision = aPluginParameter.displayPrecision;
-		stringList = aPluginParameter.stringList;
-		useParameterSmoothing = aPluginParameter.useParameterSmoothing;
-		smoothingType = aPluginParameter.smoothingType;
-		smoothingTimeMsec = aPluginParameter.smoothingTimeMsec;
-		meterAttack_ms = aPluginParameter.meterAttack_ms;
-		meterRelease_ms = aPluginParameter.meterRelease_ms;
-		detectorMode = aPluginParameter.detectorMode;
-		logMeter = aPluginParameter.logMeter;
-		isWritable = aPluginParameter.isWritable;
-		isDiscreteSwitch = aPluginParameter.isDiscreteSwitch;
-		invertedMeter = aPluginParameter.invertedMeter;
+        controlID = aPluginParameter.controlID;
+        controlName = aPluginParameter.controlName;
+        controlUnits = aPluginParameter.controlUnits;
+        commaSeparatedStringList = aPluginParameter.commaSeparatedStringList;
+        controlType = aPluginParameter.controlType;
+        minValue = aPluginParameter.minValue;
+        maxValue = aPluginParameter.maxValue;
+        defaultValue = aPluginParameter.defaultValue;
+        controlTaper = aPluginParameter.controlTaper;
+        controlValueAtomic = aPluginParameter.getAtomicControlValueFloat();
+        displayPrecision = aPluginParameter.displayPrecision;
+        stringList = aPluginParameter.stringList;
+        useParameterSmoothing = aPluginParameter.useParameterSmoothing;
+        smoothingType = aPluginParameter.smoothingType;
+        smoothingTimeMsec = aPluginParameter.smoothingTimeMsec;
+        meterAttack_ms = aPluginParameter.meterAttack_ms;
+        meterRelease_ms = aPluginParameter.meterRelease_ms;
+        detectorMode = aPluginParameter.detectorMode;
+        logMeter = aPluginParameter.logMeter;
+        isWritable = aPluginParameter.isWritable;
+        isDiscreteSwitch = aPluginParameter.isDiscreteSwitch;
+        invertedMeter = aPluginParameter.invertedMeter;
 
-		return *this;
-	}
+        return *this;
+    }
 
 protected:
     int controlID = -1;							///< the ID value for the parameter
@@ -604,15 +683,27 @@ protected:
     //     atomic double will not behave properly between 32/64 bit
     std::atomic<float> controlValueAtomic;		///< the underlying atomic variable
 
-    float getAtomicControlValueFloat() const { return controlValueAtomic.load(std::memory_order_relaxed); }			///< set atomic variable with float
-	void setAtomicControlValueFloat(float value) { controlValueAtomic.store(value, std::memory_order_relaxed); }	///< get atomic variable as float
+    float getAtomicControlValueFloat() const {
+        return controlValueAtomic.load(std::memory_order_relaxed);    ///< set atomic variable with float
+    }
+    void setAtomicControlValueFloat(float value) {
+        controlValueAtomic.store(value, std::memory_order_relaxed);    ///< get atomic variable as float
+    }
 
-    double getAtomicControlValueDouble() const { return (double)controlValueAtomic.load(std::memory_order_relaxed); }		///< set atomic variable with double
-	void setAtomicControlValueDouble(double value) { controlValueAtomic.store((float)value, std::memory_order_relaxed); }	///< get atomic variable as double
+    double getAtomicControlValueDouble() const {
+        return (double)controlValueAtomic.load(std::memory_order_relaxed);    ///< set atomic variable with double
+    }
+    void setAtomicControlValueDouble(double value) {
+        controlValueAtomic.store((float)value, std::memory_order_relaxed);    ///< get atomic variable as double
+    }
 
     std::atomic<float> smoothedTargetValueAtomic;	///< the underlying atomic variable TARGET for smoothing
-    void setSmoothedTargetValue(double value){ smoothedTargetValueAtomic.store((float)value); }	///< set atomic TARGET smoothing variable with double
-    double getSmoothedTargetValue() const { return (double)smoothedTargetValueAtomic.load(); }	///< set atomic TARGET smoothing variable with double
+    void setSmoothedTargetValue(double value) {
+        smoothedTargetValueAtomic.store((float)value);    ///< set atomic TARGET smoothing variable with double
+    }
+    double getSmoothedTargetValue() const {
+        return (double)smoothedTargetValueAtomic.load();    ///< set atomic TARGET smoothing variable with double
+    }
 
     // --- control tweakers
     taper controlTaper = taper::kLinearTaper;	///< the taper
@@ -625,15 +716,15 @@ protected:
     // --- gui specific
     bool appendUnits = true;					///< flag to append units in GUI controls (use with several built-in custom views)
     bool isWritable = false;					///< flag for meter variables
-	bool isDiscreteSwitch = false;				///< flag for switches (not currently used in ASPiK)
+    bool isDiscreteSwitch = false;				///< flag for switches (not currently used in ASPiK)
 
     // --- for VU meters
     double meterAttack_ms = 10.0;				///< meter attack time in milliseconds
     double meterRelease_ms = 500.0;				///< meter release time in milliseconds
     uint32_t detectorMode = ENVELOPE_DETECT_MODE_RMS;///< meter detector mode
-	bool logMeter = false;						///< meter is log
-	bool invertedMeter = false;					///< meter is inverted
-	bool protoolsGRMeter = false;				///< meter is a Pro Tools gain reduction meter
+    bool logMeter = false;						///< meter is log
+    bool invertedMeter = false;					///< meter is inverted
+    bool protoolsGRMeter = false;				///< meter is a Pro Tools gain reduction meter
 
     // --- parameter smoothing
     bool useParameterSmoothing = false;			///< enable param smoothing
@@ -641,8 +732,8 @@ protected:
     double smoothingTimeMsec = 100.0;			///< param smoothing time
     ParamSmoother<double> paramSmoother;		///< param smoothing object
 
-	// --- variable binding
-	boundVariableType boundVariableDataType = boundVariableType::kFloat;	///< bound data type
+    // --- variable binding
+    boundVariableType boundVariableDataType = boundVariableType::kFloat;	///< bound data type
 
     // --- our sample accurate interface for VST3
     IParameterUpdateQueue* parameterUpdateQueue = nullptr;					///< interface for VST3 sample accurate updates
@@ -651,13 +742,12 @@ protected:
     bool enableVSTSampleAccurateAutomation = true;							///< VST3 sample accurate flag
 
     /**
-	\brief get volt/octave control value from a normalized value
+    \brief get volt/octave control value from a normalized value
 
-	\param normalizedValue the normalized version
-	\return volt/octave version
-	*/
-    inline double getVoltOctaveControlValueFromNormValue(double normalizedValue)
-    {
+    \param normalizedValue the normalized version
+    \return volt/octave version
+    */
+    inline double getVoltOctaveControlValueFromNormValue(double normalizedValue) {
         double octaves = log2(maxValue / minValue);
         if (normalizedValue == 0)
             return minValue;
@@ -665,111 +755,101 @@ protected:
         return minValue*pow(2.0, normalizedValue*octaves);
     }
 
-	/**
-	\brief get get log control value in normalized form
-	\return log control value in normalized form
-	*/
-    inline double getNormalizedLogControlValue()
-    {
+    /**
+    \brief get get log control value in normalized form
+    \return log control value in normalized form
+    */
+    inline double getNormalizedLogControlValue() {
         return logNormToNorm(getNormalizedControlValue());
     }
 
-	/**
-	\brief get get anti-log control value in normalized form
-	\return anti-log control value in normalized form
-	*/
-    inline double getNormalizedAntiLogControlValue()
-    {
+    /**
+    \brief get get anti-log control value in normalized form
+    \return anti-log control value in normalized form
+    */
+    inline double getNormalizedAntiLogControlValue() {
         return antiLogNormToNorm(getNormalizedControlValue());
     }
 
-	/**
-	\brief get get volt/octave control value in normalized form
-	\return volt/octave control value in normalized form
-	*/
-    inline double getNormalizedVoltOctaveControlValue()
-    {
+    /**
+    \brief get get volt/octave control value in normalized form
+    \return volt/octave control value in normalized form
+    */
+    inline double getNormalizedVoltOctaveControlValue() {
         if (minValue == 0)
             return getAtomicControlValueDouble();
 
         return log2(getAtomicControlValueDouble() / minValue) / (log2(maxValue / minValue));
     }
 
-	/**
-	\brief convert actual control value into normalized value (helper)
+    /**
+    \brief convert actual control value into normalized value (helper)
 
-	\param actualValue the actual value
-	\return normalized version
-	*/
-	inline double getNormalizedControlValueWithActual(double actualValue)
-    {
+    \param actualValue the actual value
+    \return normalized version
+    */
+    inline double getNormalizedControlValueWithActual(double actualValue) {
         // --- calculate normalized value from actual
-		return (actualValue - minValue) / (maxValue - minValue);
-	}
+        return (actualValue - minValue) / (maxValue - minValue);
+    }
 
-	/**
-	\brief get control value as normalized value (helper)
-	\return normalized version
-	*/
-	inline double getNormalizedControlValue()
-    {
+    /**
+    \brief get control value as normalized value (helper)
+    \return normalized version
+    */
+    inline double getNormalizedControlValue() {
         // --- calculate normalized value from actual
-		//double d = (getAtomicControlValueDouble() - minValue) / (maxValue - minValue);
-		return (getAtomicControlValueDouble() - minValue) / (maxValue - minValue);
-	}
+        //double d = (getAtomicControlValueDouble() - minValue) / (maxValue - minValue);
+        return (getAtomicControlValueDouble() - minValue) / (maxValue - minValue);
+    }
 
-	/**
-	\brief get control value with a normalized value (helper)
+    /**
+    \brief get control value with a normalized value (helper)
 
-	\param normalizedValue the normalized value
-	\return actual version
-	*/
-    inline double getControlValueFromNormalizedValue(double normalizedValue)
-    {
+    \param normalizedValue the normalized value
+    \return actual version
+    */
+    inline double getControlValueFromNormalizedValue(double normalizedValue) {
         // --- calculate the control Value using normalized input
-		//double d = (maxValue - minValue)*normalizedValue + minValue;
-		return (maxValue - minValue)*normalizedValue + minValue;
-	}
+        //double d = (maxValue - minValue)*normalizedValue + minValue;
+        return (maxValue - minValue)*normalizedValue + minValue;
+    }
 
-	/**
-	\brief get default value as a normalized value (helper)
+    /**
+    \brief get default value as a normalized value (helper)
 
-	\return normalized version
-	*/
-	inline double getNormalizedDefaultValue()
-    {
+    \return normalized version
+    */
+    inline double getNormalizedDefaultValue() {
         // --- calculate normalized value from actual
-		//double d = (defaultValue - minValue) / (maxValue - minValue);
-		return (defaultValue - minValue) / (maxValue - minValue);
-	}
+        //double d = (defaultValue - minValue) / (maxValue - minValue);
+        return (defaultValue - minValue) / (maxValue - minValue);
+    }
 
-	/**
-	\brief get log default value in normalized form
+    /**
+    \brief get log default value in normalized form
 
-	\return normalized version
-	*/
-	inline double getNormalizedLogDefaultValue()
-    {
+    \return normalized version
+    */
+    inline double getNormalizedLogDefaultValue() {
         return logNormToNorm(getNormalizedDefaultValue());
     }
 
-	/**
-	\brief get anti-log default value in normalized form
+    /**
+    \brief get anti-log default value in normalized form
 
-	\return normalized version
-	*/
-	inline double getNormalizedAntiLogDefaultValue()
-    {
+    \return normalized version
+    */
+    inline double getNormalizedAntiLogDefaultValue() {
         return antiLogNormToNorm(getNormalizedDefaultValue());
     }
 
-	/**
-	\brief get volt/octave default value in normalized form
+    /**
+    \brief get volt/octave default value in normalized form
 
-	\return normalized version
-	*/
-	inline double getNormalizedVoltOctaveDefaultValue()
-    {
+    \return normalized version
+    */
+    inline double getNormalizedVoltOctaveDefaultValue() {
         if (minValue == 0)
             return defaultValue;
 
@@ -783,8 +863,8 @@ private:
     float* boundVariableFloat = nullptr;			///< bound variable as float
     double* boundVariableDouble = nullptr;			///< bound variable as double
 
-	typedef std::map<uint32_t, AuxParameterAttribute*> auxParameterAttributeMap; ///< Aux attributes that can be stored on this object (similar to VSTGUI4) makes it easy to add extra data in the future
-	auxParameterAttributeMap auxAttributeMap;		///< map of aux attributes
+    typedef std::map<uint32_t, AuxParameterAttribute*> auxParameterAttributeMap; ///< Aux attributes that can be stored on this object (similar to VSTGUI4) makes it easy to add extra data in the future
+    auxParameterAttributeMap auxAttributeMap;		///< map of aux attributes
 
 };
 

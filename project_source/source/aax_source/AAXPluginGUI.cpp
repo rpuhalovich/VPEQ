@@ -25,13 +25,11 @@
 
 void* hInstance = nullptr;
 
-extern "C" BOOL WINAPI DllMain(HINSTANCE iInstance, DWORD iSelector, LPVOID iReserved)
-{
-	if(iSelector == DLL_PROCESS_ATTACH)
-	{
-		hInstance = (HINSTANCE)iInstance;
-	}
-	return true;
+extern "C" BOOL WINAPI DllMain(HINSTANCE iInstance, DWORD iSelector, LPVOID iReserved) {
+    if(iSelector == DLL_PROCESS_ATTACH) {
+        hInstance = (HINSTANCE)iInstance;
+    }
+    return true;
 }
 #endif //_WINDOWS -----------------------------------------------------------------------
 
@@ -47,11 +45,10 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE iInstance, DWORD iSelector, LPVOID iRes
  - see AAX SDK for more information on this function and its parameters
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAXPluginGUI::AAXPluginGUI(void)
-{
-	guiWidth = 0;
-	guiHeight = 0;
-	pureCustomGUI = false;
+AAXPluginGUI::AAXPluginGUI(void) {
+    guiWidth = 0;
+    guiHeight = 0;
+    pureCustomGUI = false;
     pluginGUI = nullptr;
 }
 
@@ -66,8 +63,7 @@ AAXPluginGUI::AAXPluginGUI(void)
  - see AAX SDK for more information on this function and its parameters
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAXPluginGUI::~AAXPluginGUI(void)
-{
+AAXPluginGUI::~AAXPluginGUI(void) {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,9 +77,8 @@ AAXPluginGUI::~AAXPluginGUI(void)
  - see AAX SDK for more information on this function and its parameters
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAX_IEffectGUI* AAX_CALLBACK AAXPluginGUI::Create()
-{
-	return new AAXPluginGUI;
+AAX_IEffectGUI* AAX_CALLBACK AAXPluginGUI::Create() {
+    return new AAXPluginGUI;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,68 +94,9 @@ AAX_IEffectGUI* AAX_CALLBACK AAXPluginGUI::Create()
  - see AAX SDK for more information on this function and its parameters
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AAXPluginGUI::CreateViewContainer()
-{
+void AAXPluginGUI::CreateViewContainer() {
 #if defined _WINDOWS || defined _WINDLL
-	if(this->GetViewContainerType() == AAX_eViewContainer_Type_HWND)
-	{
-         customData.guiPlugin_Connector = nullptr;
-        customData.plugin_Core = nullptr;
-        uint32_t oSize;
-
-        AAX_Result success = GetEffectParameters()->GetCustomData(PLUGIN_CUSTOMDATA_ID, sizeof(pluginCustomData*), &customData, &oSize);
-
-        if(success != AAX_SUCCESS)
-            return; // fail
-
-        guiWidth = 0;
-        guiHeight = 0;
-
-        if(!customData.guiPlugin_Connector)
-            return; // fail
-        if(!customData.plugin_Core)
-            return; // fail
-
-        // --- first see if they have a custom GUI
-        void* createdCustomGUI = nullptr;
-
-        if(!createdCustomGUI)
-        {
-            // --- set up the GUI parameter copy list
-            std::vector<PluginParameter*>* PluginParameterPtr = customData.plugin_Core->makePluginParameterVectorCopy();
-            
-            pluginGUI = new VSTGUI::PluginGUI("PluginGUI.uidesc");
-            if(pluginGUI)
-            {
-                // --- create GUI
-                bool opened = pluginGUI->open("Editor", this->GetViewContainerPtr(), PluginParameterPtr, VSTGUI::kHWND, customData.guiPlugin_Connector, nullptr);
-                
-                // --- delete the PluginParameterPtr guts, and pointer too...
-                for(std::vector<PluginParameter*>::iterator it = PluginParameterPtr->begin(); it !=  PluginParameterPtr->end(); ++it)
-                {
-                    delete *it;
-                }
-                delete PluginParameterPtr;
-                
-                if(opened)
-                {
-                    pluginGUI->setAAXViewContainer(GetViewContainer());
-                    float width, height = 0.f;
-                    
-                    pluginGUI->getSize(width, height);
-                    guiWidth = (int)width;
-                    guiHeight = (int)height;
-                    
-                    pluginGUI->setGUIWindowFrame((IGUIWindowFrame*)this);
-                }
-            }
-            return;
-        }
-    }
-    
-#else
-    if(this->GetViewContainerType() == AAX_eViewContainer_Type_NSView)
-    {
+    if(this->GetViewContainerType() == AAX_eViewContainer_Type_HWND) {
         customData.guiPlugin_Connector = nullptr;
         customData.plugin_Core = nullptr;
         uint32_t oSize;
@@ -181,8 +117,59 @@ void AAXPluginGUI::CreateViewContainer()
         // --- first see if they have a custom GUI
         void* createdCustomGUI = nullptr;
 
-        if(!createdCustomGUI)
-        {
+        if(!createdCustomGUI) {
+            // --- set up the GUI parameter copy list
+            std::vector<PluginParameter*>* PluginParameterPtr = customData.plugin_Core->makePluginParameterVectorCopy();
+
+            pluginGUI = new VSTGUI::PluginGUI("PluginGUI.uidesc");
+            if(pluginGUI) {
+                // --- create GUI
+                bool opened = pluginGUI->open("Editor", this->GetViewContainerPtr(), PluginParameterPtr, VSTGUI::kHWND, customData.guiPlugin_Connector, nullptr);
+
+                // --- delete the PluginParameterPtr guts, and pointer too...
+                for(std::vector<PluginParameter*>::iterator it = PluginParameterPtr->begin(); it !=  PluginParameterPtr->end(); ++it) {
+                    delete *it;
+                }
+                delete PluginParameterPtr;
+
+                if(opened) {
+                    pluginGUI->setAAXViewContainer(GetViewContainer());
+                    float width, height = 0.f;
+
+                    pluginGUI->getSize(width, height);
+                    guiWidth = (int)width;
+                    guiHeight = (int)height;
+
+                    pluginGUI->setGUIWindowFrame((IGUIWindowFrame*)this);
+                }
+            }
+            return;
+        }
+    }
+
+#else
+    if(this->GetViewContainerType() == AAX_eViewContainer_Type_NSView) {
+        customData.guiPlugin_Connector = nullptr;
+        customData.plugin_Core = nullptr;
+        uint32_t oSize;
+
+        AAX_Result success = GetEffectParameters()->GetCustomData(PLUGIN_CUSTOMDATA_ID, sizeof(pluginCustomData*), &customData, &oSize);
+
+        if(success != AAX_SUCCESS)
+            return; // fail
+
+        guiWidth = 0;
+        guiHeight = 0;
+
+        if(!customData.guiPlugin_Connector)
+            return; // fail
+        if(!customData.plugin_Core)
+            return; // fail
+
+        // --- first see if they have a custom GUI
+        void* createdCustomGUI = nullptr;
+
+        if(!createdCustomGUI) {
             // --- Look for a resource in the main bundle by name and type.
             //     NOTE: this is set in info.plist
             CFBundleRef bundle = CFBundleGetBundleWithIdentifier(CFStringCreateWithCString(nullptr, customData.plugin_Core->getAAXBundleID(), kCFStringEncodingASCII));
@@ -201,21 +188,18 @@ void AAXPluginGUI::CreateViewContainer()
             std::vector<PluginParameter*>* PluginParameterPtr = customData.plugin_Core->makePluginParameterVectorCopy();
 
             pluginGUI = new VSTGUI::PluginGUI(path);
-            if(pluginGUI)
-            {
+            if(pluginGUI) {
                 // --- create GUI
                 bool opened = pluginGUI->open("Editor", this->GetViewContainerPtr(), PluginParameterPtr, VSTGUI::kNSView, customData.guiPlugin_Connector, nullptr);
 
                 // --- delete the PluginParameterPtr guts, and pointer too...
-                for(std::vector<PluginParameter*>::iterator it = PluginParameterPtr->begin(); it !=  PluginParameterPtr->end(); ++it)
-                {
+                for(std::vector<PluginParameter*>::iterator it = PluginParameterPtr->begin(); it !=  PluginParameterPtr->end(); ++it) {
                     delete *it;
                 }
                 delete PluginParameterPtr;
                 delete [] path;
 
-                if(opened)
-                {
+                if(opened) {
                     pluginGUI->setAAXViewContainer(GetViewContainer());
                     float width, height = 0.f;
 
@@ -239,9 +223,8 @@ void AAXPluginGUI::CreateViewContainer()
 
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAX_Result AAXPluginGUI::Draw(AAX_Rect* iDrawRect)
-{
-	return AAX_SUCCESS;
+AAX_Result AAXPluginGUI::Draw(AAX_Rect* iDrawRect) {
+    return AAX_SUCCESS;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -252,9 +235,8 @@ AAX_Result AAXPluginGUI::Draw(AAX_Rect* iDrawRect)
 
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAX_Result AAXPluginGUI::TimerWakeup(void)
-{
-	return AAX_SUCCESS;
+AAX_Result AAXPluginGUI::TimerWakeup(void) {
+    return AAX_SUCCESS;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -272,13 +254,11 @@ AAX_Result AAXPluginGUI::TimerWakeup(void)
  - see AAX SDK for more information on this function and its parameters
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAX_Result AAXPluginGUI::ParameterUpdated(const char* iParameterID)
-{
+AAX_Result AAXPluginGUI::ParameterUpdated(const char* iParameterID) {
     AAX_IParameter* pParam = nullptr;
     GetEffectParameters()->GetParameter(iParameterID, &pParam);
 
-    if(pParam && pluginGUI)
-    {
+    if(pParam && pluginGUI) {
         double controlValue = 0.0;
         pParam->GetValueAsDouble(&controlValue);
         int nTag = atoi(iParameterID) - 1;
@@ -288,7 +268,7 @@ AAX_Result AAXPluginGUI::ParameterUpdated(const char* iParameterID)
         return AAX_SUCCESS;
     }
 
-	return AAX_ERROR_INVALID_PARAMETER_ID;
+    return AAX_ERROR_INVALID_PARAMETER_ID;
 }
 
 
@@ -304,11 +284,9 @@ AAX_Result AAXPluginGUI::ParameterUpdated(const char* iParameterID)
  - see AAX SDK for more information on this function and its parameters
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AAXPluginGUI::DeleteViewContainer()
-{
+void AAXPluginGUI::DeleteViewContainer() {
     // --- destroy GUI
-    if(pluginGUI)
-    {
+    if(pluginGUI) {
         // --- close it
         pluginGUI->close();
 
@@ -334,8 +312,7 @@ void AAXPluginGUI::DeleteViewContainer()
  - see AAX SDK for more information on this function and its parameters
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AAX_Result AAXPluginGUI::GetViewSize(AAX_Point* oEffectViewSize) const
-{
+AAX_Result AAXPluginGUI::GetViewSize(AAX_Point* oEffectViewSize) const {
     oEffectViewSize->horz = (float)guiWidth;
     oEffectViewSize->vert = (float)guiHeight;
 
@@ -351,8 +328,7 @@ AAX_Result AAXPluginGUI::GetViewSize(AAX_Point* oEffectViewSize) const
 
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AAXPluginGUI::CreateViewContents()
-{
+void AAXPluginGUI::CreateViewContents() {
     // --- unused
 }
 

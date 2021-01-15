@@ -22,30 +22,26 @@ Operations:
 - create the PluginParameter objects that represent the plugin parameters (see FX book if needed)
 - create the presets
 */
-PluginCore::PluginCore()
-{
+PluginCore::PluginCore() {
     // --- describe the plugin; call the helper to init the static parts you setup in plugindescription.h
     initPluginDescriptors();
 
     // --- default I/O combinations
-	// --- for FX plugins
-	if (getPluginType() == kFXPlugin)
-	{
-		addSupportedIOCombination({ kCFMono, kCFMono });
-		addSupportedIOCombination({ kCFMono, kCFStereo });
-		addSupportedIOCombination({ kCFStereo, kCFStereo });
-	}
-	else // --- synth plugins have no input, only output
-	{
-		addSupportedIOCombination({ kCFNone, kCFMono });
-		addSupportedIOCombination({ kCFNone, kCFStereo });
-	}
+    // --- for FX plugins
+    if (getPluginType() == kFXPlugin) {
+        addSupportedIOCombination({ kCFMono, kCFMono });
+        addSupportedIOCombination({ kCFMono, kCFStereo });
+        addSupportedIOCombination({ kCFStereo, kCFStereo });
+    } else { // --- synth plugins have no input, only output
+        addSupportedIOCombination({ kCFNone, kCFMono });
+        addSupportedIOCombination({ kCFNone, kCFStereo });
+    }
 
-	// --- for sidechaining, we support mono and stereo inputs; auxOutputs reserved for future use
-	addSupportedAuxIOCombination({ kCFMono, kCFNone });
-	addSupportedAuxIOCombination({ kCFStereo, kCFNone });
+    // --- for sidechaining, we support mono and stereo inputs; auxOutputs reserved for future use
+    addSupportedAuxIOCombination({ kCFMono, kCFNone });
+    addSupportedAuxIOCombination({ kCFStereo, kCFNone });
 
-	// --- create the parameters
+    // --- create the parameters
     initPluginParameters();
 
     // --- create the presets
@@ -57,25 +53,45 @@ PluginCore::PluginCore()
 
 \return true if parameters were created, false if they already existed
 */
-bool PluginCore::initPluginParameters()
-{
-	if (pluginParameterMap.size() > 0)
-		return false;
+bool PluginCore::initPluginParameters() {
+    if (pluginParameterMap.size() > 0)
+        return false;
 
     // --- Add your plugin parameter instantiation code bewtween these hex codes
-	// **--0xDEA7--**
+    // **--0xDEA7--**
+    PluginParameter* piParam = nullptr;
 
-    
-    
-	// **--0xEDA5--**
-   
+    piParam = new PluginParameter(controlID::filterFC_Hz, "FC", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 1000.000000, taper::kVoltOctaveTaper);
+    piParam->setParameterSmoothing(true);
+    piParam->setSmoothingTimeMsec(20.000000);
+    piParam->setBoundVariable(&filterFC_Hz, boundVariableType::kDouble);
+    addPluginParameter(piParam);
+
+    piParam = new PluginParameter(controlID::filterQ, "Q", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
+    piParam->setParameterSmoothing(true);
+    piParam->setSmoothingTimeMsec(20.000000);
+    piParam->setBoundVariable(&filterQ, boundVariableType::kDouble);
+    addPluginParameter(piParam);
+
+    piParam = new PluginParameter(controlID::boostCut_dB, "Boost/Cut", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
+    piParam->setParameterSmoothing(true);
+    piParam->setSmoothingTimeMsec(20.000000);
+    piParam->setBoundVariable(&boostCut_dB, boundVariableType::kDouble);
+    addPluginParameter(piParam);
+
+    piParam = new PluginParameter(controlID::filterType, "Filter Type", "LPF1P, LPF1, HPF1, LPF2, HPF2, BPF2, BSF2, ButterLPF2, ButterHPF2, ButterBPF2, ButterBSF2, MMALPF2, MMALPF2B, LowShelf, HiShelf, NCQParaEQ, CQParaEQ, LWRLPF2, LWRHPF2, APF1, APF2, ResonA, ResonB, MatchLP2A, MatchLP2B, MatchBP2A, MatchBP2B, ImpInvLP1, ImpInvLP2", "LPF1P");
+    piParam->setBoundVariable(&filterType, boundVariableType::kInt);
+    addPluginParameter(piParam);
+
+    // **--0xEDA5--**
+
     // --- BONUS Parameter
     // --- SCALE_GUI_SIZE
     PluginParameter* piParamBonus = new PluginParameter(SCALE_GUI_SIZE, "Scale GUI", "tiny,small,medium,normal,large,giant", "normal");
     addPluginParameter(piParamBonus);
 
-	// --- create the super fast access array
-	initPluginParameterArray();
+    // --- create the super fast access array
+    initPluginParameterArray();
 
     return true;
 }
@@ -91,11 +107,12 @@ Operation:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::reset(ResetInfo& resetInfo)
-{
+bool PluginCore::reset(ResetInfo& resetInfo) {
     // --- save for audio processing
     audioProcDescriptor.sampleRate = resetInfo.sampleRate;
     audioProcDescriptor.bitDepth = resetInfo.bitDepth;
+    
+    filter.reset(resetInfo.sampleRate);
 
     // --- other reset inits
     return PluginBase::reset(resetInfo);
@@ -107,11 +124,10 @@ bool PluginCore::reset(ResetInfo& resetInfo)
 Operation:
 - saves structure for the plugin to use; you can also load WAV files or state information here
 */
-bool PluginCore::initialize(PluginInfo& pluginInfo)
-{
-	// --- add one-time init stuff here
+bool PluginCore::initialize(PluginInfo& pluginInfo) {
+    // --- add one-time init stuff here
 
-	return true;
+    return true;
 }
 
 /**
@@ -128,8 +144,7 @@ Operation:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::preProcessAudioBuffers(ProcessBufferInfo& processInfo)
-{
+bool PluginCore::preProcessAudioBuffers(ProcessBufferInfo& processInfo) {
     // --- sync internal variables to GUI parameters; you can also do this manually if you don't
     //     want to use the auto-variable-binding
     syncInBoundVariables();
@@ -149,61 +164,16 @@ Operation:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
-{
-    // --- fire any MIDI events for this sample interval
-    processFrameInfo.midiEventQueue->fireMidiEvents(processFrameInfo.currentFrame);
-
-	// --- do per-frame updates; VST automation and parameter smoothing
-	doSampleAccurateParameterUpdates();
-
-    // --- decode the channelIOConfiguration and process accordingly
-    //
-	// --- Synth Plugin:
-	// --- Synth Plugin --- remove for FX plugins
-	if (getPluginType() == kSynthPlugin)
-	{
-		// --- output silence: change this with your signal render code
-		processFrameInfo.audioOutputFrame[0] = 0.0;
-		if (processFrameInfo.channelIOConfig.outputChannelFormat == kCFStereo)
-			processFrameInfo.audioOutputFrame[1] = 0.0;
-
-		return true;	/// processed
-	}
-
-    // --- FX Plugin:
-    if(processFrameInfo.channelIOConfig.inputChannelFormat == kCFMono &&
-       processFrameInfo.channelIOConfig.outputChannelFormat == kCFMono)
-    {
-		// --- pass through code: change this with your signal processing
-        processFrameInfo.audioOutputFrame[0] = processFrameInfo.audioInputFrame[0];
-
-        return true; /// processed
+bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo) {
+    doSampleAccurateParameterUpdates();
+    updateParameters();
+    
+    // for each channel, process sample in the filter
+    for (int i = 0; i < processFrameInfo.numAudioInChannels; i++) {
+        processFrameInfo.audioOutputFrame[i] = filter.processAudioSample(processFrameInfo.audioInputFrame[i]);
     }
 
-    // --- Mono-In/Stereo-Out
-    else if(processFrameInfo.channelIOConfig.inputChannelFormat == kCFMono &&
-       processFrameInfo.channelIOConfig.outputChannelFormat == kCFStereo)
-    {
-		// --- pass through code: change this with your signal processing
-        processFrameInfo.audioOutputFrame[0] = processFrameInfo.audioInputFrame[0];
-        processFrameInfo.audioOutputFrame[1] = processFrameInfo.audioInputFrame[0];
-
-        return true; /// processed
-    }
-
-    // --- Stereo-In/Stereo-Out
-    else if(processFrameInfo.channelIOConfig.inputChannelFormat == kCFStereo &&
-       processFrameInfo.channelIOConfig.outputChannelFormat == kCFStereo)
-    {
-		// --- pass through code: change this with your signal processing
-        processFrameInfo.audioOutputFrame[0] = processFrameInfo.audioInputFrame[0];
-        processFrameInfo.audioOutputFrame[1] = processFrameInfo.audioInputFrame[1];
-
-        return true; /// processed
-    }
-
-    return false; /// NOT processed
+    return true;
 }
 
 
@@ -217,11 +187,10 @@ Operation:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::postProcessAudioBuffers(ProcessBufferInfo& processInfo)
-{
-	// --- update outbound variables; currently this is meter data only, but could be extended
-	//     in the future
-	updateOutBoundVariables();
+bool PluginCore::postProcessAudioBuffers(ProcessBufferInfo& processInfo) {
+    // --- update outbound variables; currently this is meter data only, but could be extended
+    //     in the future
+    updateOutBoundVariables();
 
     return true;
 }
@@ -239,8 +208,7 @@ Operation:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::updatePluginParameter(int32_t controlID, double controlValue, ParameterUpdateInfo& paramInfo)
-{
+bool PluginCore::updatePluginParameter(int32_t controlID, double controlValue, ParameterUpdateInfo& paramInfo) {
     // --- use base class helper
     setPIParamValue(controlID, controlValue);
 
@@ -263,15 +231,14 @@ Operation:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::updatePluginParameterNormalized(int32_t controlID, double normalizedValue, ParameterUpdateInfo& paramInfo)
-{
-	// --- use base class helper, returns actual value
-	double controlValue = setPIParamValueNormalized(controlID, normalizedValue, paramInfo.applyTaper);
+bool PluginCore::updatePluginParameterNormalized(int32_t controlID, double normalizedValue, ParameterUpdateInfo& paramInfo) {
+    // --- use base class helper, returns actual value
+    double controlValue = setPIParamValueNormalized(controlID, normalizedValue, paramInfo.applyTaper);
 
-	// --- do any post-processing
-	postUpdatePluginParameter(controlID, controlValue, paramInfo);
+    // --- do any post-processing
+    postUpdatePluginParameter(controlID, controlValue, paramInfo);
 
-	return true; /// handled
+    return true; /// handled
 }
 
 /**
@@ -287,8 +254,7 @@ bool PluginCore::updatePluginParameterNormalized(int32_t controlID, double norma
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::postUpdatePluginParameter(int32_t controlID, double controlValue, ParameterUpdateInfo& paramInfo)
-{
+bool PluginCore::postUpdatePluginParameter(int32_t controlID, double controlValue, ParameterUpdateInfo& paramInfo) {
     // --- now do any post update cooking; be careful with VST Sample Accurate automation
     //     If enabled, then make sure the cooking functions are short and efficient otherwise disable it
     //     for the Parameter involved
@@ -323,22 +289,21 @@ WARNING:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::guiParameterChanged(int32_t controlID, double actualValue)
-{
-	/*
-	switch (controlID)
-	{
-		case controlID::<your control here>
-		{
+bool PluginCore::guiParameterChanged(int32_t controlID, double actualValue) {
+    /*
+    switch (controlID)
+    {
+    	case controlID::<your control here>
+    	{
 
-			return true; // handled
-		}
+    		return true; // handled
+    	}
 
-		default:
-			break;
-	}*/
+    	default:
+    		break;
+    }*/
 
-	return false; /// not handled
+    return false; /// not handled
 }
 
 /**
@@ -352,52 +317,45 @@ NOTES:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::processMessage(MessageInfo& messageInfo)
-{
-	// --- decode message
-	switch (messageInfo.message)
-	{
-		// --- add customization appearance here
-	case PLUGINGUI_DIDOPEN:
-	{
-		return false;
-	}
+bool PluginCore::processMessage(MessageInfo& messageInfo) {
+    // --- decode message
+    switch (messageInfo.message) {
+    // --- add customization appearance here
+    case PLUGINGUI_DIDOPEN: {
+        return false;
+    }
 
-	// --- NULL pointers so that we don't accidentally use them
-	case PLUGINGUI_WILLCLOSE:
-	{
-		return false;
-	}
+    // --- NULL pointers so that we don't accidentally use them
+    case PLUGINGUI_WILLCLOSE: {
+        return false;
+    }
 
-	// --- update view; this will only be called if the GUI is actually open
-	case PLUGINGUI_TIMERPING:
-	{
-		return false;
-	}
+    // --- update view; this will only be called if the GUI is actually open
+    case PLUGINGUI_TIMERPING: {
+        return false;
+    }
 
-	// --- register the custom view, grab the ICustomView interface
-	case PLUGINGUI_REGISTER_CUSTOMVIEW:
-	{
+    // --- register the custom view, grab the ICustomView interface
+    case PLUGINGUI_REGISTER_CUSTOMVIEW: {
 
-		return false;
-	}
+        return false;
+    }
 
-	case PLUGINGUI_REGISTER_SUBCONTROLLER:
-	case PLUGINGUI_QUERY_HASUSERCUSTOM:
-	case PLUGINGUI_USER_CUSTOMOPEN:
-	case PLUGINGUI_USER_CUSTOMCLOSE:
-	case PLUGINGUI_EXTERNAL_SET_NORMVALUE:
-	case PLUGINGUI_EXTERNAL_SET_ACTUALVALUE:
-	{
+    case PLUGINGUI_REGISTER_SUBCONTROLLER:
+    case PLUGINGUI_QUERY_HASUSERCUSTOM:
+    case PLUGINGUI_USER_CUSTOMOPEN:
+    case PLUGINGUI_USER_CUSTOMCLOSE:
+    case PLUGINGUI_EXTERNAL_SET_NORMVALUE:
+    case PLUGINGUI_EXTERNAL_SET_ACTUALVALUE: {
 
-		return false;
-	}
+        return false;
+    }
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
 
-	return false; /// not handled
+    return false; /// not handled
 }
 
 
@@ -412,9 +370,8 @@ NOTES:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::processMIDIEvent(midiEvent& event)
-{
-	return true;
+bool PluginCore::processMIDIEvent(midiEvent& event) {
+    return true;
 }
 
 /**
@@ -428,9 +385,8 @@ NOTES:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::setVectorJoystickParameters(const VectorJoystickData& vectorJoysickData)
-{
-	return true;
+bool PluginCore::setVectorJoystickParameters(const VectorJoystickData& vectorJoysickData) {
+    return true;
 }
 
 /**
@@ -443,11 +399,10 @@ NOTES:
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::initPluginPresets()
-{
-	// **--0xFF7A--**
+bool PluginCore::initPluginPresets() {
+    // **--0xFF7A--**
 
-	// **--0xA7FF--**
+    // **--0xA7FF--**
 
     return true;
 }
@@ -457,18 +412,17 @@ bool PluginCore::initPluginPresets()
 
 \return true if operation succeeds, false otherwise
 */
-bool PluginCore::initPluginDescriptors()
-{
+bool PluginCore::initPluginDescriptors() {
     pluginDescriptor.pluginName = PluginCore::getPluginName();
     pluginDescriptor.shortPluginName = PluginCore::getShortPluginName();
     pluginDescriptor.vendorName = PluginCore::getVendorName();
     pluginDescriptor.pluginTypeCode = PluginCore::getPluginType();
 
-	// --- describe the plugin attributes; set according to your needs
-	pluginDescriptor.hasSidechain = kWantSidechain;
-	pluginDescriptor.latencyInSamples = kLatencyInSamples;
-	pluginDescriptor.tailTimeInMSec = kTailTimeMsec;
-	pluginDescriptor.infiniteTailVST3 = kVSTInfiniteTail;
+    // --- describe the plugin attributes; set according to your needs
+    pluginDescriptor.hasSidechain = kWantSidechain;
+    pluginDescriptor.latencyInSamples = kLatencyInSamples;
+    pluginDescriptor.tailTimeInMSec = kTailTimeMsec;
+    pluginDescriptor.infiniteTailVST3 = kVSTInfiniteTail;
 
     // --- AAX
     apiSpecificInfo.aaxManufacturerID = kManufacturerID;
@@ -485,8 +439,8 @@ bool PluginCore::initPluginDescriptors()
     // --- VST3
     apiSpecificInfo.vst3FUID = PluginCore::getVSTFUID(); // OLE string format
     apiSpecificInfo.vst3BundleID = kVST3BundleID;/* MacOS only: this MUST match the bundle identifier in your info.plist file */
-	apiSpecificInfo.enableVST3SampleAccurateAutomation = kVSTSAA;
-	apiSpecificInfo.vst3SampleAccurateGranularity = kVST3SAAGranularity;
+    apiSpecificInfo.enableVST3SampleAccurateAutomation = kVSTSAA;
+    apiSpecificInfo.vst3SampleAccurateGranularity = kVST3SAAGranularity;
 
     // --- AU and AAX
     apiSpecificInfo.fourCharCode = PluginCore::getFourCharCode();
@@ -495,13 +449,48 @@ bool PluginCore::initPluginDescriptors()
 }
 
 // --- static functions required for VST3/AU only --------------------------------------------- //
-const char* PluginCore::getPluginBundleName() { return kAUBundleName; }
-const char* PluginCore::getPluginName(){ return kPluginName; }
-const char* PluginCore::getShortPluginName(){ return kShortPluginName; }
-const char* PluginCore::getVendorName(){ return kVendorName; }
-const char* PluginCore::getVendorURL(){ return kVendorURL; }
-const char* PluginCore::getVendorEmail(){ return kVendorEmail; }
-const char* PluginCore::getAUCocoaViewFactoryName(){ return AU_COCOA_VIEWFACTORY_STRING; }
-pluginType PluginCore::getPluginType(){ return kPluginType; }
-const char* PluginCore::getVSTFUID(){ return kVSTFUID; }
-int32_t PluginCore::getFourCharCode(){ return kFourCharCode; }
+const char* PluginCore::getPluginBundleName() {
+    return kAUBundleName;
+}
+const char* PluginCore::getPluginName() {
+    return kPluginName;
+}
+const char* PluginCore::getShortPluginName() {
+    return kShortPluginName;
+}
+const char* PluginCore::getVendorName() {
+    return kVendorName;
+}
+const char* PluginCore::getVendorURL() {
+    return kVendorURL;
+}
+const char* PluginCore::getVendorEmail() {
+    return kVendorEmail;
+}
+const char* PluginCore::getAUCocoaViewFactoryName() {
+    return AU_COCOA_VIEWFACTORY_STRING;
+}
+pluginType PluginCore::getPluginType() {
+    return kPluginType;
+}
+const char* PluginCore::getVSTFUID() {
+    return kVSTFUID;
+}
+int32_t PluginCore::getFourCharCode() {
+    return kFourCharCode;
+}
+
+void PluginCore::updateParameters() {
+    // update left filter with gui parameters
+    AudioFilterParameters filterParams = filter.getParameters();
+    
+    // alter the parameter values
+    filterParams.fc = filterFC_Hz;
+    filterParams.Q = filterQ;
+    filterParams.boostCut_dB = boostCut_dB;
+    filterParams.algorithm = convertIntToEnum(filterType, filterAlgorithm);
+    
+    // set on objects
+    filter.setParameters(filterParams);
+}
+

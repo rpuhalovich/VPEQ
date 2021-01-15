@@ -11,34 +11,34 @@
 #define AU_COCOA_VIEW_STRING STR(AU_COCOA_VIEW_NAME)
 
 // --- AU Plugin Cocoa View Names (flat namespace) 
-#define AU_COCOA_VIEWFACTORY_NAME AUCocoaViewFactory_0B98EC48E03B391591955421DB4F5DD9
-#define AU_COCOA_VIEW_NAME AUCocoaView_0B98EC48E03B391591955421DB4F5DD9
+#define AU_COCOA_VIEWFACTORY_NAME AUCocoaViewFactory_2CC73BF4B78C3EBA975349C8403A6832
+#define AU_COCOA_VIEW_NAME AUCocoaView_2CC73BF4B78C3EBA975349C8403A6832
 
 // --- BUNDLE IDs (MacOS Only) 
-const char* kAAXBundleID = "developer.aax.aspiktemplate.bundleID";
-const char* kAUBundleID = "developer.au.aspiktemplate.bundleID";
-const char* kVST3BundleID = "developer.vst3.aspiktemplate.bundleID";
+const char* kAAXBundleID = "developer.aax.vparametriceq.bundleID";
+const char* kAUBundleID = "developer.au.vparametriceq.bundleID";
+const char* kVST3BundleID = "developer.vst3.vparametriceq.bundleID";
 
 // --- Plugin Names 
-const char* kPluginName = "ASPiKTemplate";
-const char* kShortPluginName = "ASPiKTemplate";
-const char* kAUBundleName = "ASPiKTemplate_AU";
+const char* kPluginName = "VParametricEQ";
+const char* kShortPluginName = "VParametricEQ";
+const char* kAUBundleName = "VParametricEQ_AU";
 
 // --- Plugin Type 
 const pluginType kPluginType = pluginType::kFXPlugin;
 
 // --- VST3 UUID 
-const char* kVSTFUID = "{0b98ec48-e03b-3915-9195-5421db4f5dd9}";
+const char* kVSTFUID = "{2cc73bf4-b78c-3eba-9753-49c8403a6832}";
 
 // --- 4-char codes 
-const int32_t kFourCharCode = 'PLuG';
-const int32_t kAAXProductID = 'PLuG';
-const int32_t kManufacturerID = 'ASPK';
+const int32_t kFourCharCode = 'VEGE';
+const int32_t kAAXProductID = 'VEGE';
+const int32_t kManufacturerID = 'RYAN';
 
 // --- Vendor information 
 const char* kVendorName = "My Company";
-const char* kVendorURL = "www.myplugins.com";
-const char* kVendorEmail = "support@myplugins.com";
+const char* kVendorURL = "";
+const char* kVendorEmail = "";
 
 // --- Plugin Options 
 const bool kWantSidechain = false;

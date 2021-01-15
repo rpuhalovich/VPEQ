@@ -22,8 +22,7 @@ namespace Vst {
 namespace ASPiK {
 
 //------------------------------------------------------------------------
-PeakParameter::PeakParameter (int32 flags, int32 id, const TChar* title)
-{
+PeakParameter::PeakParameter (int32 flags, int32 id, const TChar* title) {
     UString (info.title, USTRINGSIZE (info.title)).assign (title);
 
     info.flags = flags;
@@ -36,15 +35,11 @@ PeakParameter::PeakParameter (int32 flags, int32 id, const TChar* title)
 }
 
 //------------------------------------------------------------------------
-void PeakParameter::toString (ParamValue normValue, String128 string) const
-{
+void PeakParameter::toString (ParamValue normValue, String128 string) const {
     String str;
-    if (normValue > 0.0001)
-    {
+    if (normValue > 0.0001) {
         str.printf ("%.3f", (float)normValue);
-    }
-    else
-    {
+    } else {
         str.assign ("-");
         str.append (kInfiniteSymbol);
     }
@@ -53,8 +48,7 @@ void PeakParameter::toString (ParamValue normValue, String128 string) const
 }
 
 //------------------------------------------------------------------------
-bool PeakParameter::fromString (const TChar* string, ParamValue& normValue) const
-{
+bool PeakParameter::fromString (const TChar* string, ParamValue& normValue) const {
     return false;
 }
 
@@ -64,14 +58,12 @@ bool PeakParameter::fromString (const TChar* string, ParamValue& normValue) cons
 LogParameter::LogParameter(const TChar* title, ParamID tag, const TChar* units,
                            ParamValue minPlain, ParamValue maxPlain, ParamValue defaultValuePlain,
                            int32 stepCount, int32 flags, UnitID unitID)
-: minPlain (minPlain)
-, maxPlain (maxPlain)
-{
+    : minPlain (minPlain)
+    , maxPlain (maxPlain) {
     UString (info.title, tStrBufferSize (String128)).assign (title);
 
     UString uUnits (info.units, tStrBufferSize (String128));
-    if (units)
-    {
+    if (units) {
         uUnits.assign (units);
     }
 
@@ -83,19 +75,16 @@ LogParameter::LogParameter(const TChar* title, ParamID tag, const TChar* units,
 }
 
 //------------------------------------------------------------------------
-void LogParameter::toString(ParamValue normValue, String128 string) const
-{
+void LogParameter::toString(ParamValue normValue, String128 string) const {
     UString128 wrapper;
     wrapper.printFloat(toPlain(normValue), precision);
     wrapper.copyTo(string, 128);
 }
 
 //------------------------------------------------------------------------
-bool LogParameter::fromString (const TChar* string, ParamValue& normValue) const
-{
+bool LogParameter::fromString (const TChar* string, ParamValue& normValue) const {
     UString wrapper ((TChar*)string, strlen16 (string));
-    if (wrapper.scanFloat (normValue))
-    {
+    if (wrapper.scanFloat (normValue)) {
         normValue = toNormalized(normValue);
         return true;
     }
@@ -103,15 +92,13 @@ bool LogParameter::fromString (const TChar* string, ParamValue& normValue) const
 }
 
 // --- convert 0->1 to cooked value
-ParamValue LogParameter::toPlain(ParamValue _valueNormalized) const
-{
+ParamValue LogParameter::toPlain(ParamValue _valueNormalized) const {
     _valueNormalized = calcLogPluginValue(_valueNormalized);
     return _valueNormalized*(getMax() - getMin()) + getMin();
 }
 
 // --- convert cooked value to 0->1 value
-ParamValue LogParameter::toNormalized(ParamValue plainValue) const
-{
+ParamValue LogParameter::toNormalized(ParamValue plainValue) const {
     ParamValue normValue = (plainValue - getMin())/(getMax() - getMin());
     return calcLogParameter(normValue);
 }
@@ -123,74 +110,14 @@ ParamValue LogParameter::toNormalized(ParamValue plainValue) const
 
 //------------------------------------------------------------------------
 AntiLogParameter::AntiLogParameter(const TChar* title, ParamID tag, const TChar* units,
-								ParamValue minPlain, ParamValue maxPlain, ParamValue defaultValuePlain,
-								int32 stepCount, int32 flags, UnitID unitID)
-: minPlain (minPlain)
-, maxPlain (maxPlain)
-{
-	UString (info.title, tStrBufferSize (String128)).assign (title);
-
-	UString uUnits (info.units, tStrBufferSize (String128));
-	if (units)
-	{
-		uUnits.assign (units);
-	}
-
-	info.stepCount = stepCount;
-	info.defaultNormalizedValue = valueNormalized = toNormalized(defaultValuePlain);
-	info.flags = flags;
-	info.id = tag;
-	info.unitId = unitID;
-}
-
-//------------------------------------------------------------------------
-void AntiLogParameter::toString(ParamValue normValue, String128 string) const
-{
-	UString128 wrapper;
-	wrapper.printFloat(toPlain(normValue), precision);
-	wrapper.copyTo(string, 128);
-}
-
-//------------------------------------------------------------------------
-bool AntiLogParameter::fromString (const TChar* string, ParamValue& normValue) const
-{
-	UString wrapper ((TChar*)string, strlen16 (string));
-	if (wrapper.scanFloat (normValue))
-	{
-		normValue = toNormalized(normValue);
-		return true;
-	}
-	return false;
-}
-
-// --- convert 0->1 to cooked value
-ParamValue AntiLogParameter::toPlain(ParamValue _valueNormalized) const
-{
-	_valueNormalized = calcAntiLogPluginValue(_valueNormalized);
-	return _valueNormalized*(getMax() - getMin()) + getMin();
-}
-
-// --- convert cooked value to 0->1 value
-ParamValue AntiLogParameter::toNormalized(ParamValue plainValue) const
-{
-	ParamValue normValue = (plainValue - getMin())/(getMax() - getMin());
-	return calcAntiLogParameter(normValue);
-}
-
-
-
-//------------------------------------------------------------------------
-VoltOctaveParameter::VoltOctaveParameter(const TChar* title, ParamID tag, const TChar* units,
-                                         ParamValue minPlain, ParamValue maxPlain, ParamValue defaultValuePlain,
-                                         int32 stepCount, int32 flags, UnitID unitID)
-: minPlain (minPlain)
-, maxPlain (maxPlain)
-{
+                                   ParamValue minPlain, ParamValue maxPlain, ParamValue defaultValuePlain,
+                                   int32 stepCount, int32 flags, UnitID unitID)
+    : minPlain (minPlain)
+    , maxPlain (maxPlain) {
     UString (info.title, tStrBufferSize (String128)).assign (title);
 
     UString uUnits (info.units, tStrBufferSize (String128));
-    if (units)
-    {
+    if (units) {
         uUnits.assign (units);
     }
 
@@ -202,19 +129,16 @@ VoltOctaveParameter::VoltOctaveParameter(const TChar* title, ParamID tag, const 
 }
 
 //------------------------------------------------------------------------
-void VoltOctaveParameter::toString(ParamValue normValue, String128 string) const
-{
+void AntiLogParameter::toString(ParamValue normValue, String128 string) const {
     UString128 wrapper;
     wrapper.printFloat(toPlain(normValue), precision);
     wrapper.copyTo(string, 128);
 }
 
 //------------------------------------------------------------------------
-bool VoltOctaveParameter::fromString (const TChar* string, ParamValue& normValue) const
-{
+bool AntiLogParameter::fromString (const TChar* string, ParamValue& normValue) const {
     UString wrapper ((TChar*)string, strlen16 (string));
-    if (wrapper.scanFloat (normValue))
-    {
+    if (wrapper.scanFloat (normValue)) {
         normValue = toNormalized(normValue);
         return true;
     }
@@ -222,20 +146,71 @@ bool VoltOctaveParameter::fromString (const TChar* string, ParamValue& normValue
 }
 
 // --- convert 0->1 to cooked value
-ParamValue VoltOctaveParameter::toPlain(ParamValue _valueNormalized) const
-{
+ParamValue AntiLogParameter::toPlain(ParamValue _valueNormalized) const {
+    _valueNormalized = calcAntiLogPluginValue(_valueNormalized);
+    return _valueNormalized*(getMax() - getMin()) + getMin();
+}
+
+// --- convert cooked value to 0->1 value
+ParamValue AntiLogParameter::toNormalized(ParamValue plainValue) const {
+    ParamValue normValue = (plainValue - getMin())/(getMax() - getMin());
+    return calcAntiLogParameter(normValue);
+}
+
+
+
+//------------------------------------------------------------------------
+VoltOctaveParameter::VoltOctaveParameter(const TChar* title, ParamID tag, const TChar* units,
+        ParamValue minPlain, ParamValue maxPlain, ParamValue defaultValuePlain,
+        int32 stepCount, int32 flags, UnitID unitID)
+    : minPlain (minPlain)
+    , maxPlain (maxPlain) {
+    UString (info.title, tStrBufferSize (String128)).assign (title);
+
+    UString uUnits (info.units, tStrBufferSize (String128));
+    if (units) {
+        uUnits.assign (units);
+    }
+
+    info.stepCount = stepCount;
+    info.defaultNormalizedValue = valueNormalized = toNormalized(defaultValuePlain);
+    info.flags = flags;
+    info.id = tag;
+    info.unitId = unitID;
+}
+
+//------------------------------------------------------------------------
+void VoltOctaveParameter::toString(ParamValue normValue, String128 string) const {
+    UString128 wrapper;
+    wrapper.printFloat(toPlain(normValue), precision);
+    wrapper.copyTo(string, 128);
+}
+
+//------------------------------------------------------------------------
+bool VoltOctaveParameter::fromString (const TChar* string, ParamValue& normValue) const {
+    UString wrapper ((TChar*)string, strlen16 (string));
+    if (wrapper.scanFloat (normValue)) {
+        normValue = toNormalized(normValue);
+        return true;
+    }
+    return false;
+}
+
+// --- convert 0->1 to cooked value
+ParamValue VoltOctaveParameter::toPlain(ParamValue _valueNormalized) const {
     _valueNormalized = calcVoltOctavePluginValue(_valueNormalized);
     return _valueNormalized*(getMax() - getMin()) + getMin();
 }
 
 // --- convert cooked value to 0->1 value
-ParamValue VoltOctaveParameter::toNormalized(ParamValue plainValue) const
-{
-	float value = calcVoltOctaveParameter(plainValue);
-	value = fmax(value, 0.0);
-	value = fmin(value, 1.0);
-	return value;
+ParamValue VoltOctaveParameter::toNormalized(ParamValue plainValue) const {
+    float value = calcVoltOctaveParameter(plainValue);
+    value = fmax(value, 0.0);
+    value = fmin(value, 1.0);
+    return value;
 }
 
 
-}}}
+}
+}
+}

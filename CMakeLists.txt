@@ -48,10 +48,10 @@ set(VST_SDK_BUILD TRUE)# <-- set TRUE or FALSE
 #
 # ---------------------------------------------------------------------------------
 # --- the name of the project must be valid CMAKE name: must not contain spaces or numbers
-set(PLUGIN_PROJECT_NAME ASPiKTemplate)	# <-- set PROJECT NAME with or without quotes
+set(PLUGIN_PROJECT_NAME VParametricEQ)	# <-- set PROJECT NAME with or without quotes
 
 # --- the name of the PLUGIN as you want it to appear in DAW menus for the user
-set(PLUGIN_NAME "ASPiKTemplate")	# <-- set PLUGIN NAME with quotes; ok to have spaces or numbers if you like
+set(PLUGIN_NAME "VParametricEQ")	# <-- set PLUGIN NAME with quotes; ok to have spaces or numbers if you like
 
 # --- Synth Flag: FALSE = FX plugin, TRUE = Synth Plugin
 set(IS_SYNTH_PLUGIN FALSE)		# <-- set Synth Flag to TRUE only for an output-only (synth) plugin
@@ -64,13 +64,13 @@ set(HAS_AAX_GR_METER FALSE)		# <-- for special Pro-Tools AAX Gain Reduction Mete
 
 # --- VENDOR information (your company stuff)
 set(VENDOR_NAME "My Company")			# <-- required!
-set(VENDOR_URL "www.myplugins.com")			# <-- OPTIONAL (ok if blank)
-set(VENDOR_EMAIL "support@myplugins.com")		# <-- OPTIONAL (ok if blank)
+set(VENDOR_URL "")			# <-- OPTIONAL (ok if blank)
+set(VENDOR_EMAIL "")		# <-- OPTIONAL (ok if blank)
 
 # --- 4-Character Codes (for AAX and VST3)
-set(4CHAR_CODE "PLuG")				# MUST be unique for each plugin your company creates/sells
-set(4CHAR_MANUFACTURER_ID "ASPK")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
-set(4CHAR_AAX_PRODUCT_ID "PLuG")			# MUST be unique for each plugin your company creates/sells
+set(4CHAR_CODE "VEGE")				# MUST be unique for each plugin your company creates/sells
+set(4CHAR_MANUFACTURER_ID "RYAN")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
+set(4CHAR_AAX_PRODUCT_ID "VEGE")			# MUST be unique for each plugin your company creates/sells
 
 # --- Plugin Options ---
 set(INCLUDE_FX_OBJECTS TRUE)		# <-- set TRUE or FALSE
@@ -399,7 +399,7 @@ message(STATUS "")
 set(AAX_PLUGIN_FOLDER AAX)
 set(AU_PLUGIN_FOLDER AU)
 
-# --- sources for the following subdirectories (cus code reuse is uncool)
+# --- sources for the following add_subdirectory(s) (cus repeat code is uncool)
 # used in project_source/cmake/aax_cmake...au_cmake...vst_cmake...unit_tests
 set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects")
 set(plugin_object_sources

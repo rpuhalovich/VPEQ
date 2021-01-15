@@ -50,32 +50,29 @@
  \version Revision : 1.0
  \date Date : 2018 / 09 / 7
  */
-class AAXPluginGUI : public AAX_CEffectGUI, public IGUIWindowFrame
-{
+class AAXPluginGUI : public AAX_CEffectGUI, public IGUIWindowFrame {
 public:
-	AAXPluginGUI(void);
-	~AAXPluginGUI(void);
+    AAXPluginGUI(void);
+    ~AAXPluginGUI(void);
 
     /** creation mechanism */
-	static AAX_IEffectGUI* AAX_CALLBACK Create( void );
+    static AAX_IEffectGUI* AAX_CALLBACK Create( void );
 
-	// --- AAX_CEffectGUI overrides
-	virtual void CreateViewContainer(); ///< AAX_CEffectGUI override
+    // --- AAX_CEffectGUI overrides
+    virtual void CreateViewContainer(); ///< AAX_CEffectGUI override
     virtual void DeleteViewContainer(); ///< AAX_CEffectGUI override
-	virtual void CreateViewContents(); ///< AAX_CEffectGUI override
-	virtual AAX_Result ParameterUpdated(const char* iParameterID); ///< AAX_CEffectGUI override
-	virtual AAX_Result Draw(AAX_Rect* iDrawRect); ///< AAX_CEffectGUI override
-	virtual AAX_Result TimerWakeup(void); ///< AAX_CEffectGUI override
+    virtual void CreateViewContents(); ///< AAX_CEffectGUI override
+    virtual AAX_Result ParameterUpdated(const char* iParameterID); ///< AAX_CEffectGUI override
+    virtual AAX_Result Draw(AAX_Rect* iDrawRect); ///< AAX_CEffectGUI override
+    virtual AAX_Result TimerWakeup(void); ///< AAX_CEffectGUI override
 
-	/** for sizing the GUI */
-	virtual AAX_Result GetViewSize(AAX_Point* oEffectViewSize) const;  ///< for sizing the GUI
+    /** for sizing the GUI */
+    virtual AAX_Result GetViewSize(AAX_Point* oEffectViewSize) const;  ///< for sizing the GUI
 
     /** IGUIWindowFrame - this allows us to set the view size for the GUI designer (only) */
-    virtual bool setWindowFrameSize(double left = 0, double top = 0, double right = 0, double bottom = 0)
-    {
+    virtual bool setWindowFrameSize(double left = 0, double top = 0, double right = 0, double bottom = 0) {
         AAX_IViewContainer* iVC = GetViewContainer();
-        if(iVC)
-        {
+        if(iVC) {
             // --- NOTE: height, width
             AAX_Point size( (float)(bottom - top), (float)(right - left) );
             iVC->SetViewSize(size);
@@ -86,8 +83,7 @@ public:
     }
 
     /** for sizing the GUI */
-    virtual bool getWindowFrameSize(double& left, double&  top, double&  right, double&  bottom)
-    {
+    virtual bool getWindowFrameSize(double& left, double&  top, double&  right, double&  bottom) {
         left = 0;
         top = 0;
         right = (VSTGUI::CCoord)guiWidth;
@@ -95,10 +91,10 @@ public:
         return true;
     }
 
-  protected:
+protected:
     int guiWidth = 100;             ///< size parameter
     int guiHeight = 100;            ///< size parameter
-	pluginCustomData customData;    ///< custom data struct used for moving information from parameters during early construction phase
+    pluginCustomData customData;    ///< custom data struct used for moving information from parameters during early construction phase
     VSTGUI::PluginGUI* pluginGUI;           ///< the ASPiK GUI - NOTE that this is maintained only for constructing and destroying the GUI
     bool pureCustomGUI = false;     ///< not used
 };

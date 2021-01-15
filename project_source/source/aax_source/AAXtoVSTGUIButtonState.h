@@ -27,22 +27,30 @@
 // CAAXButtonState
 //==============================================================================
 
-static uint32_t SynthesizeModifiers(const VSTGUI::CButtonState& inButtonState, AAX_IViewContainer* inViewContainer)
-{
+static uint32_t SynthesizeModifiers(const VSTGUI::CButtonState& inButtonState, AAX_IViewContainer* inViewContainer) {
     uint32_t aax_mods = 0;
 
-    if (inButtonState & VSTGUI::kAlt) { aax_mods |= AAX_eModifiers_Option; }
-    if (inButtonState & VSTGUI::kApple) { aax_mods |= AAX_eModifiers_Control; } // VSTGUI modifier definitions are flipped on Mac.
-    if (inButtonState & VSTGUI::kControl) { aax_mods |= AAX_eModifiers_Command; } // VSTGUI modifier definitions are flipped on Mac.
-    if (inButtonState & VSTGUI::kShift) { aax_mods |= AAX_eModifiers_Shift; }
-    if (inButtonState & VSTGUI::kRButton) { aax_mods |= AAX_eModifiers_SecondaryButton; }
+    if (inButtonState & VSTGUI::kAlt) {
+        aax_mods |= AAX_eModifiers_Option;
+    }
+    if (inButtonState & VSTGUI::kApple) {
+        aax_mods |= AAX_eModifiers_Control;    // VSTGUI modifier definitions are flipped on Mac.
+    }
+    if (inButtonState & VSTGUI::kControl) {
+        aax_mods |= AAX_eModifiers_Command;    // VSTGUI modifier definitions are flipped on Mac.
+    }
+    if (inButtonState & VSTGUI::kShift) {
+        aax_mods |= AAX_eModifiers_Shift;
+    }
+    if (inButtonState & VSTGUI::kRButton) {
+        aax_mods |= AAX_eModifiers_SecondaryButton;
+    }
 
     // It is best practice to always query the host as
     // well, since the host's key handler may have
     // prevented some modifier key states from reaching
     // the plug-in.
-    if (inViewContainer)
-    {
+    if (inViewContainer) {
         uint32_t aaxViewMods = 0;
         inViewContainer->GetModifiers (&aaxViewMods);
         aax_mods |= aaxViewMods;
@@ -51,15 +59,24 @@ static uint32_t SynthesizeModifiers(const VSTGUI::CButtonState& inButtonState, A
     return aax_mods;
 }
 
-static VSTGUI::CButtonState SynthesizeButtonState(const VSTGUI::CButtonState& inButtonState, uint32_t inModifiers)
-{
+static VSTGUI::CButtonState SynthesizeButtonState(const VSTGUI::CButtonState& inButtonState, uint32_t inModifiers) {
     VSTGUI::CButtonState buttons(inButtonState);
 
-    if (AAX_eModifiers_Shift & inModifiers) { buttons |= VSTGUI::kShift; }
-    if (AAX_eModifiers_Control & inModifiers) { buttons |= VSTGUI::kApple; } // VSTGUI modifier definitions are flipped on Mac.
-    if (AAX_eModifiers_Option & inModifiers) { buttons |= VSTGUI::kAlt; }
-    if (AAX_eModifiers_Command & inModifiers) { buttons |= VSTGUI::kControl; } // VSTGUI modifier definitions are flipped on Mac.
-    if (AAX_eModifiers_SecondaryButton & inModifiers) { buttons |= VSTGUI::kRButton; }
+    if (AAX_eModifiers_Shift & inModifiers) {
+        buttons |= VSTGUI::kShift;
+    }
+    if (AAX_eModifiers_Control & inModifiers) {
+        buttons |= VSTGUI::kApple;    // VSTGUI modifier definitions are flipped on Mac.
+    }
+    if (AAX_eModifiers_Option & inModifiers) {
+        buttons |= VSTGUI::kAlt;
+    }
+    if (AAX_eModifiers_Command & inModifiers) {
+        buttons |= VSTGUI::kControl;    // VSTGUI modifier definitions are flipped on Mac.
+    }
+    if (AAX_eModifiers_SecondaryButton & inModifiers) {
+        buttons |= VSTGUI::kRButton;
+    }
 
     return buttons;
 }
@@ -69,17 +86,19 @@ static VSTGUI::CButtonState SynthesizeButtonState(const VSTGUI::CButtonState& in
 // Helper class combining representations of the AAX modifier key mask and
 // the VSTGUI::CButtonState mask. Includes logic to fix missing modifier
 // key states that are removed by host filtering, e.g. by the host key hook.
-class AAX_CVSTGUIButtonState
-{
+class AAX_CVSTGUIButtonState {
 public:
     AAX_CVSTGUIButtonState(const VSTGUI::CButtonState& inButtonState, AAX_IViewContainer* inViewContainer)
-    : mModifiers(SynthesizeModifiers(inButtonState, inViewContainer))
-    , mButtonState(SynthesizeButtonState(inButtonState, mModifiers))
-    {
+        : mModifiers(SynthesizeModifiers(inButtonState, inViewContainer))
+        , mButtonState(SynthesizeButtonState(inButtonState, mModifiers)) {
     }
 
-    const VSTGUI::CButtonState& AsVST() const { return mButtonState; }
-    uint32_t AsAAX() const { return mModifiers; }
+    const VSTGUI::CButtonState& AsVST() const {
+        return mButtonState;
+    }
+    uint32_t AsAAX() const {
+        return mModifiers;
+    }
 
 private:
     uint32_t mModifiers;

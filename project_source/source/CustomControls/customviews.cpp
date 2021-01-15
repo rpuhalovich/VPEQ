@@ -23,27 +23,25 @@ namespace VSTGUI {
 \param tag - the control ID value
 */
 WaveView::WaveView(const VSTGUI::CRect& size, IControlListener* listener, int32_t tag)
-: CControl(size, listener, tag)
-, ICustomView()
-{
+    : CControl(size, listener, tag)
+    , ICustomView() {
     // --- create circular buffer that is same size as the window is wide
-	circularBuffer = new double[(int)size.getWidth()];
+    circularBuffer = new double[(int)size.getWidth()];
 
     // --- init
-	writeIndex = 0;
-	readIndex = 0;
-	circularBufferLength = (int)size.getWidth();
+    writeIndex = 0;
+    readIndex = 0;
+    circularBufferLength = (int)size.getWidth();
     memset(circularBuffer, 0, circularBufferLength*sizeof(double));
-	paintXAxis = true;
-	currentRect = size;
+    paintXAxis = true;
+    currentRect = size;
 
     // --- ICustomView
     // --- create our incoming data-queue
     dataQueue = new moodycamel::ReaderWriterQueue<double, DATA_QUEUE_LEN>;
 }
 
-WaveView::~WaveView()
-{
+WaveView::~WaveView() {
     if(circularBuffer)
         delete [] circularBuffer;
 
@@ -51,26 +49,22 @@ WaveView::~WaveView()
         delete dataQueue;
 }
 
-void WaveView::pushDataValue(double data)
-{
+void WaveView::pushDataValue(double data) {
     if(!dataQueue) return;
 
     // --- add data point, make room if needed
     dataQueue->enqueue(data);
 }
 
-void WaveView::updateView()
-{
+void WaveView::updateView() {
     // --- get the max value that was added to the queue during the last
     //     GUI timer ping interval
     double audioSample = 0.0;
     double max = 0.0;
     bool success = dataQueue->try_dequeue(audioSample);
-    if(success)
-    {
+    if(success) {
         max = audioSample;
-        while(success)
-        {
+        while(success) {
             success = dataQueue->try_dequeue(audioSample);
             if(success && audioSample > max)
                 max = audioSample;
@@ -84,32 +78,29 @@ void WaveView::updateView()
     invalid();
 }
 
-void WaveView::addWaveDataPoint(float fSample)
-{
-	if(!circularBuffer) return;
-	circularBuffer[writeIndex] = fSample;
-	writeIndex++;
-	if(writeIndex > circularBufferLength - 1)
-		writeIndex = 0;
+void WaveView::addWaveDataPoint(float fSample) {
+    if(!circularBuffer) return;
+    circularBuffer[writeIndex] = fSample;
+    writeIndex++;
+    if(writeIndex > circularBufferLength - 1)
+        writeIndex = 0;
 }
 
-void WaveView::clearBuffer()
-{
-	if(!circularBuffer) return;
-	memset(circularBuffer, 0, circularBufferLength*sizeof(float));
-	writeIndex = 0;
-	readIndex = 0;
+void WaveView::clearBuffer() {
+    if(!circularBuffer) return;
+    memset(circularBuffer, 0, circularBufferLength*sizeof(float));
+    writeIndex = 0;
+    readIndex = 0;
 }
 
-void WaveView::draw(CDrawContext* pContext)
-{
+void WaveView::draw(CDrawContext* pContext) {
     // --- setup the backround rectangle
     int frameWidth = 1;
     int plotLineWidth = 1;
     pContext->setLineWidth(frameWidth);
     pContext->setFillColor(CColor(200, 200, 200, 255)); // light grey
     pContext->setFrameColor(CColor(0, 0, 0, 255)); // black
-	CRect size = getViewSize();
+    CRect size = getViewSize();
 
     // --- draw the rect filled (with grey) and stroked (line around rectangle)
     pContext->drawRect(size, kDrawFilledAndStroked);
@@ -126,8 +117,7 @@ void WaveView::draw(CDrawContext* pContext)
     if(index < 0)
         index = circularBufferLength - 1;
 
-    for(int i=1; i<circularBufferLength; i++)
-    {
+    for(int i=1; i<circularBufferLength; i++) {
         double sample = circularBuffer[index--];
 
         double normalized = sample*(double)size.getHeight();
@@ -137,8 +127,7 @@ void WaveView::draw(CDrawContext* pContext)
         // --- so there is an x-axis even if no data
         if(normalized == 0) normalized = 0.1f;
 
-        if (paintXAxis)
-        {
+        if (paintXAxis) {
             const CPoint p1(size.left + i, size.bottom - size.getHeight() / 2.f);
             const CPoint p2(size.left + i, size.bottom - size.getHeight() / 2.f - 1.0);
             const CPoint p3(size.left + i, size.bottom - size.getHeight() / 2.f + 1.0);
@@ -177,8 +166,7 @@ void WaveView::draw(CDrawContext* pContext)
 \param tag - the control ID value
 */
 SpectrumView::SpectrumView(const VSTGUI::CRect& size, IControlListener* listener, int32_t tag)
-: CControl(size, listener, tag)
-{
+    : CControl(size, listener, tag) {
     // --- ICustomView
     // --- create our incoming data-queue
     dataQueue = new moodycamel::ReaderWriterQueue<double,FFT_LEN>;
@@ -206,8 +194,7 @@ SpectrumView::SpectrumView(const VSTGUI::CRect& size, IControlListener* listener
     setWindow(spectrumViewWindowType::kBlackmanHarrisWindow);
 }
 
-SpectrumView::~SpectrumView()
-{
+SpectrumView::~SpectrumView() {
     fftw_destroy_plan( plan_forward );
     fftw_destroy_plan( plan_backward );
 
@@ -215,46 +202,37 @@ SpectrumView::~SpectrumView()
     fftw_free( fft_result );
     fftw_free( ifft_result );
 
-	if (dataQueue)
-		delete dataQueue;
+    if (dataQueue)
+        delete dataQueue;
 
-	if (fftMagBuffersReady)
-		delete fftMagBuffersReady;
+    if (fftMagBuffersReady)
+        delete fftMagBuffersReady;
 
-	if (fftMagBuffersEmpty)
-		delete fftMagBuffersEmpty;
+    if (fftMagBuffersEmpty)
+        delete fftMagBuffersEmpty;
 }
 
-void SpectrumView::setWindow(spectrumViewWindowType _window)
-{
+void SpectrumView::setWindow(spectrumViewWindowType _window) {
     window = _window;
     memset(&fftWindow[0], 0, FFT_LEN*sizeof(double));
 
     // --- rectangular has fftWindow[0] = 0, fftWindow[FFT_LEN-1] = 0, all other points = 1.0
-    if(window == spectrumViewWindowType::kRectWindow)
-    {
-        for (int n=0;n<FFT_LEN-1;n++)
+    if(window == spectrumViewWindowType::kRectWindow) {
+        for (int n=0; n<FFT_LEN-1; n++)
             fftWindow[n] = 1.0;
-    }
-    else if(window == spectrumViewWindowType::kHannWindow)
-    {
-        for (int n=0;n<FFT_LEN;n++)
+    } else if(window == spectrumViewWindowType::kHannWindow) {
+        for (int n=0; n<FFT_LEN; n++)
             fftWindow[n] = (0.5 * (1-cos((n*2.0*M_PI)/FFT_LEN)));
-    }
-    else if(window == spectrumViewWindowType::kBlackmanHarrisWindow)
-    {
-        for (int n=0;n<FFT_LEN;n++)
+    } else if(window == spectrumViewWindowType::kBlackmanHarrisWindow) {
+        for (int n=0; n<FFT_LEN; n++)
             fftWindow[n] = (0.42323 - (0.49755*cos((n*2.0*M_PI)/FFT_LEN))+ 0.07922*cos((2*n*2.0*M_PI)/FFT_LEN));
-    }
-    else // --- default to rectangular
-    {
-        for (int n=1;n<FFT_LEN-1;n++)
+    } else { // --- default to rectangular
+        for (int n=1; n<FFT_LEN-1; n++)
             fftWindow[n] = 1.0;
     }
 }
 
-bool SpectrumView::addFFTInputData(double inputSample)
-{
+bool SpectrumView::addFFTInputData(double inputSample) {
     if(fftInputCounter >= FFT_LEN)
         return false;
 
@@ -269,23 +247,20 @@ bool SpectrumView::addFFTInputData(double inputSample)
 }
 
 
-void SpectrumView::pushDataValue(double data)
-{
+void SpectrumView::pushDataValue(double data) {
     if(!dataQueue) return;
 
     // --- add data point, make room if needed
     dataQueue->enqueue(data);
 }
 
-void SpectrumView::updateView()
-{
+void SpectrumView::updateView() {
     // --- grab samples from incoming queue and add to FFT input
     double audioSample = 0.0;
     bool success = dataQueue->try_dequeue(audioSample);
     if(!success) return;
     bool fftReady = false;
-    while(success)
-    {
+    while(success) {
         // --- keep adding values into the array; it will stop when full
         //     and return TRUE if the FFT buffer is full and we are ready
         //     to do a FFT
@@ -297,24 +272,21 @@ void SpectrumView::updateView()
         success = dataQueue->try_dequeue(audioSample);
     }
 
-    if(fftReady)
-    {
+    if(fftReady) {
         // do the FFT
         fftw_execute(plan_forward);
 
         double* bufferToFill = nullptr;
         fftMagBuffersEmpty->try_dequeue(bufferToFill);
 
-        if(!bufferToFill)
-        {
+        if(!bufferToFill) {
             fftReady = false;
             fftInputCounter = 0;
             return;
         }
 
         int maxIndex = 0;
-        for(int i=0; i<FFT_LEN; i++)
-        {
+        for(int i=0; i<FFT_LEN; i++) {
             bufferToFill[i] = (getMagnitude(fft_result[i][0], fft_result[i][1]));
         }
 
@@ -337,8 +309,7 @@ void SpectrumView::updateView()
     invalid();
 }
 
-void SpectrumView::draw(CDrawContext* pContext)
-{
+void SpectrumView::draw(CDrawContext* pContext) {
     // --- setup the backround rectangle
     int frameWidth = 1;
     int plotLineWidth = 1;
@@ -347,7 +318,7 @@ void SpectrumView::draw(CDrawContext* pContext)
     pContext->setFrameColor(CColor(0, 0, 0, 255)); // black
 
     // --- draw the rect filled (with grey) and stroked (line around rectangle)
-	CRect size = getViewSize();
+    CRect size = getViewSize();
     pContext->drawRect(size, kDrawFilledAndStroked);
 
     // --- this will be the line color when drawing lines
@@ -356,8 +327,7 @@ void SpectrumView::draw(CDrawContext* pContext)
     pContext->setLineWidth(plotLineWidth);
 
     // --- is there a new fftBuffer?
-    if(fftMagBuffersReady->peek())
-    {
+    if(fftMagBuffersReady->peek()) {
         // --- put current buffer in empty queue
         if(currentFFTMagBuffer)
             fftMagBuffersEmpty->try_enqueue(currentFFTMagBuffer);
@@ -378,14 +348,13 @@ void SpectrumView::draw(CDrawContext* pContext)
     double ypt = size.bottom - size.getHeight()*yn;
 
     // --- make sure we leave room for bottom of frame
-	if (ypt > size.bottom - frameWidth)
-		ypt = size.bottom - frameWidth;
+    if (ypt > size.bottom - frameWidth)
+        ypt = size.bottom - frameWidth;
 
     // --- setup first point, which is last point for loop below
     CPoint lastPoint(size.left, ypt);
 
-    for (int x = 1; x < size.getWidth()-1; x++)
-    {
+    for (int x = 1; x < size.getWidth()-1; x++) {
         // --- increment stepper for mag array
         magIndex += step;
 
@@ -396,23 +365,20 @@ void SpectrumView::draw(CDrawContext* pContext)
         ypt = size.bottom - size.getHeight()*yn;
 
         // --- make sure we leave room for bottom of frame
-		if (ypt > size.bottom - frameWidth)
-			ypt = size.bottom - frameWidth;
+        if (ypt > size.bottom - frameWidth)
+            ypt = size.bottom - frameWidth;
 
         // --- create a graphic point to this location
         const CPoint p2(size.left + x, ypt);
 
         // --- filled FFT is a set of vertical lines that touch
-        if(filledFFT)
-        {
+        if(filledFFT) {
             // --- find bottom point
-			CPoint bottomPoint(size.left + x, size.bottom - frameWidth);
+            CPoint bottomPoint(size.left + x, size.bottom - frameWidth);
 
             // --- draw vertical line
             pContext->drawLine(bottomPoint, p2);
-        }
-        else // line-FFT
-        {
+        } else { // line-FFT
             // --- move and draw line segment
             pContext->drawLine(lastPoint, p2);
 
@@ -438,27 +404,22 @@ void SpectrumView::draw(CDrawContext* pContext)
 \param bSwitchKnob - flag to enable switch knob
 */
 CustomKnobView::CustomKnobView (const CRect& size, IControlListener* listener, int32_t tag, int32_t subPixmaps, CCoord heightOfOneImage, CBitmap* background, const CPoint &offset, bool bSwitchKnob)
-: CAnimKnob (size, listener, tag, subPixmaps, heightOfOneImage, background, offset)
-{
+    : CAnimKnob (size, listener, tag, subPixmaps, heightOfOneImage, background, offset) {
     // --- ICustomView
     // --- create our incoming data-queue
     dataQueue = new moodycamel::ReaderWriterQueue<CustomViewMessage, 32>;
 }
 
-CustomKnobView::~CustomKnobView(void)
-{
+CustomKnobView::~CustomKnobView(void) {
     if(dataQueue) delete dataQueue;
 }
 
-void CustomKnobView::sendMessage(void* data)
-{
+void CustomKnobView::sendMessage(void* data) {
     CustomViewMessage* viewMessage = (CustomViewMessage*)data;
-    
+
     // --- example of messaging: plugin core send message, we acknowledge
-    if (viewMessage->message == MESSAGE_QUERY_CONTROL)
-    {
-        if (viewMessage->queryString.compare("Hello There!") == 0)
-        {
+    if (viewMessage->message == MESSAGE_QUERY_CONTROL) {
+        if (viewMessage->queryString.compare("Hello There!") == 0) {
             viewMessage->replyString.assign("I'm Here!!");
             viewMessage->messageData = this; // <– example of VERY risky thing to do; not recommended
         }
@@ -468,16 +429,13 @@ void CustomKnobView::sendMessage(void* data)
     dataQueue->enqueue(*viewMessage);
 }
 
-void CustomKnobView::updateView()
-{
+void CustomKnobView::updateView() {
     CustomViewMessage viewMessage;
     bool success = dataQueue->try_dequeue(viewMessage);
-    while(success)
-    {
+    while(success) {
         // --- not connected, but example of setting control's appearance via message
         //     you could use this to also show/hide the control, or move it to a new location
-        if(viewMessage.message == MESSAGE_SET_CONTROL_ALPHA)
-        {
+        if(viewMessage.message == MESSAGE_SET_CONTROL_ALPHA) {
             this->setAlphaValue(viewMessage.controlAlpha);
         }
 

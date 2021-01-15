@@ -26,18 +26,18 @@
 - see VST3 SDK Documentation for more details
 */
 BEGIN_FACTORY_DEF (Steinberg::Vst::ASPiK::VST3Plugin::getVendorName(),
-				   Steinberg::Vst::ASPiK::VST3Plugin::getVendorURL(),
-				   Steinberg::Vst::ASPiK::VST3Plugin::getVendorEmail())
+                   Steinberg::Vst::ASPiK::VST3Plugin::getVendorURL(),
+                   Steinberg::Vst::ASPiK::VST3Plugin::getVendorEmail())
 
-	DEF_CLASS2 (INLINE_UID_FROM_FUID((*(Steinberg::Vst::ASPiK::VST3Plugin::getFUID()))),
-				PClassInfo::kManyInstances,                             // cardinality
-				kVstAudioEffectClass,                                   // the component category
-				Steinberg::Vst::ASPiK::VST3Plugin::getPluginName(),		// Plug-in name
-				0,                                                      // single component effects can not be destributed across CPUs so this is zero
-                Steinberg::Vst::ASPiK::VST3Plugin::getPluginType(),		// Subcategory for this Plug-in
-				"1.0.0.001",                                            // Plug-in version
-				kVstVersionString,                                      // the VST 3 SDK version
-				Steinberg::Vst::ASPiK::VST3Plugin::createInstance)		// function pointer called when this component should be instanciated
+DEF_CLASS2 (INLINE_UID_FROM_FUID((*(Steinberg::Vst::ASPiK::VST3Plugin::getFUID()))),
+            PClassInfo::kManyInstances,                             // cardinality
+            kVstAudioEffectClass,                                   // the component category
+            Steinberg::Vst::ASPiK::VST3Plugin::getPluginName(),		// Plug-in name
+            0,                                                      // single component effects can not be destributed across CPUs so this is zero
+            Steinberg::Vst::ASPiK::VST3Plugin::getPluginType(),		// Subcategory for this Plug-in
+            "1.0.0.001",                                            // Plug-in version
+            kVstVersionString,                                      // the VST 3 SDK version
+            Steinberg::Vst::ASPiK::VST3Plugin::createInstance)		// function pointer called when this component should be instanciated
 END_FACTORY
 
 /**
@@ -49,8 +49,8 @@ END_FACTORY
 - see VST3 SDK Documentation for more details
 - not used in ASPiK
 */
-bool InitModule(){
-	return true;
+bool InitModule() {
+    return true;
 }
 
 /**
@@ -62,8 +62,8 @@ bool InitModule(){
 - see VST3 SDK Documentation for more details
 - not used in ASPiK
 */
-bool DeinitModule(){
-	return true;
+bool DeinitModule() {
+    return true;
 }
 
 

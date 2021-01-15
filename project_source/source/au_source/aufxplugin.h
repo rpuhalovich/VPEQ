@@ -41,9 +41,8 @@ enum guiMessage { kOpenGUI = 64000, kCloseGUI };
 // see <AudioUnit/AudioUnitProperties.h> for a list of Apple-defined standard properties
 //
 // --- These are for VSTGUI4 messaging - WP
-enum guiMessage
-{
-	kOpenGUI = 64000,
+enum guiMessage {
+    kOpenGUI = 64000,
     kCloseGUI
 };
 
@@ -67,14 +66,15 @@ NOTES:
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class AUFXPlugin : public AUMIDIEffectBase
-{
+class AUFXPlugin : public AUMIDIEffectBase {
 public:
     AUFXPlugin(AudioUnit component);
     ~AUFXPlugin();
 
     /** AU override method */
-    virtual ComponentResult	Version() {return 1000;}
+    virtual ComponentResult	Version() {
+        return 1000;
+    }
 
     /** AU override method */
     virtual ComponentResult	Initialize();
@@ -101,8 +101,8 @@ public:
 
     /** AU override method */
     virtual ComponentResult	GetParameterInfo(AudioUnitScope			inScope,
-                                             AudioUnitParameterID	inParameterID,
-                                             AudioUnitParameterInfo	&outParameterInfo );
+            AudioUnitParameterID	inParameterID,
+            AudioUnitParameterInfo	&outParameterInfo );
 
     /** AU override method */
     virtual ComponentResult	GetPresets(CFArrayRef* outData)	const;
@@ -114,16 +114,14 @@ public:
 
     \return TRUE if plugin core wants a tail
     */
-    virtual	bool SupportsTail()
-    {
+    virtual	bool SupportsTail() {
         if(pluginCore)
             return pluginCore->getTailTimeInMSec() > 0 ? true : false;
 
         return false;
     }
 
-    virtual Float64	GetTailTime()
-    {
+    virtual Float64	GetTailTime() {
         if(pluginCore)
             return pluginCore->getTailTimeInMSec() / 1000.0;
 
@@ -131,7 +129,9 @@ public:
     }
 
     /** AU override method */
-    virtual Float64	GetLatency() {return latencyInSeconds;}
+    virtual Float64	GetLatency() {
+        return latencyInSeconds;
+    }
 
 
     /** AU override method */
@@ -159,8 +159,8 @@ public:
 
     /** AU override method */
     virtual ComponentResult	GetParameterValueStrings(AudioUnitScope		  inScope,
-                                                     AudioUnitParameterID inParameterID,
-                                                     CFArrayRef*		  outStrings);
+            AudioUnitParameterID inParameterID,
+            CFArrayRef*		  outStrings);
 
     // --- need this for when user selects a NON factory-preset (ie they created the preset in the Client)
     /** AU override method */
@@ -198,10 +198,10 @@ public:
     // --- for ALL other MIDI messages you can get them here
     /** AU override method */
     virtual OSStatus HandleMidiEvent(UInt8  status,
-                             UInt8  channel,
-                             UInt8  data1,
-                             UInt8  data2,
-                             UInt32 inStartFrame);
+                                     UInt8  channel,
+                                     UInt8  data1,
+                                     UInt8  data2,
+                                     UInt32 inStartFrame);
 
     /**
      \brief helper function to get a path to the location where THIS library is loaded
@@ -210,23 +210,18 @@ public:
 
      \return the path as a simple, naked char*
      */
-    char* getMyComponentDirectory(CFStringRef bundleID)
-    {
-        if (bundleID != NULL)
-        {
+    char* getMyComponentDirectory(CFStringRef bundleID) {
+        if (bundleID != NULL) {
             CFBundleRef helixBundle = CFBundleGetBundleWithIdentifier( bundleID );
-            if(helixBundle != NULL)
-            {
+            if(helixBundle != NULL) {
                 CFURLRef bundleURL = CFBundleCopyBundleURL ( helixBundle );
-                if(bundleURL != NULL)
-                {
+                if(bundleURL != NULL) {
                     CFURLRef componentFolderPathURL = CFURLCreateCopyDeletingLastPathComponent(NULL, bundleURL);
 
                     CFStringRef myComponentPath = CFURLCopyFileSystemPath(componentFolderPathURL, kCFURLPOSIXPathStyle);
                     CFRelease(componentFolderPathURL);
 
-                    if(myComponentPath != NULL)
-                    {
+                    if(myComponentPath != NULL) {
                         int nSize = CFStringGetLength(myComponentPath);
                         char* path = new char[nSize+1];
                         memset(path, 0, (nSize+1)*sizeof(char));
@@ -245,12 +240,12 @@ public:
         return NULL;
     }
 
-     /**
-     \brief safely issue a parameter change event
+    /**
+    \brief safely issue a parameter change event
 
-     \param controlID the AU parameter identifier (same as PluginParameter's controlID)
-     \param actualValue the value to set
-     */
+    \param controlID the AU parameter identifier (same as PluginParameter's controlID)
+    \param actualValue the value to set
+    */
     void setAUParameterChangeEvent(unsigned int controlID, double actualValue);
 
     /**
@@ -309,41 +304,38 @@ The PluginHostConnector implements the IPluginHostConnector interface for the pl
 \version Revision : 1.0
 \date Date : 2018 / 09 / 7
 */
-class PluginHostConnector : public IPluginHostConnector
-{
+class PluginHostConnector : public IPluginHostConnector {
 public:
-    PluginHostConnector(AUFXPlugin* _auInstance){auInstance = _auInstance;}
-    virtual ~PluginHostConnector(){}
+    PluginHostConnector(AUFXPlugin* _auInstance) {
+        auInstance = _auInstance;
+    }
+    virtual ~PluginHostConnector() {}
 
     /**
     \brief process a message; by default it processes sendGUIUpdate to safely send a parameter change event but you can add your own custom message processing here (be careful)
 
     \param hostMessageInfo custom structure with message information; for sendGUIUpdate the message data arrives in the hostMessageInfo.guiUpdateData list; the function iterates over the list and sends AU parameter change events.
     */
-    virtual void sendHostMessage(const HostMessageInfo& hostMessageInfo)
-    {
-        switch(hostMessageInfo.hostMessage)
-        {
-            case sendGUIUpdate:
-            {
-                GUIUpdateData guiUpdateData = hostMessageInfo.guiUpdateData;
+    virtual void sendHostMessage(const HostMessageInfo& hostMessageInfo) {
+        switch(hostMessageInfo.hostMessage) {
+        case sendGUIUpdate: {
+            GUIUpdateData guiUpdateData = hostMessageInfo.guiUpdateData;
 
-                for(int i = 0; i < guiUpdateData.guiParameters.size(); i++)
-                {
-                    GUIParameter guiParam = guiUpdateData.guiParameters[i];
+            for(int i = 0; i < guiUpdateData.guiParameters.size(); i++) {
+                GUIParameter guiParam = guiUpdateData.guiParameters[i];
 
-                    // --- threadsafe atomic write to global param & GUI update dispatch
-                    auInstance->setAUParameterChangeEvent(guiParam.controlID, guiParam.actualValue);
-                }
-
-                // --- clean up
-                for(int i = 0; i < guiUpdateData.guiParameters.size(); i++)
-                    guiUpdateData.guiParameters.pop_back();
-
-                break;
+                // --- threadsafe atomic write to global param & GUI update dispatch
+                auInstance->setAUParameterChangeEvent(guiParam.controlID, guiParam.actualValue);
             }
-            default:
-                break;
+
+            // --- clean up
+            for(int i = 0; i < guiUpdateData.guiParameters.size(); i++)
+                guiUpdateData.guiParameters.pop_back();
+
+            break;
+        }
+        default:
+            break;
         }
     }
 
@@ -365,42 +357,46 @@ protected:
  */// --- GUI -> Plugin interface
 //
 // --- container for a custom view pointer
-class CustomViewController : public ICustomView
-{
+class CustomViewController : public ICustomView {
 public:
     /** constructor: pass the newly registered ICustomView* */
-    CustomViewController(ICustomView* _customViewIF) { customViewIF = _customViewIF; }
+    CustomViewController(ICustomView* _customViewIF) {
+        customViewIF = _customViewIF;
+    }
     virtual ~CustomViewController() {}
 
     /** forward call to ICustomView interface *if it is still alive* */
-    virtual void updateView()
-    {
+    virtual void updateView() {
         if (customViewIF)
             customViewIF->updateView();
     }
 
     /** forward call to ICustomView interface *if it is still alive* */
-    virtual void pushDataValue(double data)
-    {
+    virtual void pushDataValue(double data) {
         if (customViewIF)
             customViewIF->pushDataValue(data);
     }
 
     /** forward call to ICustomView interface *if it is still alive* */
-    virtual void sendMessage(void* data)
-    {
+    virtual void sendMessage(void* data) {
         if (customViewIF)
             customViewIF->sendMessage(data);
     }
 
     /** set a NEW ICustomView* -- this is called when a custom view is registered */
-    void setCustomViewPtr(ICustomView* _customViewIF) { customViewIF = _customViewIF; }
+    void setCustomViewPtr(ICustomView* _customViewIF) {
+        customViewIF = _customViewIF;
+    }
 
     /** get the current ICustomView* -- note this is read-only (const) and it also MAY be NULL */
-    const ICustomView* getCustomViewPtr() { return customViewIF; }
+    const ICustomView* getCustomViewPtr() {
+        return customViewIF;
+    }
 
     /** clear the stored ICustomView* -- this is called when a custom view is de-registered */
-    void clearCustomViewPtr() { customViewIF = nullptr; }
+    void clearCustomViewPtr() {
+        customViewIF = nullptr;
+    }
 
 
 private:
@@ -426,52 +422,44 @@ private:
  \version Revision : 1.0
  \date Date : 2018 / 09 / 7
  */// --- GUI -> Plugin interface
-class GUIPluginConnector : public IGUIPluginConnector
-{
+class GUIPluginConnector : public IGUIPluginConnector {
 public:
     /** construct with two pointers */
-    GUIPluginConnector(AUFXPlugin* _auInstance, PluginCore* _pluginCore){auInstance = _auInstance; pluginCore = _pluginCore;}
+    GUIPluginConnector(AUFXPlugin* _auInstance, PluginCore* _pluginCore) {
+        auInstance = _auInstance;
+        pluginCore = _pluginCore;
+    }
 
     /** destroy subcontroller and custom view container objects */
-    virtual ~GUIPluginConnector()
-    {
-        for (customViewControllerMap::const_iterator it = customSubControllerMap.begin(), end = customSubControllerMap.end(); it != end; ++it)
-        {
+    virtual ~GUIPluginConnector() {
+        for (customViewControllerMap::const_iterator it = customSubControllerMap.begin(), end = customSubControllerMap.end(); it != end; ++it) {
             delete it->second;
         }
-        for (customViewControllerMap::const_iterator it = customViewMap.begin(), end = customViewMap.end(); it != end; ++it)
-        {
+        for (customViewControllerMap::const_iterator it = customViewMap.begin(), end = customViewMap.end(); it != end; ++it) {
             delete it->second;
         }
     }
 
     /** inform core that parameter has changed (NOT to be used to alter plugin states!) */
-    virtual void parameterChanged(int32_t controlID, double actualValue, double /*normalizedValue*/)
-    {
+    virtual void parameterChanged(int32_t controlID, double actualValue, double /*normalizedValue*/) {
         if(pluginCore)
             pluginCore->guiParameterChanged(controlID, actualValue);
     }
 
     /** get AU parameter in actual form */
-    virtual double getActualPluginParameter(int32_t controlID)
-    {
+    virtual double getActualPluginParameter(int32_t controlID) {
         PluginParameter* piParam = pluginCore->getPluginParameterByControlID(controlID);
-        if(piParam)
-        {
+        if(piParam) {
             return auInstance->getAUParameter(controlID);
-        }
-        else
+        } else
             return 0.0;
     }
 
     /** get AU parameter in normalized form */
-    virtual double getNormalizedPluginParameter(int32_t controlID)
-    {
-        if(pluginCore && auInstance)
-        {
+    virtual double getNormalizedPluginParameter(int32_t controlID) {
+        if(pluginCore && auInstance) {
             PluginParameter* piParam = pluginCore->getPluginParameterByControlID(controlID);
-            if(piParam)
-            {
+            if(piParam) {
                 double actualValue = getActualPluginParameter(controlID);
                 return piParam->getNormalizedControlValueWithActualValue(actualValue);
             }
@@ -480,19 +468,15 @@ public:
     }
 
     /** store sub-controller's ICustomView and send message to core */
-    virtual bool registerSubcontroller(std::string subcontrollerName, ICustomView* customViewConnector)
-    {
+    virtual bool registerSubcontroller(std::string subcontrollerName, ICustomView* customViewConnector) {
         // --- do we have this in our map already?
         CustomViewController* pCVC = nullptr;
 
         customViewControllerMap::const_iterator it = customSubControllerMap.find(subcontrollerName);
-        if (it != customSubControllerMap.end())
-        {
+        if (it != customSubControllerMap.end()) {
             pCVC = it->second;
             pCVC->setCustomViewPtr(customViewConnector);
-        }
-        else
-        {
+        } else {
             pCVC = new CustomViewController(customViewConnector);
             customSubControllerMap.insert(std::make_pair(subcontrollerName, pCVC));
         }
@@ -508,11 +492,9 @@ public:
     }
 
     /** remove sub-controller's ICustomView and send message to core */
-    virtual bool deRregisterSubcontroller(ICustomView* customViewConnector)
-    {
+    virtual bool deRregisterSubcontroller(ICustomView* customViewConnector) {
         CustomViewController* pCVC = getCustomSubController(customViewConnector);
-        if (pCVC)
-        {
+        if (pCVC) {
             pCVC->clearCustomViewPtr();
 
             MessageInfo info(PLUGINGUI_DE_REGISTER_SUBCONTROLLER);
@@ -528,19 +510,15 @@ public:
 
 
     /** store custom view's ICustomView and send message to core */
-    virtual bool registerCustomView(std::string customViewName, ICustomView* customViewConnector)
-    {
+    virtual bool registerCustomView(std::string customViewName, ICustomView* customViewConnector) {
         // --- do we have this in our map already?
         CustomViewController* pCVC = nullptr;
 
         customViewControllerMap::const_iterator it = customViewMap.find(customViewName);
-        if (it != customViewMap.end())
-        {
+        if (it != customViewMap.end()) {
             pCVC = it->second;
             pCVC->setCustomViewPtr(customViewConnector);
-        }
-        else
-        {
+        } else {
             pCVC = new CustomViewController(customViewConnector);
             customViewMap.insert(std::make_pair(customViewName, pCVC));
         }
@@ -556,11 +534,9 @@ public:
     }
 
     /** remove custom view's ICustomView and send message to core */
-    virtual bool deRegisterCustomView(ICustomView* customViewConnector)
-    {
+    virtual bool deRegisterCustomView(ICustomView* customViewConnector) {
         CustomViewController* pCVC = getCustomViewController(customViewConnector);
-        if (pCVC)
-        {
+        if (pCVC) {
             // --- clear it
             pCVC->clearCustomViewPtr();
 
@@ -576,24 +552,20 @@ public:
     }
 
     /** send message to core: GUI has been opened and all VISIBLE controls are active */
-    virtual bool guiDidOpen()
-    {
+    virtual bool guiDidOpen() {
         if(!pluginCore) return false;
         MessageInfo info(PLUGINGUI_DIDOPEN);
         return pluginCore->processMessage(info);
     }
 
     /** send message to core: GUI will close; all controls active but will vanish */
-    virtual bool guiWillClose()
-    {
+    virtual bool guiWillClose() {
         if(!pluginCore) return false;
 
-        for (customViewControllerMap::const_iterator it = customViewMap.begin(), end = customViewMap.end(); it != end; ++it)
-        {
+        for (customViewControllerMap::const_iterator it = customViewMap.begin(), end = customViewMap.end(); it != end; ++it) {
             it->second->clearCustomViewPtr();
         }
-        for (customViewControllerMap::const_iterator it = customSubControllerMap.begin(), end = customSubControllerMap.end(); it != end; ++it)
-        {
+        for (customViewControllerMap::const_iterator it = customSubControllerMap.begin(), end = customSubControllerMap.end(); it != end; ++it) {
             it->second->clearCustomViewPtr();
         }
 
@@ -602,16 +574,14 @@ public:
     }
 
     /** send message to core: repaint timer */
-    virtual bool guiTimerPing()
-    {
+    virtual bool guiTimerPing() {
         if(!pluginCore) return false;
         MessageInfo info(PLUGINGUI_TIMERPING);
         return pluginCore->processMessage(info);
     }
 
     /** send message to core: a non-bound variable has changed (NOT implemented or needed, but may be added for your own customization) */
-    virtual bool checkNonBoundValueChange(int tag, float normalizedValue)
-    {
+    virtual bool checkNonBoundValueChange(int tag, float normalizedValue) {
         if(!pluginCore) return false;
 
         // --- do any additional stuff here
@@ -631,10 +601,8 @@ protected:
     customViewControllerMap customViewMap;
 
     /** get a custom view controller object (internal use only) */
-    CustomViewController* getCustomViewController(ICustomView* customViewConnector)
-    {
-        for (customViewControllerMap::const_iterator it = customViewMap.begin(), end = customViewMap.end(); it != end; ++it)
-        {
+    CustomViewController* getCustomViewController(ICustomView* customViewConnector) {
+        for (customViewControllerMap::const_iterator it = customViewMap.begin(), end = customViewMap.end(); it != end; ++it) {
             if (it->second->getCustomViewPtr() == customViewConnector)
                 return it->second;
         }
@@ -645,10 +613,8 @@ protected:
     customViewControllerMap customSubControllerMap;   ///< map of custom sub-controllers
 
     /** get a sub-controller controller object (internal use only) */
-    CustomViewController* getCustomSubController(ICustomView* customViewConnector)
-    {
-        for (customViewControllerMap::const_iterator it = customSubControllerMap.begin(), end = customSubControllerMap.end(); it != end; ++it)
-        {
+    CustomViewController* getCustomSubController(ICustomView* customViewConnector) {
+        for (customViewControllerMap::const_iterator it = customSubControllerMap.begin(), end = customSubControllerMap.end(); it != end; ++it) {
             if (it->second->getCustomViewPtr() == customViewConnector)
                 return it->second;
         }
@@ -673,33 +639,28 @@ protected:
  \version Revision : 1.0
  \date Date : 2018 / 09 / 7
  */// --- GUI -> Plugin interface
-class AUMIDIEventQueue : public IMidiEventQueue
-{
+class AUMIDIEventQueue : public IMidiEventQueue {
 public:
 
     /** consruct with a core pointer */
-    AUMIDIEventQueue(PluginCore* _pluginCore)
-    {
+    AUMIDIEventQueue(PluginCore* _pluginCore) {
         pluginCore = _pluginCore;
         writingQueueA.store(true);
     };
 
     /** just clear out the events that may remain */
-    virtual ~AUMIDIEventQueue()
-    {
+    virtual ~AUMIDIEventQueue() {
         clearEvents();
     }
 
     /** clear both A and B queues */
-    void clearEvents()
-    {
+    void clearEvents() {
         clearQueueAEvents();
         clearQueueBEvents();
     }
 
     /** clear queue A */
-    void clearQueueAEvents()
-    {
+    void clearQueueAEvents() {
         if(midiEventQueueA.size() > 0)
             fprintf(stderr, "midiEventQueueA.size() > 0: %u", midiEventQueueA.size() > 0);
 
@@ -708,8 +669,7 @@ public:
     }
 
     /** clear queue B */
-    void clearQueueBEvents()
-    {
+    void clearQueueBEvents() {
         if(midiEventQueueB.size() > 0)
             fprintf(stderr, "midiEventQueueB.size() > 0: %u", midiEventQueueB.size() > 0);
 
@@ -718,8 +678,7 @@ public:
     }
 
     /** atomic flag toggle */
-    void toggleQueue()
-    {
+    void toggleQueue() {
         // --- toggle the atomic bool
         writingQueueA = !writingQueueA;
 
@@ -731,27 +690,22 @@ public:
     }
 
     /** add a MIDI event to the currently active writing queue */
-    inline void addEvent(midiEvent event)
-    {
-        if(writingQueueA)
-        {
+    inline void addEvent(midiEvent event) {
+        if(writingQueueA) {
             midiEventQueueA.push(event);
-           // fprintf(stderr, "QA addEvent: %u", event.midiData1);
-           // fprintf(stderr, "  with offset: %u\n", event.midiSampleOffset);
+            // fprintf(stderr, "QA addEvent: %u", event.midiData1);
+            // fprintf(stderr, "  with offset: %u\n", event.midiSampleOffset);
 
-        }
-        else
-        {
+        } else {
             midiEventQueueB.push(event);
             //fprintf(stderr, "QB addEvent: %u", event.midiData1);
-           // fprintf(stderr, "  with offset: %u\n", event.midiSampleOffset);
+            // fprintf(stderr, "  with offset: %u\n", event.midiSampleOffset);
 
         }
     }
 
     /** get a MIDI event from the currently active reading queue */
-    virtual unsigned int getEventCount()
-    {
+    virtual unsigned int getEventCount() {
         if(writingQueueA)
             return midiEventQueueB.size();
         else
@@ -759,20 +713,18 @@ public:
     }
 
     /** send MIDI event with this sample offset to the core for processing */
-    virtual bool fireMidiEvents(unsigned int sampleOffset)
-    {
+    virtual bool fireMidiEvents(unsigned int sampleOffset) {
         std::queue<midiEvent>* readingQueue = writingQueueA ? &midiEventQueueB : &midiEventQueueA;
 
         if(readingQueue->size() <= 0 || !pluginCore) return false;
 
-        while(readingQueue->size() > 0)
-        {
+        while(readingQueue->size() > 0) {
             // --- check the current top
             midiEvent event = readingQueue->front();
             if(event.midiSampleOffset != sampleOffset) return false;
 
-           // fprintf(stderr, "fired MIDI Event: %u", event.midiData1);
-          //  fprintf(stderr, "  with offset: %u\n", event.midiSampleOffset);
+            // fprintf(stderr, "fired MIDI Event: %u", event.midiData1);
+            //  fprintf(stderr, "  with offset: %u\n", event.midiSampleOffset);
 
             // --- send to core for processing
             if(pluginCore)
