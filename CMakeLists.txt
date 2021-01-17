@@ -48,10 +48,10 @@ set(VST_SDK_BUILD TRUE)# <-- set TRUE or FALSE
 #
 # ---------------------------------------------------------------------------------
 # --- the name of the project must be valid CMAKE name: must not contain spaces or numbers
-set(PLUGIN_PROJECT_NAME VParametricEQ)	# <-- set PROJECT NAME with or without quotes
+set(PLUGIN_PROJECT_NAME VPEQ)	# <-- set PROJECT NAME with or without quotes
 
 # --- the name of the PLUGIN as you want it to appear in DAW menus for the user
-set(PLUGIN_NAME "VParametricEQ")	# <-- set PLUGIN NAME with quotes; ok to have spaces or numbers if you like
+set(PLUGIN_NAME "VPEQ")	# <-- set PLUGIN NAME with quotes; ok to have spaces or numbers if you like
 
 # --- Synth Flag: FALSE = FX plugin, TRUE = Synth Plugin
 set(IS_SYNTH_PLUGIN FALSE)		# <-- set Synth Flag to TRUE only for an output-only (synth) plugin
@@ -63,14 +63,14 @@ set(WANT_AAX_SIDECHAIN FALSE)	# <-- for AAX Sidechaining Only
 set(HAS_AAX_GR_METER FALSE)		# <-- for special Pro-Tools AAX Gain Reduction Meter Only
 
 # --- VENDOR information (your company stuff)
-set(VENDOR_NAME "My Company")			# <-- required!
+set(VENDOR_NAME "cloudyhead")			# <-- required!
 set(VENDOR_URL "")			# <-- OPTIONAL (ok if blank)
 set(VENDOR_EMAIL "")		# <-- OPTIONAL (ok if blank)
 
 # --- 4-Character Codes (for AAX and VST3)
-set(4CHAR_CODE "VEGE")				# MUST be unique for each plugin your company creates/sells
+set(4CHAR_CODE "VPEQ")				# MUST be unique for each plugin your company creates/sells
 set(4CHAR_MANUFACTURER_ID "RYAN")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
-set(4CHAR_AAX_PRODUCT_ID "VEGE")			# MUST be unique for each plugin your company creates/sells
+set(4CHAR_AAX_PRODUCT_ID "VPEQ")			# MUST be unique for each plugin your company creates/sells
 
 # --- Plugin Options ---
 set(INCLUDE_FX_OBJECTS TRUE)		# <-- set TRUE or FALSE
@@ -436,9 +436,9 @@ if(VST_SDK_BUILD)
 	add_subdirectory(${VST_CMAKE_FOLDER})
 endif()
 
-# add unit testing
+# add unit testing:
 set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
 add_subdirectory(${UNIT_TESTS_DIR})
 
-# --- set the startup project to be the VST project
+# --- set the startup project to be the VST project in Visual Studio
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})

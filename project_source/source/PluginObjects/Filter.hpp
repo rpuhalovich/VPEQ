@@ -5,6 +5,8 @@
 // for using Pi
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <iostream>
+
 #include <fxobjects.h>
 #include "SimpleBiquad.hpp"
 
@@ -43,7 +45,6 @@ public:
     
     // returns true if coeffs were calculated
     bool calculateCoeffs();
-
     FilterParameters getParameters();
     
     // sets the parameters and also calcs the new coeffs resulting from param changes

@@ -11,32 +11,32 @@
 #define AU_COCOA_VIEW_STRING STR(AU_COCOA_VIEW_NAME)
 
 // --- AU Plugin Cocoa View Names (flat namespace) 
-#define AU_COCOA_VIEWFACTORY_NAME AUCocoaViewFactory_BD5217D167EF39DDBBB7FCD8136D1ACF
-#define AU_COCOA_VIEW_NAME AUCocoaView_BD5217D167EF39DDBBB7FCD8136D1ACF
+#define AU_COCOA_VIEWFACTORY_NAME AUCocoaViewFactory_5653D0FEFA073B498897A3698BCB9A77
+#define AU_COCOA_VIEW_NAME AUCocoaView_5653D0FEFA073B498897A3698BCB9A77
 
 // --- BUNDLE IDs (MacOS Only) 
-const char* kAAXBundleID = "developer.aax.vparametriceq.bundleID";
-const char* kAUBundleID = "developer.au.vparametriceq.bundleID";
-const char* kVST3BundleID = "developer.vst3.vparametriceq.bundleID";
+const char* kAAXBundleID = "developer.aax.vpeq.bundleID";
+const char* kAUBundleID = "developer.au.vpeq.bundleID";
+const char* kVST3BundleID = "developer.vst3.vpeq.bundleID";
 
 // --- Plugin Names 
-const char* kPluginName = "VParametricEQ";
-const char* kShortPluginName = "VParametricEQ";
-const char* kAUBundleName = "VParametricEQ_AU";
+const char* kPluginName = "VPEQ";
+const char* kShortPluginName = "VPEQ";
+const char* kAUBundleName = "VPEQ_AU";
 
 // --- Plugin Type 
 const pluginType kPluginType = pluginType::kFXPlugin;
 
 // --- VST3 UUID 
-const char* kVSTFUID = "{bd5217d1-67ef-39dd-bbb7-fcd8136d1acf}";
+const char* kVSTFUID = "{5653d0fe-fa07-3b49-8897-a3698bcb9a77}";
 
 // --- 4-char codes 
-const int32_t kFourCharCode = 'VEGE';
-const int32_t kAAXProductID = 'VEGE';
+const int32_t kFourCharCode = 'VPEQ';
+const int32_t kAAXProductID = 'VPEQ';
 const int32_t kManufacturerID = 'RYAN';
 
 // --- Vendor information 
-const char* kVendorName = "My Company";
+const char* kVendorName = "cloudyhead";
 const char* kVendorURL = "";
 const char* kVendorEmail = "";
 

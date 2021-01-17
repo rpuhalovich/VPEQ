@@ -11,7 +11,7 @@ bool Filter::reset(double _sampleRate) {
 
 double Filter::processAudioSample(double xn) {
     biquad.coeffs.d0 = Filter::params.wetDry;
-    biquad.coeffs.c0 = 1 / Filter::params.wetDry;
+    biquad.coeffs.c0 = 1 - Filter::params.wetDry;
 
     return biquad.coeffs.d0 * xn + biquad.coeffs.c0 * biquad.processAudioSample(xn);
 }
@@ -26,7 +26,7 @@ bool Filter::calculateCoeffs() {
     double theta = 0.0f;
 
     if (params.type == FilterType::LPF2) {
-        // calculatefilter coeffs
+        // calculate filter coeffs
         theta = (2 * M_PI * params.fc) / sampleRate;
         d = 1 / params.Q;
         beta = 0.5 * ((1 - (d / 2) * sin(theta)) / (1 - (d / 2) * sin(theta)));
@@ -42,6 +42,8 @@ bool Filter::calculateCoeffs() {
 
         biquad.coeffs.c0 = 1.0f;
         biquad.coeffs.d0 = 0.0f;
+
+        std::cout << biquad.coeffs.a0 << std::endl;
 
         return biquad.processAudioSample(yn);
     }
