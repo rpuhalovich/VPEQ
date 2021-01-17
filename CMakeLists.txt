@@ -400,7 +400,11 @@ set(AAX_PLUGIN_FOLDER AAX)
 set(AU_PLUGIN_FOLDER AU)
 
 # --- sources for the following add_subdirectory(s) (cus repeat code is uncool)
-# used in project_source/cmake/aax_cmake...au_cmake...vst_cmake...unit_tests
+# used in:
+# - project_source/cmake/aax_cmake
+# - project_source/cmake/au_cmake
+# - project_source/cmake/vst_cmake
+# - project_source/cmake/unit_tests
 set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects")
 set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/fxobjects.h
@@ -418,7 +422,8 @@ set(TESTS_SRC
     ${TESTS_DIR}/test_Filter.cpp
 )
 
-# --- add each project:
+# --- add_subdirectories: 
+# add each project:
 if(AAX_SDK_BUILD)
 	add_subdirectory(${AAX_CMAKE_FOLDER})
 endif()
@@ -431,9 +436,9 @@ if(VST_SDK_BUILD)
 	add_subdirectory(${VST_CMAKE_FOLDER})
 endif()
 
-# set the startup project to be the VST project
-set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
-
-# --- add unit testing
+# add unit testing
 set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
 add_subdirectory(${UNIT_TESTS_DIR})
+
+# --- set the startup project to be the VST project
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})

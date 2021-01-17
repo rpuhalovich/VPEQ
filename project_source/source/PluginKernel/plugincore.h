@@ -16,12 +16,16 @@
 #include "pluginbase.h"
 #include "fxobjects.h"
 
+// my objects
+#include "Filter.hpp"
+
 // **--0x7F1F--**
 enum controlID {
-    filterFC_Hz,
-    filterQ,
-    boostCut_dB,
-    filterType
+    filterFC_Hz = 0,
+    filterQ = 1,
+    boostCut_dB = 2,
+    filterType = 3,
+    wetDry = 4
 };
 // **--0x0F1F--**
 
@@ -112,15 +116,13 @@ private:
     double filterFC_Hz = 1000.000000; // filterFc_Hz
     double filterQ = 0.707000;
     double boostCut_dB = 0.000000;
+    double wetDry = 100.00000000;
     
     int filterType = 0;
-    enum class filterTypeEnum { 
-        LPF1P, LPF1, HPF1, LPF2, HPF2, BPF2, BSF2, ButterLPF2, ButterHPF2, ButterBPF2,
-        ButterBSF2, MMALPF2, MMALPF2B, LowShelf, HiShelf, NCQParaEQ, CQParaEQ, LWRLPF2, 
-        LWRHPF2, APF1, APF2, ResonA, ResonB, MatchLP2A, MatchLP2B, MatchBP2A, MatchBP2B, 
-        ImpInvLP1, ImpInvLP2
+    enum class filterTypeEnum {
+        LPF2,
+        HPF2
     };
-
     // **--0x1A7F--**
     // --- end member variables
 
@@ -198,7 +200,7 @@ public:
     }
 protected:
     // --- members
-    AudioFilter filter;
+    Filter filter;
 
     // --- methods
     // used to update processing objects from gui elements each frame cycle

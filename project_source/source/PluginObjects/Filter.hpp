@@ -2,14 +2,54 @@
 
 #pragma once
 
-#include <stdio.h>
-#include "fxobjects.h"
+// for using Pi
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <fxobjects.h>
+#include "SimpleBiquad.hpp"
+
+enum class FilterType {
+    LPF2,
+    HPF2
+};
+
+// changable parameters of the filter
+struct FilterParameters {
+    FilterParameters& operator=(const FilterParameters& params) {
+        if (this == &params)
+            return *this;
+        
+        fc = params.fc;
+        Q = params.Q;
+        boost = params.boost;
+        
+        return *this;
+    }
+
+    FilterType type = FilterType::LPF2;
+    
+    double fc = 100.0f; // cut off frequency
+    double Q = 0.707f;
+    double boost = 0.0f;
+    double wetDry = 1.0f;
+};
 
 class Filter : public IAudioSignalProcessor {
 public:
     virtual bool reset(double _sampleRate);
-    virtual double processAudioSample(double xn);
+    virtual double processAudioSample(double xn); // this is not where the coeffs are to be calculated
     virtual bool canProcessAudioFrame();
+    
+    // returns true if coeffs were calculated
+    bool calculateCoeffs();
 
-    int sum(int a, int b);
+    FilterParameters getParameters();
+    
+    // sets the parameters and also calcs the new coeffs resulting from param changes
+    void setParameters(const FilterParameters& parameters);
+
+private:
+    SimpleBiquad biquad;
+    FilterParameters params;
+    double sampleRate = 44100.0f;
 };

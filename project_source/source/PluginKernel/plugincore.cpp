@@ -79,7 +79,13 @@ bool PluginCore::initPluginParameters() {
     piParam->setBoundVariable(&boostCut_dB, boundVariableType::kDouble);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType, "Filter Type", "LPF1P, LPF1, HPF1, LPF2, HPF2, BPF2, BSF2, ButterLPF2, ButterHPF2, ButterBPF2, ButterBSF2, MMALPF2, MMALPF2B, LowShelf, HiShelf, NCQParaEQ, CQParaEQ, LWRLPF2, LWRHPF2, APF1, APF2, ResonA, ResonB, MatchLP2A, MatchLP2B, MatchBP2A, MatchBP2B, ImpInvLP1, ImpInvLP2", "LPF1P");
+    piParam = new PluginParameter(4, "Wet/Dry", "%", controlVariableType::kDouble, 0.000000, 100.000000, 100.000000, taper::kLinearTaper);
+    piParam->setParameterSmoothing(true);
+    piParam->setSmoothingTimeMsec(20.000000);
+    piParam->setBoundVariable(&wetDry, boundVariableType::kDouble);
+    addPluginParameter(piParam);
+
+    piParam = new PluginParameter(controlID::filterType, "Filter Type", "LPF2, HPF2", "LPF2");
     piParam->setBoundVariable(&filterType, boundVariableType::kInt);
     addPluginParameter(piParam);
 
@@ -482,13 +488,14 @@ int32_t PluginCore::getFourCharCode() {
 
 void PluginCore::updateParameters() {
     // update left filter with gui parameters
-    AudioFilterParameters filterParams = filter.getParameters();
+    FilterParameters filterParams = filter.getParameters();
     
     // alter the parameter values
     filterParams.fc = filterFC_Hz;
     filterParams.Q = filterQ;
-    filterParams.boostCut_dB = boostCut_dB;
-    filterParams.algorithm = convertIntToEnum(filterType, filterAlgorithm);
+    filterParams.boost = boostCut_dB;
+    filterParams.
+    filterParams.type = convertIntToEnum(filterType, FilterType);
     
     // set on objects
     filter.setParameters(filterParams);
