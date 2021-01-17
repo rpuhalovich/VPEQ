@@ -15,7 +15,6 @@
 
 #include "pluginbase.h"
 #include "fxobjects.h"
-#include <memory>
 
 // **--0x7F1F--**
 enum controlID {

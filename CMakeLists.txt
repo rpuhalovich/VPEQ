@@ -408,6 +408,8 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/fxobjects.cpp
     ${OBJECTS_SOURCE_ROOT}/Filter.hpp
     ${OBJECTS_SOURCE_ROOT}/Filter.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
 )
 
 # used in project_source/cmake/unit_tests
@@ -429,6 +431,7 @@ if(VST_SDK_BUILD)
 	add_subdirectory(${VST_CMAKE_FOLDER})
 endif()
 
+# set the startup project to be the VST project
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
 
 # --- add unit testing
