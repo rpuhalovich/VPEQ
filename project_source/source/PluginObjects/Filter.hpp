@@ -22,6 +22,7 @@ struct FilterParameters {
         fc = params.fc;
         Q = params.Q;
         boost = params.boost;
+        wetDry = params.wetDry;
         
         return *this;
     }
@@ -31,7 +32,7 @@ struct FilterParameters {
     double fc = 100.0f; // cut off frequency
     double Q = 0.707f;
     double boost = 0.0f;
-    double wetDry = 1.0f;
+    double wetDry = 1.0f; // range: 0.0 - 1.0
 };
 
 class Filter : public IAudioSignalProcessor {

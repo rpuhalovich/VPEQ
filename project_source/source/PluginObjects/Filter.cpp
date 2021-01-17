@@ -10,6 +10,9 @@ bool Filter::reset(double _sampleRate) {
 }
 
 double Filter::processAudioSample(double xn) {
+    biquad.coeffs.d0 = Filter::params.wetDry;
+    biquad.coeffs.c0 = 1 / Filter::params.wetDry;
+
     return biquad.coeffs.d0 * xn + biquad.coeffs.c0 * biquad.processAudioSample(xn);
 }
 

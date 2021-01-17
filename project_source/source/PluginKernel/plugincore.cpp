@@ -487,14 +487,14 @@ int32_t PluginCore::getFourCharCode() {
 }
 
 void PluginCore::updateParameters() {
-    // update left filter with gui parameters
+    // update filter with gui parameters
     FilterParameters filterParams = filter.getParameters();
     
     // alter the parameter values
     filterParams.fc = filterFC_Hz;
     filterParams.Q = filterQ;
     filterParams.boost = boostCut_dB;
-    filterParams.
+    filterParams.wetDry = wetDry / 100; // from range: 0 - 100 to 0 - 1
     filterParams.type = convertIntToEnum(filterType, FilterType);
     
     // set on objects
