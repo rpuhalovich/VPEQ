@@ -414,6 +414,8 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/Filter.cpp
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.cpp
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
+    ${OBJECTS_SOURCE_ROOT}/Headers.hpp
+    ${OBJECTS_SOURCE_ROOT}/Utils.hpp
 )
 
 # used in project_source/cmake/unit_tests
