@@ -2,9 +2,9 @@
 
 #pragma once
 
-// for using Pi
+
 #define _USE_MATH_DEFINES
-#include <cmath>
+#include <cmath> // for using Pi
 #include <iostream>
 
 #include <fxobjects.h>
@@ -18,17 +18,15 @@ enum class FilterType {
 // changable parameters of the filter
 struct FilterParameters {
     FilterParameters& operator=(const FilterParameters& params) {
-        if (this == &params)
-            return *this;
+        if (this == &params) { return *this; }
         
         fc = params.fc;
         Q = params.Q;
         boost = params.boost;
         wetDry = params.wetDry;
-        
         return *this;
     }
-
+    
     FilterType type = FilterType::LPF2;
     
     double fc = 100.0f; // cut off frequency
