@@ -3,10 +3,8 @@
 
 #pragma once
 
-#include <iostream>
 #include <fxobjects.h>
-
-#define DEBUG_PRINT(msg_str, var) std::cout << msg_str << var << std::endl
+#include "Headers.hpp"
 
 struct Coefficient {
     double a0 = 0.0f;
@@ -32,7 +30,6 @@ public:
     virtual bool canProcessAudioFrame();
     
     void setCoeffs(Coefficient coeffs);
-
 private:
     Coefficient coeffs;
     StateReg regs;

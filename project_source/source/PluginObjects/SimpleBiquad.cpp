@@ -8,9 +8,6 @@ bool SimpleBiquad::reset(double _sampleRate) {
 }
 
 double SimpleBiquad::processAudioSample(double xn) {
-    // DEBUG_PRINT("xn: ", xn);
-    // DEBUG_PRINT("regs.x_z1: ", regs.x_z1);
-    
     // 1 - calc yn using diff equation
     double yn = coeffs.a0 * xn + coeffs.a1 * regs.x_z1 + coeffs.a2 * regs.x_z2 - coeffs.b1 * regs.y_z1 - coeffs.b2 * regs.y_z2;
     
@@ -29,13 +26,13 @@ double SimpleBiquad::processAudioSample(double xn) {
 
 bool SimpleBiquad::canProcessAudioFrame() { return false; }
 
-void SimpleBiquad::setCoeffs(Coefficient _coeffs) {
+void SimpleBiquad::setCoeffs(Coefficient coeffs) {
     // maybe also set if statement to check if coeffs have been changed
-    coeffs.a0 = _coeffs.a0;
-    coeffs.a1 = _coeffs.a1;
-    coeffs.a2 = _coeffs.a2;
-    coeffs.b1 = _coeffs.b1;
-    coeffs.b2 = _coeffs.b2;
-    coeffs.c0 = _coeffs.c0;
-    coeffs.d0 = _coeffs.d0;
+    this->coeffs.a0 = coeffs.a0;
+    this->coeffs.a1 = coeffs.a1;
+    this->coeffs.a2 = coeffs.a2;
+    this->coeffs.b1 = coeffs.b1;
+    this->coeffs.b2 = coeffs.b2;
+    this->coeffs.c0 = coeffs.c0;
+    this->coeffs.d0 = coeffs.d0;
 }

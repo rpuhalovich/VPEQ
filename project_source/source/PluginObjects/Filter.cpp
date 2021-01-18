@@ -5,15 +5,14 @@
 
 bool Filter::reset(double _sampleRate) {
     sampleRate = _sampleRate;
-    
     return true; // success
 }
 
 double Filter::processAudioSample(double xn) {
     // coeffs.d0 = Filter::params.wetDry;
     // coeffs.c0 = 1 - Filter::params.wetDry;
-
     // return coeffs.d0 * xn + coeffs.c0 * biquad.processAudioSample(xn);
+
     return biquad.processAudioSample(xn);
 }
 
@@ -58,6 +57,5 @@ void Filter::setParameters(const FilterParameters& params) {
 
     // don't allow 0 or (-) values for Q
     if (this->params.Q <= 0) { this->params.Q = 0.707; }
-
     calculateCoeffs();
 }

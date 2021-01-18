@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <iostream>
 #include <fxobjects.h>
+#include "Headers.hpp"
 #include "SimpleBiquad.hpp"
 
 enum class FilterType {
@@ -24,9 +24,7 @@ struct FilterParameters {
         wetDry = params.wetDry;
         return *this;
     }
-    
     FilterType type = FilterType::LPF2;
-    
     double fc = 100.0f; // cut off frequency
     double Q = 0.707f;
     double boost = 0.0f;
@@ -45,7 +43,6 @@ public:
     
     // sets the parameters and also calcs the new coeffs resulting from param changes
     void setParameters(const FilterParameters& parameters);
-
 private:
     Coefficient coeffs;
     SimpleBiquad biquad;
