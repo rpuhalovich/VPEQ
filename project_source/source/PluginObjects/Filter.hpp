@@ -1,12 +1,10 @@
 // created by Ryan Puhalovich - http://github.com/rpuhalovich
+// relies on a biquad object to do the calculations - this object
+// just calculates the coeffs of a biquad
 
 #pragma once
 
-
-#define _USE_MATH_DEFINES
-#include <cmath> // for using Pi
 #include <iostream>
-
 #include <fxobjects.h>
 #include "SimpleBiquad.hpp"
 
@@ -49,6 +47,7 @@ public:
     void setParameters(const FilterParameters& parameters);
 
 private:
+    Coefficient coeffs;
     SimpleBiquad biquad;
     FilterParameters params;
     double sampleRate = 44100.0f;

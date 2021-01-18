@@ -3,7 +3,10 @@
 
 #pragma once
 
+#include <iostream>
 #include <fxobjects.h>
+
+#define DEBUG_PRINT(msg_str, var) std::cout << msg_str << var << std::endl
 
 struct Coefficient {
     double a0 = 0.0f;
@@ -18,13 +21,8 @@ struct Coefficient {
 struct StateReg {
     double x_z1 = 0.0f;
     double x_z2 = 0.0f;
-    double x_z3 = 0.0f;
-    double x_z4 = 0.0f;
-
     double y_z1 = 0.0f;
     double y_z2 = 0.0f;
-    double y_z3 = 0.0f;
-    double y_z4 = 0.0f;
 };
 
 class SimpleBiquad : IAudioSignalProcessor {
@@ -32,9 +30,11 @@ public:
     virtual bool reset(double _sampleRate);
     virtual double processAudioSample(double xn);
     virtual bool canProcessAudioFrame();
+    
+    void setCoeffs(Coefficient coeffs);
 
+private:
     Coefficient coeffs;
     StateReg regs;
-
     double sampleRate = 44100.0f;
 };
