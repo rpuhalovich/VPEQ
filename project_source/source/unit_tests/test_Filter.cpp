@@ -1,4 +1,4 @@
-#include <Catch2/catch.hpp>
+﻿#include <Catch2/catch.hpp>
 #include <fxobjects.h>
 #include <guiconstants.h>
 #include "Headers.hpp"
@@ -27,26 +27,23 @@ TEST_CASE("Testing Audio Filter against my Filter", "[filter]") {
     afilter.setParameters(afilterParams);
     
     // Nyquist
-    double xn = 1.0f;
-    double yn = 0.0f;
-    
-    yn = afilter.processAudioSample(xn);
-    yn = filter.processAudioSample(xn);
-    xn = -1.0;
-    
-    yn = afilter.processAudioSample(xn);
-    yn = filter.processAudioSample(xn);
-    xn = 1.0;
-    
-    yn = afilter.processAudioSample(xn);
-    yn = filter.processAudioSample(xn);
-    xn = -1.0;
-    REQUIRE(afilter.processAudioSample(xn) == filter.processAudioSample(xn));
+    for (int i = 0; i < _pattern_len; i++) {
+        afilter.processAudioSample(_nyquist_pattern[i]);
+        filter.processAudioSample(_nyquist_pattern[i]);
+    }
+    REQUIRE(afilter.processAudioSample(_nyquist_pattern[0]) == filter.processAudioSample(_nyquist_pattern[0]));
     
     // DC
-    xn = 1.0;
+    double xn = 1.0;
     afilter.processAudioSample(xn); filter.processAudioSample(xn);
     afilter.processAudioSample(xn); filter.processAudioSample(xn);
     afilter.processAudioSample(xn); filter.processAudioSample(xn);
     REQUIRE(afilter.processAudioSample(xn) == filter.processAudioSample(xn));
+
+    // Quater Nyquist
+    for (int i = 0; i < _pattern_len; i++) {
+        afilter.processAudioSample(_quater_nyquist_pattern[i]);
+        filter.processAudioSample(_quater_nyquist_pattern[i]);
+    }
+    REQUIRE(afilter.processAudioSample(_quater_nyquist_pattern[0]) == filter.processAudioSample(_quater_nyquist_pattern[0]));
 }
