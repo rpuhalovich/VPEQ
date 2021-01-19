@@ -37,8 +37,6 @@ public:
     virtual double processAudioSample(double xn); // this is not where the coeffs are to be calculated
     virtual bool canProcessAudioFrame();
     
-    // returns true if coeffs were calculated
-    bool calculateCoeffs();
     FilterParameters getParameters();
     
     // sets the parameters and also calcs the new coeffs resulting from param changes
@@ -48,4 +46,7 @@ private:
     SimpleBiquad biquad;
     FilterParameters params;
     double sampleRate = 44100.0f;
+    
+    // returns true if coeffs were calculated
+    bool calculateCoeffs();
 };

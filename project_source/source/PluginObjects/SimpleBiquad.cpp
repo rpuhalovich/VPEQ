@@ -8,6 +8,7 @@ bool SimpleBiquad::reset(double _sampleRate) {
 }
 
 double SimpleBiquad::processAudioSample(double xn) {
+    /*
     // 1 - calc yn using diff equation
     double yn = coeffs.a0 * xn + coeffs.a1 * regs.x_z1 + coeffs.a2 * regs.x_z2 - coeffs.b1 * regs.y_z1 - coeffs.b2 * regs.y_z2;
     
@@ -21,6 +22,26 @@ double SimpleBiquad::processAudioSample(double xn) {
     regs.y_z2 = regs.y_z1;
     regs.y_z2 = yn;
 
+    return yn;
+    */
+    // --- 1)  form output y(n) = a0*x(n) + a1*x(n-1) + a2*x(n-2) - b1*y(n-1) - b2*y(n-2)
+    double yn = coeffs.a0 * xn +
+                coeffs.a1 * regs.x_z1 +
+                coeffs.a2 * regs.x_z2 -
+                coeffs.b1 * regs.y_z1 -
+                coeffs.b2 * regs.y_z2;
+
+    // --- 2) underflow check
+    checkFloatUnderflow(yn);
+
+    // --- 3) update states
+    regs.x_z2 = regs.x_z1;
+    regs.x_z1 = xn;
+
+    regs.y_z2 = regs.y_z1;
+    regs.y_z1 = yn;
+
+    // --- return value
     return yn;
 }
 

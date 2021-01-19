@@ -1422,8 +1422,8 @@ public:
         BiquadParameters bqp = biquad.getParameters();
 
         // --- you can try both forms - do you hear a difference?
-        bqp.biquadCalcType = biquadAlgorithm::kTransposeCanonical; //<- this is the default operation
-        //	bqp.biquadCalcType = biquadAlgorithm::kDirect;
+        // bqp.biquadCalcType = biquadAlgorithm::kTransposeCanonical; //<- this is the default operation
+        bqp.biquadCalcType = biquadAlgorithm::kDirect;
         biquad.setParameters(bqp);
 
         sampleRate = _sampleRate;
