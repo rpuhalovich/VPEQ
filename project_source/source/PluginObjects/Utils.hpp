@@ -3,8 +3,11 @@
 
 #pragma once
 
+// change to ifdef DEBUG - confusing
 #ifdef RELEASE
     #define DEBUG_PRINT(msg_str, var)
 #else
     #define DEBUG_PRINT(msg_str, var) std::cout << msg_str << var << std::endl
-#endif // DEBUG
+#endif // RELEASE
+
+#define TEST_SAMPLE_RATE 44100.0f
