@@ -15,6 +15,7 @@
 
 #include "pluginbase.h"
 #include "fxobjects.h"
+#include "Headers.hpp"
 
 // my objects
 #include "Filter.hpp"

@@ -27,7 +27,7 @@ TEST_CASE("Testing Audio Filter against my Filter", "[filter]") {
     afilter.setParameters(afilterParams);
     
     // Nyquist
-    for (int i = 0; i < _pattern_len; i++) {
+    for (int i = 0; i < _PATTERN_LEN; i++) {
         afilter.processAudioSample(_nyquist_pattern[i]);
         filter.processAudioSample(_nyquist_pattern[i]);
     }
@@ -41,7 +41,7 @@ TEST_CASE("Testing Audio Filter against my Filter", "[filter]") {
     REQUIRE(afilter.processAudioSample(xn) == filter.processAudioSample(xn));
 
     // Quater Nyquist
-    for (int i = 0; i < _pattern_len; i++) {
+    for (int i = 0; i < _PATTERN_LEN; i++) {
         afilter.processAudioSample(_quater_nyquist_pattern[i]);
         filter.processAudioSample(_quater_nyquist_pattern[i]);
     }
