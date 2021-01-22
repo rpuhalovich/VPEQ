@@ -1,7 +1,7 @@
 #include <Catch2/catch.hpp>
 #include <fxobjects.h>
 #include <guiconstants.h>
-#include "headers.hpp"
+#include "pch.hpp"
 #include "Filter.hpp"
 
 AudioFilter afilter;

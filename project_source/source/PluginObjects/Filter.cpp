@@ -78,8 +78,8 @@ bool Filter::calculateCoeffs() {
         double K = tan((kPi * params.fc) / sampleRate);
         double delta = K * K * params.Q + K + params.Q;
         
-        double alpha = ( params.Q * (K * K + 1) ) / delta;
-        double beta = ( 2 * params.Q * (K * K - 1) ) / delta;
+        double alpha = ( params.Q * (K * K + 1.0) ) / delta;
+        double beta = ( 2.0 * params.Q * (K * K - 1.0) ) / delta;
         
         coeffs.a0 = alpha;
         coeffs.a1 = beta;
@@ -91,44 +91,59 @@ bool Filter::calculateCoeffs() {
         return true;
     } else if (params.type == FilterType::LSF) {
         double theta = (2.0 * kPi * params.fc) / sampleRate;
-        double mu = pow(10, params.boost / 20);
+        double mu = pow(10.0, params.boost / 20.0);
         double beta = 4.0 / (1.0 + mu);
         double delta = beta * tan(theta / 2.0);
         double gamma = (1.0 - delta) / (1.0 + delta);
-        
-        double alpha = (1.0 - gamma) / 2;
+        double alpha = (1.0 - gamma) / 2.0;
         
         coeffs.a0 = alpha;
         coeffs.a1 = alpha;
         coeffs.a2 = 0.0;
-        coeffs.b1 = -1 * gamma;
+        coeffs.b1 = -(gamma);
         coeffs.c0 = mu - 1.0;
         coeffs.d0 = 1.0;
         
+        biquad.setCoeffs(coeffs);
         return true;
     } else if (params.type == FilterType::HSF) {
         double theta = (2.0 * kPi * params.fc) / sampleRate;
-        double mu = pow(10, params.boost / 20);
-        double beta = (1 + mu) / 4;
+        double mu = pow(10.0, params.boost / 20.0);
+        double beta = (1.0 + mu) / 4;
         double delta = beta * tan(theta / 2.0);
         double gamma = (1.0 - delta) / (1.0 + delta);
-        
-        double alpha = (1.0 + gamma) / 2;
+        double alpha = (1.0 + gamma) / 2.0;
         
         coeffs.a0 = alpha;
-        coeffs.a1 = -1 * alpha;
+        coeffs.a1 = -alpha;
         coeffs.a2 = 0.0;
-        coeffs.b1 = -1 * gamma;
+        coeffs.b1 = -gamma;
         coeffs.b2 = 0.0;
         coeffs.c0 = mu - 1.0;
         coeffs.d0 = 1.0;
         
+        biquad.setCoeffs(coeffs);
         return true;
     } else if (params.type == FilterType::PEQ) {
-        
-        return true;
-    } else if (params.type == FilterType::OFF) {
-        
+        double theta = (2.0 * kPi * params.fc) / sampleRate;
+        double mu = pow(10.0, params.boost / 20.0);
+        double zeta = 4.0 / (1.0 + mu);
+        double betaNum = 1.0 - (zeta * tan(theta / (2 * params.Q)));
+        double betaDen = 1.0 + (zeta * tan(theta / (2 * params.Q)));
+        double beta = 0.5 * (betaNum / betaDen);
+        double gamma = (0.5 + beta) * cos(theta);
+
+        double alpha = 0.5 - beta;
+
+        coeffs.a0 = alpha;
+        coeffs.a1 = 0.0;
+        coeffs.a2 = -alpha;
+        coeffs.b1 = -2 * gamma;
+        coeffs.b2 = 2 * beta;
+        coeffs.c0 = mu - 1.0;
+        coeffs.d0 = 1.0;
+
+        biquad.setCoeffs(coeffs);
         return true;
     }
     return false; // coeffs were not recalculated
@@ -139,9 +154,7 @@ FilterParameters Filter::getParameters() { return Filter::params; }
 void Filter::setParameters(const FilterParameters& params) {
     // only set parameters if a parameter changes
     // float equality is actually okay here - we're comparing to if the parameter has changed at all
-    if (this->params.boost != params.boost || this->params.fc != params.fc || this->params.Q != params.Q ||
-        this->params.type != params.type)
-    {
+    if (this->params.boost != params.boost || this->params.fc != params.fc || this->params.Q != params.Q || this->params.type != params.type) {
         this->params = params;
     } else {
         return;

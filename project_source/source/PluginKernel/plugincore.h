@@ -25,7 +25,7 @@ enum controlID {
     filterFC_Hz = 0,
     filterQ = 1,
     boostCut_dB = 2,
-    filterType = 3,
+    filterType = 3
 };
 // **--0x0F1F--**
 
