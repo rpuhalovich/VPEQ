@@ -15,7 +15,7 @@
 
 #include "pluginbase.h"
 #include "fxobjects.h"
-#include "Headers.hpp"
+#include "headers.hpp"
 
 // my objects
 #include "Filter.hpp"
@@ -122,7 +122,9 @@ private:
     int filterType = 0;
     enum class filterTypeEnum {
         LPF2,
-        HPF2
+        HPF2,
+        BPF,
+        BSF
     };
     // **--0x1A7F--**
     // --- end member variables

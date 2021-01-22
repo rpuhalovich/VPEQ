@@ -4,7 +4,7 @@
 #pragma once
 
 #include <fxobjects.h>
-#include "Headers.hpp"
+#include "headers.hpp"
 
 struct Coefficient {
     double a0 = 0.0f;

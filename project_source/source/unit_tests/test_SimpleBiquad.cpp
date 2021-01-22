@@ -3,7 +3,7 @@
 
 #include <Catch2/catch.hpp>
 #include <fxobjects.h>
-#include "Headers.hpp"
+#include "headers.hpp"
 #include "SimpleBiquad.hpp"
 
 // Biquad bi;

@@ -5,12 +5,20 @@
 #pragma once
 
 #include <fxobjects.h>
-#include "Headers.hpp"
+#include "headers.hpp"
 #include "SimpleBiquad.hpp"
+
+#define DEQUALS_PRECISION 0.00001
 
 enum class FilterType {
     LPF2,
-    HPF2
+    HPF2,
+    BPF,
+    BSF,
+    HSF,
+    LSF,
+    PEQ,
+    OFF
 };
 
 // changable parameters of the filter
@@ -22,6 +30,7 @@ struct FilterParameters {
         Q = params.Q;
         boost = params.boost;
         wetDry = params.wetDry;
+        type = params.type;
         return *this;
     }
     FilterType type = FilterType::LPF2;
@@ -49,4 +58,5 @@ private:
     
     // returns true if coeffs were calculated
     bool calculateCoeffs();
+    void clearCoeffs();
 };

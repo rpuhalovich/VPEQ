@@ -85,7 +85,7 @@ bool PluginCore::initPluginParameters() {
     piParam->setBoundVariable(&wetDry, boundVariableType::kDouble);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType, "Filter Type", "LPF2,HPF2", "LPF2");
+    piParam = new PluginParameter(controlID::filterType, "Filter Type", "Low Pass,High Pass,Band Pass,Band Stop", "LPF2");
     piParam->setBoundVariable(&filterType, boundVariableType::kInt);
     addPluginParameter(piParam);
 

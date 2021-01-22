@@ -5,21 +5,21 @@
 
 bool Filter::reset(double _sampleRate) {
     sampleRate = _sampleRate;
+    calculateCoeffs();
     return true; // success
 }
 
 double Filter::processAudioSample(double xn) {
-    // coeffs.d0 = Filter::params.wetDry;
-    // coeffs.c0 = 1 - Filter::params.wetDry;
-    // return coeffs.d0 * xn + coeffs.c0 * biquad.processAudioSample(xn);
-
-    return biquad.processAudioSample(xn);
+    return coeffs.d0 * xn + coeffs.c0 * biquad.processAudioSample(xn);
 }
 
 bool Filter::canProcessAudioFrame() { return false; }
 
 bool Filter::calculateCoeffs() {
-    // --- set default pass-through
+    // clear coeff array
+    clearCoeffs();
+    
+    // set default pass-through
     coeffs.a0 = 1.0;
     coeffs.c0 = 1.0;
     coeffs.d0 = 0.0;
@@ -62,6 +62,41 @@ bool Filter::calculateCoeffs() {
         
         biquad.setCoeffs(coeffs);
         return true; // coeffs were calculated
+    } else if (params.type == FilterType::BPF) {
+        // calculate filter coeffs
+        double K = tan((kPi * params.fc) / sampleRate);
+        double delta = K * K * params.Q + K + params.Q;
+        
+        coeffs.a0 = K / delta;
+        coeffs.a1 = 0.0;
+        coeffs.a2 = (-K) / delta;
+        coeffs.b1 = ( 2.0 * params.Q * (K * K - 1.0) ) / delta;
+        coeffs.b2 = ( (K * K * params.Q) - K + params.Q ) / delta;
+        
+        biquad.setCoeffs(coeffs);
+        return true;
+    } else if (params.type == FilterType::BSF) {
+        // calculate filter coeffs
+        double K = tan((kPi * params.fc) / sampleRate);
+        double delta = K * K * params.Q + K + params.Q;
+        
+        double alpha = ( params.Q * (K * K + 1) ) / delta;
+        double beta = ( 2 * params.Q * (K * K - 1) ) / delta;
+        
+        coeffs.a0 = alpha;
+        coeffs.a1 = beta;
+        coeffs.a2 = alpha;
+        coeffs.b1 = beta;
+        coeffs.b2 = ( (K * K * params.Q) - K + params.Q ) / delta;
+        
+        biquad.setCoeffs(coeffs);
+        return true;
+    } else if (params.type == FilterType::LSF) {
+        // CODE
+        return true;
+    } else if (params.type == FilterType::HSF) {
+        // CODE
+        return true;
     }
     return false; // coeffs were not recalculated
 }
@@ -70,9 +105,8 @@ FilterParameters Filter::getParameters() { return Filter::params; }
 
 void Filter::setParameters(const FilterParameters& params) {
     // only set parameters if a parameter changes
-    if (this->params.boost != params.boost ||
-        this->params.fc != params.fc ||
-        this->params.Q != params.Q ||
+    // float equality is actually okay here - we're comparing to if the parameter has changed at all
+    if (this->params.boost != params.boost || this->params.fc != params.fc || this->params.Q != params.Q ||
         this->params.type != params.type)
     {
         this->params = params;
@@ -84,3 +118,14 @@ void Filter::setParameters(const FilterParameters& params) {
     if (this->params.Q <= 0) { this->params.Q = 0.707; }
     calculateCoeffs();
 }
+
+void Filter::clearCoeffs() {
+    this->coeffs.a0 = 0.0;
+    this->coeffs.a1 = 0.0;
+    this->coeffs.a2 = 0.0;
+    this->coeffs.b1 = 0.0;
+    this->coeffs.b2 = 0.0;
+    this->coeffs.c0 = 0.0;
+    this->coeffs.d0 = 0.0;
+}
+
