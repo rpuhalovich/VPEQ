@@ -15,9 +15,9 @@
 
 #include "pluginbase.h"
 #include "fxobjects.h"
-#include "pch.hpp"
 
-// my objects
+// my headers
+#include "pch.hpp"
 #include "Filter.hpp"
 
 // **--0x7F1F--**
@@ -26,7 +26,6 @@ enum controlID {
     filterQ = 1,
     boostCut_dB = 2,
     filterType = 3,
-    wetDry = 4
 };
 // **--0x0F1F--**
 
@@ -117,7 +116,6 @@ private:
     double filterFC_Hz = 1000.000000; // filterFc_Hz
     double filterQ = 0.707000;
     double boostCut_dB = 0.000000;
-    double wetDry = 100.00000000;
     
     int filterType = 0;
     enum class filterTypeEnum {
@@ -125,8 +123,8 @@ private:
         HPF2,
         BPF,
         BSF,
-        HSF,
         LSF,
+        HSF,
         PEQ,
         OFF
     };

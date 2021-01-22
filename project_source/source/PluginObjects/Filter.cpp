@@ -90,10 +90,39 @@ bool Filter::calculateCoeffs() {
         biquad.setCoeffs(coeffs);
         return true;
     } else if (params.type == FilterType::LSF) {
-        // CODE
+        double theta = (2.0 * kPi * params.fc) / sampleRate;
+        double mu = pow(10, params.boost / 20);
+        double beta = 4.0 / (1.0 + mu);
+        double delta = beta * tan(theta / 2.0);
+        double gamma = (1.0 - delta) / (1.0 + delta);
+        
+        double alpha = (1.0 - gamma) / 2;
+        
+        coeffs.a0 = alpha;
+        coeffs.a1 = alpha;
+        coeffs.a2 = 0.0;
+        coeffs.b1 = -1 * gamma;
+        coeffs.c0 = mu - 1.0;
+        coeffs.d0 = 1.0;
+        
         return true;
     } else if (params.type == FilterType::HSF) {
-        // CODE
+        double theta = (2.0 * kPi * params.fc) / sampleRate;
+        double mu = pow(10, params.boost / 20);
+        double beta = (1 + mu) / 4;
+        double delta = beta * tan(theta / 2.0);
+        double gamma = (1.0 - delta) / (1.0 + delta);
+        
+        double alpha = (1.0 + gamma) / 2;
+        
+        coeffs.a0 = alpha;
+        coeffs.a1 = -1 * alpha;
+        coeffs.a2 = 0.0;
+        coeffs.b1 = -1 * gamma;
+        coeffs.b2 = 0.0;
+        coeffs.c0 = mu - 1.0;
+        coeffs.d0 = 1.0;
+        
         return true;
     } else if (params.type == FilterType::PEQ) {
         

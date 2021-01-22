@@ -15,8 +15,8 @@ enum class FilterType {
     HPF2,
     BPF,
     BSF,
-    HSF,
     LSF,
+    HSF,
     PEQ,
     OFF
 };

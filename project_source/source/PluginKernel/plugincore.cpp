@@ -79,13 +79,7 @@ bool PluginCore::initPluginParameters() {
     piParam->setBoundVariable(&boostCut_dB, boundVariableType::kDouble);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(4, "Wet/Dry", "%", controlVariableType::kDouble, 0.000000, 100.000000, 100.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&wetDry, boundVariableType::kDouble);
-    addPluginParameter(piParam);
-
-    piParam = new PluginParameter(controlID::filterType, "Filter Type", "Low Pass,High Pass,Band Pass,Band Stop", "Low Pass");
+    piParam = new PluginParameter(controlID::filterType, "Filter Type", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Low Pass");
     piParam->setBoundVariable(&filterType, boundVariableType::kInt);
     addPluginParameter(piParam);
 
@@ -494,7 +488,6 @@ void PluginCore::updateParameters() {
     filterParams.fc = filterFC_Hz;
     filterParams.Q = filterQ;
     filterParams.boost = boostCut_dB;
-    filterParams.wetDry = wetDry / 100; // from range: 0 - 100 to 0 - 1
     filterParams.type = convertIntToEnum(filterType, FilterType);
     
     // set on objects
