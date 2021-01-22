@@ -24,3 +24,5 @@ target_include_directories(unit_tests PRIVATE
 )
 
 source_group(Tests FILES ${TESTS_SRC})
+
+target_precompile_headers(unit_tests PRIVATE ${PCH})

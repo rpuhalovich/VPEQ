@@ -414,7 +414,7 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/Filter.cpp
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.cpp
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
-    ${OBJECTS_SOURCE_ROOT}/headers.hpp
+    ${OBJECTS_SOURCE_ROOT}/pch.hpp
     ${OBJECTS_SOURCE_ROOT}/utils.hpp
 )
 
@@ -424,6 +424,8 @@ set(TESTS_SRC
     ${TESTS_DIR}/test_Filter.cpp
     ${TESTS_DIR}/test_SimpleBiquad.cpp
 )
+
+set(PCH "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp")
 
 # --- add_subdirectories: 
 # add each project:

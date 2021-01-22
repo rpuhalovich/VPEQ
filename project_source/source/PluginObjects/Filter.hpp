@@ -5,7 +5,7 @@
 #pragma once
 
 #include <fxobjects.h>
-#include "headers.hpp"
+#include "pch.hpp"
 #include "SimpleBiquad.hpp"
 
 #define DEQUALS_PRECISION 0.00001
@@ -48,7 +48,7 @@ public:
     
     FilterParameters getParameters();
     
-    // sets the parameters and also calcs the new coeffs resulting from param changes
+    // sets the parameters and also calcs the new coeffs resulting from parameter changes
     void setParameters(const FilterParameters& parameters);
 private:
     Coefficient coeffs;

@@ -21,9 +21,9 @@
 
 #include <memory>
 #include <math.h>
+#include <time.h>
 #include "guiconstants.h"
 #include "filters.h"
-#include <time.h>       /* time */
 
 /** @file fxobjects.h
 \brief FX Objects File

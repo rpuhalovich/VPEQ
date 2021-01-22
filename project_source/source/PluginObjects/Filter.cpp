@@ -63,7 +63,6 @@ bool Filter::calculateCoeffs() {
         biquad.setCoeffs(coeffs);
         return true; // coeffs were calculated
     } else if (params.type == FilterType::BPF) {
-        // calculate filter coeffs
         double K = tan((kPi * params.fc) / sampleRate);
         double delta = K * K * params.Q + K + params.Q;
         
@@ -76,7 +75,6 @@ bool Filter::calculateCoeffs() {
         biquad.setCoeffs(coeffs);
         return true;
     } else if (params.type == FilterType::BSF) {
-        // calculate filter coeffs
         double K = tan((kPi * params.fc) / sampleRate);
         double delta = K * K * params.Q + K + params.Q;
         
@@ -96,6 +94,12 @@ bool Filter::calculateCoeffs() {
         return true;
     } else if (params.type == FilterType::HSF) {
         // CODE
+        return true;
+    } else if (params.type == FilterType::PEQ) {
+        
+        return true;
+    } else if (params.type == FilterType::OFF) {
+        
         return true;
     }
     return false; // coeffs were not recalculated

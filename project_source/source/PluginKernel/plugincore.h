@@ -15,7 +15,7 @@
 
 #include "pluginbase.h"
 #include "fxobjects.h"
-#include "headers.hpp"
+#include "pch.hpp"
 
 // my objects
 #include "Filter.hpp"
@@ -124,7 +124,11 @@ private:
         LPF2,
         HPF2,
         BPF,
-        BSF
+        BSF,
+        HSF,
+        LSF,
+        PEQ,
+        OFF
     };
     // **--0x1A7F--**
     // --- end member variables
