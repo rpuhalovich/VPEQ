@@ -427,7 +427,7 @@ set(TESTS_SRC
 
 set(PCH "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp")
 
-# --- add_subdirectories ------------------------------------------------------- 
+# --- add_subdirectories: 
 # add each project:
 if(AAX_SDK_BUILD)
 	add_subdirectory(${AAX_CMAKE_FOLDER})

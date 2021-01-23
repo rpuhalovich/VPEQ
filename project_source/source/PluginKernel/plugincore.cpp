@@ -172,8 +172,10 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo) {
     for (int i = 0; i < processFrameInfo.numAudioInChannels; i++) {
         processFrameInfo.audioOutputFrame[i] = filter.processAudioSample(processFrameInfo.audioInputFrame[i]);
     }
+
     return true;
 }
+
 
 /**
 \brief do anything needed prior to arrival of audio buffers
