@@ -369,4 +369,4 @@ elseif(WIN)
 	target_sources(${target} PRIVATE ${RESOURCE_ROOT}/PluginGUI.uidesc)
 endif()
 
-target_precompile_headers(${target} PRIVATE ${PCH})
+# target_precompile_headers(${target} PRIVATE ${PCH})

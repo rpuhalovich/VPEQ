@@ -1,5 +1,5 @@
 // created by Ryan Puhalovich - http://github.com/rpuhalovich
-// a precompiled header file that contains all the headers that I may need anywhere
+// a (soon to be) precompiled header file that contains all the headers that I may need anywhere
 
 #pragma once
 

@@ -430,4 +430,4 @@ if(XCODE)
 	add_custom_command(TARGET ${target} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "$<$<CONFIG:Debug>:${TARGET_PATH_DEBUG}>$<$<CONFIG:Release>:${TARGET_PATH_RELEASE}>" ${PLUGIN_FOLDER})
 endif()
 
-target_precompile_headers(${target} PRIVATE ${PCH})
+# target_precompile_headers(${target} PRIVATE ${PCH})

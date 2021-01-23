@@ -239,4 +239,4 @@ source_group(CustomVSTGUI FILES ${custom_vstgui_sources})
 source_group(VST3Core FILES ${vst_core_sources})
 source_group(VST3SDK FILES ${vstsdk_sources})
 
-target_precompile_headers(${target} PRIVATE ${PCH})
+# target_precompile_headers(${target} PRIVATE ${PCH})
