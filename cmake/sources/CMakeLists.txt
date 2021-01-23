@@ -18,6 +18,7 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
     ${OBJECTS_SOURCE_ROOT}/pch.hpp
     ${OBJECTS_SOURCE_ROOT}/utils.hpp
+    ${OBJECTS_SOURCE_ROOT}/controlView.hpp
     PARENT_SCOPE
 )
 

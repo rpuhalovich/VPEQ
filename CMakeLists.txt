@@ -401,7 +401,6 @@ set(AU_PLUGIN_FOLDER AU)
 
 # --- add_subdirectories -------------------------------------------------------
 # added a dedicated sources subdir for clenliness
-message(STATUS "test sources: ${TEST_SRC}")
 add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
 
 # add each project:

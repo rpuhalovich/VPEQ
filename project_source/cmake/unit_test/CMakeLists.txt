@@ -22,9 +22,6 @@ target_include_directories(unit_tests PRIVATE
     "${VENDOR_SOURCE_ROOT}"
 )
 
-message(STATUS "OBJECT_SOURCE_ROOT: ${OBJECTS_SOURCE_ROOT}")
-message(STATUS "TESTS_SRC: ${TESTS_SRC}")
-
 source_group(Tests FILES ${TESTS_SRC})
 
 # target_precompile_headers(unit_tests PRIVATE ${PCH})
