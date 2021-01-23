@@ -20,6 +20,8 @@
 #include "pch.hpp"
 #include "Filter.hpp"
 
+#define NUM_FILTERS 7
+
 // **--0x7F1F--**
 enum controlID {
     filterFC_Hz = 0,
@@ -116,7 +118,7 @@ private:
     double filterFC_Hz = 1000.000000; // filterFc_Hz
     double filterQ = 0.707000;
     double boostCut_dB = 0.000000;
-    
+
     int filterType = 0;
     enum class filterTypeEnum {
         LPF2,
@@ -200,7 +202,7 @@ public:
         HostMessageInfo hostMessageInfo;
         hostMessageInfo.hostMessage = sendRAFXStatusWndText;
         hostMessageInfo.rafxStatusWndText.assign(messageString);
-        if(pluginHostConnector)
+        if (pluginHostConnector)
             pluginHostConnector->sendHostMessage(hostMessageInfo);
     }
 protected:
