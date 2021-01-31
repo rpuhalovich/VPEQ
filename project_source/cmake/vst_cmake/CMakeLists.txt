@@ -235,7 +235,6 @@ endif()
 
 source_group(PluginKernel FILES ${kernel_sources})
 source_group(PluginObjects FILES ${plugin_object_sources})
-#source_group(TREE ${OBJECTS_SOURCE_ROOT})
 source_group(CustomVSTGUI FILES ${custom_vstgui_sources})
 source_group(VST3Core FILES ${vst_core_sources})
 source_group(VST3SDK FILES ${vstsdk_sources})

@@ -31,6 +31,7 @@ void set_defaults() {
     afilter.setParameters(afilterParams);
 }
 
+// note that passing classes is okay as performance isn't critical
 void process_nyquist(Filter filter, AudioFilter afilter) {
     for (int i = 0; i < PATTERN_LEN; i++) {
         afilter.processAudioSample(utils::nyquist_pattern[i]);
@@ -53,15 +54,12 @@ void process_dc(Filter filter, AudioFilter afilter) {
 }
 
 void process(Filter filter, AudioFilter afilter) {
-    // Nyquist
     process_nyquist(filter, afilter);
     REQUIRE(afilter.processAudioSample(utils::nyquist_pattern[0]) == filter.processAudioSample(utils::nyquist_pattern[0]));
     
-    // Quater Nyquist
     process_quater_nyquist(filter, afilter);
     REQUIRE(afilter.processAudioSample(utils::quater_nyquist_pattern[0]) == filter.processAudioSample(utils::quater_nyquist_pattern[0]));
 
-    // DC
     process_dc(filter, afilter);
     REQUIRE(afilter.processAudioSample(utils::dc_pattern[0]) == filter.processAudioSample(utils::dc_pattern[0]));
 }
