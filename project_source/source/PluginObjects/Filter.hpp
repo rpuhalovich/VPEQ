@@ -24,12 +24,11 @@ enum class FilterType {
 // changable parameters of the filter
 struct FilterParameters {
     FilterParameters& operator=(const FilterParameters& params) {
-        if (this == &params) { return *this; }
+        if (this == &params) return *this;
         
         fc = params.fc;
         Q = params.Q;
         boost = params.boost;
-        wetDry = params.wetDry;
         type = params.type;
         return *this;
     }
@@ -37,7 +36,6 @@ struct FilterParameters {
     double fc = 100.0f; // cut off frequency
     double Q = 0.707f;
     double boost = 0.0f;
-    double wetDry = 1.0f; // range: 0.0 - 1.0
 };
 
 class Filter : public IAudioSignalProcessor {
@@ -58,5 +56,5 @@ private:
     
     // returns true if coeffs were calculated
     bool calculateCoeffs();
-    void clearCoeffs();
+    
 };

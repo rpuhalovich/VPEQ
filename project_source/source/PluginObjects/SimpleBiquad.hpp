@@ -7,6 +7,19 @@
 #include "pch.hpp"
 
 struct Coefficient {
+    Coefficient& operator=(const Coefficient& coeffs) {
+        if (this == &coeffs) return *this;
+        
+        this->a0 = coeffs.a0;
+        this->a1 = coeffs.a1;
+        this->a2 = coeffs.a2;
+        this->b1 = coeffs.b1;
+        this->b2 = coeffs.b2;
+        this->c0 = coeffs.c0;
+        this->d0 = coeffs.d0;
+        return *this;
+    }
+    
     double a0 = 0.0f;
     double a1 = 0.0f;
     double a2 = 0.0f;
@@ -30,6 +43,7 @@ public:
     virtual bool canProcessAudioFrame();
     
     void setCoeffs(Coefficient coeffs);
+    void clearCoeffs();
 private:
     Coefficient coeffs;
     StateReg regs;

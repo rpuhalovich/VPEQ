@@ -17,7 +17,7 @@ bool Filter::canProcessAudioFrame() { return false; }
 
 bool Filter::calculateCoeffs() {
     // clear coeff array
-    clearCoeffs();
+    biquad.clearCoeffs();
     
     // set default pass-through
     coeffs.a0 = 1.0;
@@ -78,8 +78,8 @@ bool Filter::calculateCoeffs() {
         double K = tan((kPi * params.fc) / sampleRate);
         double delta = K * K * params.Q + K + params.Q;
         
-        double alpha = ( params.Q * (K * K + 1.0) ) / delta;
-        double beta = ( 2.0 * params.Q * (K * K - 1.0) ) / delta;
+        double alpha = (params.Q * (K * K + 1.0) ) / delta;
+        double beta = (2.0 * params.Q * (K * K - 1.0) ) / delta;
         
         coeffs.a0 = alpha;
         coeffs.a1 = beta;
@@ -164,14 +164,3 @@ void Filter::setParameters(const FilterParameters& params) {
     if (this->params.Q <= 0) { this->params.Q = 0.707; }
     calculateCoeffs();
 }
-
-void Filter::clearCoeffs() {
-    this->coeffs.a0 = 0.0;
-    this->coeffs.a1 = 0.0;
-    this->coeffs.a2 = 0.0;
-    this->coeffs.b1 = 0.0;
-    this->coeffs.b2 = 0.0;
-    this->coeffs.c0 = 0.0;
-    this->coeffs.d0 = 0.0;
-}
-
