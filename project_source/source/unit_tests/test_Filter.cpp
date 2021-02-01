@@ -66,7 +66,7 @@ void process(Filter filter, AudioFilter afilter) {
 
 // --- test cases ------------------------------------------------------------------------------------------------------
 
-TEST_CASE("Testing default Filter against default AudioFilter.", "[filter]") {
+TEST_CASE("Testing default Filter against default AudioFilter (LPF vs kLPF2).", "[filter]") {
     set_defaults();
     process(filter, afilter);
 }
