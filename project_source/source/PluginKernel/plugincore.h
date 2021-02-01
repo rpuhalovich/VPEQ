@@ -20,8 +20,8 @@
 #include "pch.hpp"
 #include "Filter.hpp"
 
-// **--0x7F1F--**
-/*
+#define NUM_FILTERS 7
+
 enum controlID {
     filterFC_Hz1,
     filterFC_Hz2,
@@ -55,15 +55,15 @@ enum controlID {
     filterType6,
     filterType7
 };
-*/
 
+/*
 enum controlID {
     filterFC_Hz,
     filterQ,
     boostCut_dB,
     filterType
 };
-// **--0x0F1F--**
+*/
 
 /**
 \class PluginCore
@@ -148,12 +148,38 @@ public:
     // --- END USER VARIABLES AND FUNCTIONS -------------------------------------- //
 
 private:
-    //  **--0x07FD--**
-    double filterFC_Hz = 1000.000000;
-    double filterQ = 0.707000;
-    double boostCut_dB = 0.000000;
+    double filterFC_Hz1 = 1000.000000;
+    double filterFC_Hz2 = 1000.000000;
+    double filterFC_Hz3 = 1000.000000;
+    double filterFC_Hz4 = 1000.000000;
+    double filterFC_Hz5 = 1000.000000;
+    double filterFC_Hz6 = 1000.000000;
+    double filterFC_Hz7 = 1000.000000;
     
-    int filterType = 0;
+    double filterQ1 = 0.707000;
+    double filterQ2 = 0.707000;
+    double filterQ3 = 0.707000;
+    double filterQ4 = 0.707000;
+    double filterQ5 = 0.707000;
+    double filterQ6 = 0.707000;
+    double filterQ7 = 0.707000;
+    
+    double boostCut_dB1 = 0.000000;
+    double boostCut_dB2 = 0.000000;
+    double boostCut_dB3 = 0.000000;
+    double boostCut_dB4 = 0.000000;
+    double boostCut_dB5 = 0.000000;
+    double boostCut_dB6 = 0.000000;
+    double boostCut_dB7 = 0.000000;
+    
+    int filterType1 = 0;
+    int filterType2 = 0;
+    int filterType3 = 0;
+    int filterType4 = 0;
+    int filterType5 = 0;
+    int filterType6 = 0;
+    int filterType7 = 0;
+    
     enum class filterTypeEnum {
         LPF2,
         HPF2,
@@ -241,7 +267,13 @@ public:
     }
 protected:
     // --- members
-    Filter filter;
+    Filter filter1;
+    Filter filter2;
+    Filter filter3;
+    Filter filter4;
+    Filter filter5;
+    Filter filter6;
+    Filter filter7;
 
     // --- methods
     // used to update processing objects from gui elements each frame cycle
