@@ -148,50 +148,11 @@ public:
     // --- END USER VARIABLES AND FUNCTIONS -------------------------------------- //
 
 private:
-    double filterFC_Hz1 = 1000.000000;
-    double filterFC_Hz2 = 1000.000000;
-    double filterFC_Hz3 = 1000.000000;
-    double filterFC_Hz4 = 1000.000000;
-    double filterFC_Hz5 = 1000.000000;
-    double filterFC_Hz6 = 1000.000000;
-    double filterFC_Hz7 = 1000.000000;
-    
-    double filterQ1 = 0.707000;
-    double filterQ2 = 0.707000;
-    double filterQ3 = 0.707000;
-    double filterQ4 = 0.707000;
-    double filterQ5 = 0.707000;
-    double filterQ6 = 0.707000;
-    double filterQ7 = 0.707000;
-    
-    double boostCut_dB1 = 0.000000;
-    double boostCut_dB2 = 0.000000;
-    double boostCut_dB3 = 0.000000;
-    double boostCut_dB4 = 0.000000;
-    double boostCut_dB5 = 0.000000;
-    double boostCut_dB6 = 0.000000;
-    double boostCut_dB7 = 0.000000;
-    
-    int filterType1 = 0;
-    int filterType2 = 0;
-    int filterType3 = 0;
-    int filterType4 = 0;
-    int filterType5 = 0;
-    int filterType6 = 0;
-    int filterType7 = 0;
-    
-    enum class filterTypeEnum {
-        LPF2,
-        HPF2,
-        BPF,
-        BSF,
-        LSF,
-        HSF,
-        PEQ,
-        OFF
-    };
-    // **--0x1A7F--**
-    // --- end member variables
+    double filterFC_Hz[NUM_FILTERS];
+    double filterQ[NUM_FILTERS];
+    double boostCut_dB[NUM_FILTERS];
+    int filterType[NUM_FILTERS];
+    enum class filterTypeEnum { LPF2, HPF2, BPF, BSF, LSF, HSF, PEQ, OFF };
 
 public:
     /** static description: bundle folder name
@@ -267,13 +228,7 @@ public:
     }
 protected:
     // --- members
-    Filter filter1;
-    Filter filter2;
-    Filter filter3;
-    Filter filter4;
-    Filter filter5;
-    Filter filter6;
-    Filter filter7;
+    Filter filters[NUM_FILTERS];
 
     // --- methods
     // used to update processing objects from gui elements each frame cycle
