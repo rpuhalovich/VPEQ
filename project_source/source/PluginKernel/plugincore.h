@@ -21,11 +21,47 @@
 #include "Filter.hpp"
 
 // **--0x7F1F--**
+/*
 enum controlID {
-    filterFC_Hz = 0,
-    filterQ = 1,
-    boostCut_dB = 2,
-    filterType = 3
+    filterFC_Hz1,
+    filterFC_Hz2,
+    filterFC_Hz3,
+    filterFC_Hz4,
+    filterFC_Hz5,
+    filterFC_Hz6,
+    filterFC_Hz7,
+    
+    filterQ1,
+    filterQ2,
+    filterQ3,
+    filterQ4,
+    filterQ5,
+    filterQ6,
+    filterQ7,
+    
+    boostCut_dB1,
+    boostCut_dB2,
+    boostCut_dB3,
+    boostCut_dB4,
+    boostCut_dB5,
+    boostCut_dB6,
+    boostCut_dB7,
+    
+    filterType1,
+    filterType2,
+    filterType3,
+    filterType4,
+    filterType5,
+    filterType6,
+    filterType7
+};
+*/
+
+enum controlID {
+    filterFC_Hz,
+    filterQ,
+    boostCut_dB,
+    filterType
 };
 // **--0x0F1F--**
 
@@ -113,7 +149,7 @@ public:
 
 private:
     //  **--0x07FD--**
-    double filterFC_Hz = 1000.000000; // filterFc_Hz
+    double filterFC_Hz = 1000.000000;
     double filterQ = 0.707000;
     double boostCut_dB = 0.000000;
     
