@@ -69,7 +69,7 @@ bool PluginCore::initPluginParameters() {
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 1000.000000, taper::kVoltOctaveTaper);
         piParam->setParameterSmoothing(true);
         piParam->setSmoothingTimeMsec(20.000000);
-        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kDouble);
+        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kDouble);
         addPluginParameter(piParam);
         
         controlIDIndex++;
@@ -81,7 +81,7 @@ bool PluginCore::initPluginParameters() {
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
         piParam->setParameterSmoothing(true);
         piParam->setSmoothingTimeMsec(20.000000);
-        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kDouble);
+        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kDouble);
         addPluginParameter(piParam);
 
         controlIDIndex++;
@@ -93,7 +93,7 @@ bool PluginCore::initPluginParameters() {
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
         piParam->setParameterSmoothing(true);
         piParam->setSmoothingTimeMsec(20.000000);
-        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kDouble);
+        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kDouble);
         addPluginParameter(piParam);
         
         controlIDIndex++;
@@ -103,7 +103,7 @@ bool PluginCore::initPluginParameters() {
         name = "Filter Type " + i;
 
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Low Pass");
-        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kInt);
+        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kInt);
         addPluginParameter(piParam);
 
         controlIDIndex++;
