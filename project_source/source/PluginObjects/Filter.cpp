@@ -16,7 +16,7 @@ double Filter::processAudioSample(double xn) {
 bool Filter::canProcessAudioFrame() { return false; }
 
 bool Filter::calculateCoeffs() {
-    // clear coeff array
+    // clear coeff struct
     biquad.clearCoeffs();
     
     // set default pass-through
@@ -44,7 +44,6 @@ bool Filter::calculateCoeffs() {
         biquad.setCoeffs(coeffs);
         return true; // coeffs were calculated
     } else if (params.type == FilterType::HPF2) {
-        // calculate filter coeffs
         double theta_c = (2 * kPi * params.fc) / sampleRate;
         double d = 1 / params.Q;
         double betaNum = 1.0 - ((d / 2.0) * sin(theta_c));
@@ -53,7 +52,6 @@ bool Filter::calculateCoeffs() {
         double gamma = (0.5 + beta) * (cos(theta_c));
         double alpha = (0.5 + beta + gamma) / 2.0;
         
-        // assign filter coeffs
         coeffs.a0 = alpha;
         coeffs.a1 = -2.0 * alpha;
         coeffs.a2 = alpha;
@@ -61,7 +59,7 @@ bool Filter::calculateCoeffs() {
         coeffs.b2 = 2.0 * beta;
         
         biquad.setCoeffs(coeffs);
-        return true; // coeffs were calculated
+        return true;
     } else if (params.type == FilterType::BPF) {
         double K = tan((kPi * params.fc) / sampleRate);
         double delta = K * K * params.Q + K + params.Q;

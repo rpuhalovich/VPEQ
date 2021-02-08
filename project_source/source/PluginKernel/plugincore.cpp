@@ -57,53 +57,57 @@ bool PluginCore::initPluginParameters() {
     if (pluginParameterMap.size() > 0) return false;
     PluginParameter* piParam = nullptr;
 
-    // TODO: there's gotta be a better way of doing this...
-    // yeah there is - for loops, arrays and string operations - fix this crap
-
+    // TODO: There's gotta be a better way of doing this...
+    // custom views maybe?
+    
     int controlIDIndex = 0;
 
     std::string name;
     for (int i = 0; i < NUM_FILTERS; i++) {
-        name = "FC " + i;
+        name = "FC ";
+        name.append(std::to_string(i + 1));
 
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 1000.000000, taper::kVoltOctaveTaper);
         piParam->setParameterSmoothing(true);
         piParam->setSmoothingTimeMsec(20.000000);
-        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kDouble);
+        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kDouble);
         addPluginParameter(piParam);
         
         controlIDIndex++;
     }
 
     for (int i = 0; i < NUM_FILTERS; i++) {
-        name = "Q " + i;
+        name = "Q ";
+        name.append(std::to_string(i + 1));
 
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
         piParam->setParameterSmoothing(true);
         piParam->setSmoothingTimeMsec(20.000000);
-        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kDouble);
+        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kDouble);
         addPluginParameter(piParam);
 
         controlIDIndex++;
     }
 
     for (int i = 0; i < NUM_FILTERS; i++) {
-        name = "Boost/Cut " + i;
+        name = "Boost/Cut ";
+        name.append(std::to_string(i + 1));
 
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
         piParam->setParameterSmoothing(true);
         piParam->setSmoothingTimeMsec(20.000000);
-        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kDouble);
+        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kDouble);
         addPluginParameter(piParam);
         
         controlIDIndex++;
     }
 
     for (int i = 0; i < NUM_FILTERS; i++) {
-        name = "Filter Type " + i;
+        name = "Filter Type ";
+        name.append(std::to_string(i + 1));
 
         piParam = new PluginParameter(controlIDIndex, name.c_str(), "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Low Pass");
-        piParam->setBoundVariable((void*)controlIDIndex, boundVariableType::kInt);
+        piParam->setBoundVariable(&controlIDIndex, boundVariableType::kInt);
         addPluginParameter(piParam);
 
         controlIDIndex++;

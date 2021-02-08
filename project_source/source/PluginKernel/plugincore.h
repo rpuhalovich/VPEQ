@@ -56,15 +56,6 @@ enum controlID {
     filterType7
 };
 
-/*
-enum controlID {
-    filterFC_Hz,
-    filterQ,
-    boostCut_dB,
-    filterType
-};
-*/
-
 /**
 \class PluginCore
 \ingroup ASPiK-Core
