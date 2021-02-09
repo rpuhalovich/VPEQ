@@ -1,6 +1,6 @@
 # VPEQ
 
-![VPEQ_screenshot](../../Users/ryan/.config/joplin-desktop/resources/reference.png)
+![VPEQ_screenshot](project_source/resources/my_resources/bg/reference.png)
 
 A basic graphic equalizer made using the ASPiK Framework as a personal exercise.
 
