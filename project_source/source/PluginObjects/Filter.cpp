@@ -139,7 +139,7 @@ bool Filter::calculateCoeffs() {
         coeffs.b1 = -2 * gamma;
         coeffs.b2 = 2 * beta;
         coeffs.c0 = mu - 1.0;
-        coeffs.d0 = 1.0;
+        coeffs.d0 = 1.0; 
 
         biquad.setCoeffs(coeffs);
         return true;

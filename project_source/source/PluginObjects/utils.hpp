@@ -22,9 +22,6 @@ namespace utils {
     static const double quater_nyquist_pattern[PATTERN_LEN] = { 0.0f, 0.707f, 1.0f, 0.707f, 0.0f, -0.707f, -1.0f, -0.707f };
     static const double dc_pattern[PATTERN_LEN] = { 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-    static double magToDB(double mag) { return 20 * std::log(mag); }
-    static double dBToMag(double dB) { return pow(10, dB / 20); }
-
     // compares two doubles based on a precision
     static bool dequals(double x, double y, double precision) { return fabs(x - y) < precision; }
 }

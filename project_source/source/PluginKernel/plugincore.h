@@ -22,38 +22,41 @@
 
 #define NUM_FILTERS 7
 
+// this is mostly for the initPlugingParameters() function for binding variables.
 enum controlID {
+    filterFC_Hz0,
     filterFC_Hz1,
     filterFC_Hz2,
     filterFC_Hz3,
     filterFC_Hz4,
     filterFC_Hz5,
     filterFC_Hz6,
-    filterFC_Hz7,
     
+    filterQ0,
     filterQ1,
     filterQ2,
     filterQ3,
     filterQ4,
     filterQ5,
     filterQ6,
-    filterQ7,
     
+    boostCut_dB0,
     boostCut_dB1,
     boostCut_dB2,
     boostCut_dB3,
     boostCut_dB4,
     boostCut_dB5,
     boostCut_dB6,
-    boostCut_dB7,
     
+    filterType0,
     filterType1,
     filterType2,
     filterType3,
     filterType4,
     filterType5,
     filterType6,
-    filterType7
+    
+    masterGain
 };
 
 /**
@@ -131,17 +134,11 @@ public:
     /** create the presets */
     bool initPluginPresets();
 
-    // --- BEGIN USER VARIABLES AND FUNCTIONS -------------------------------------- //
-    //	   Add your variables and methods here
-
-
-
-    // --- END USER VARIABLES AND FUNCTIONS -------------------------------------- //
-
 private:
     double filterFC_Hz[NUM_FILTERS];
     double filterQ[NUM_FILTERS];
     double boostCut_dB[NUM_FILTERS];
+    double masterGain = 0.0f;
     int filterType[NUM_FILTERS];
     enum class filterTypeEnum { LPF2, HPF2, BPF, BSF, LSF, HSF, PEQ, OFF };
 
