@@ -58,13 +58,6 @@ bool PluginCore::initPluginParameters() {
     PluginParameter* piParam = nullptr;
 
     //TODO: There's gotta be a better way of doing this...custom views maybe?
-
-    // --- masterGain --------------------------------------------------------------------------------------------------
-    piParam = new PluginParameter(controlID::masterGain, "Master Gain", "", controlVariableType::kDouble, -60.000000, 12.000000, 0.000000, taper::kLogTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&masterGain, boundVariableType::kDouble);
-    addPluginParameter(piParam);
     
     // --- filterFC ----------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::filterFC_Hz0, "FC 0", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 90.000000, taper::kVoltOctaveTaper);
@@ -222,6 +215,13 @@ bool PluginCore::initPluginParameters() {
 
     piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "High Shelf");
     piParam->setBoundVariable(&filterType[6], boundVariableType::kInt);
+    addPluginParameter(piParam);
+
+    // --- masterGain --------------------------------------------------------------------------------------------------
+    piParam = new PluginParameter(controlID::masterGain, "Master Gain", "", controlVariableType::kDouble, -60.000000, 12.000000, 0.000000, taper::kLogTaper);
+    piParam->setParameterSmoothing(true);
+    piParam->setSmoothingTimeMsec(20.000000);
+    piParam->setBoundVariable(&masterGain, boundVariableType::kDouble);
     addPluginParameter(piParam);
 
     // --- SCALE_GUI_SIZE
@@ -632,6 +632,4 @@ void PluginCore::updateParameters() {
     
         filters[i].setParameters(filterParams);
     }
-    
-    // no need to update masterGain as the actual control is being used
 }

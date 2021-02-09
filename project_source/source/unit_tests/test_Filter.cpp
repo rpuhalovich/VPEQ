@@ -4,8 +4,11 @@
 #include <Catch2/catch.hpp>
 #include <fxobjects.h>
 #include <guiconstants.h>
+#include <Instrumentor/Instrumentor.h>
+
 #include "pch.hpp"
 #include "Filter.hpp"
+
 
 AudioFilter afilter;
 AudioFilterParameters afilterParams;
@@ -67,8 +70,19 @@ void process(Filter filter, AudioFilter afilter) {
 // --- test cases ------------------------------------------------------------------------------------------------------
 
 TEST_CASE("Testing default Filter against default AudioFilter (LPF vs kLPF2).", "[filter]") {
+    // Instrumentor::Get().BeginSession("Filter Timing");
+    
     set_defaults();
     process(filter, afilter);
+
+    /*
+    SECTION("Testing Filter HPF2 against AudioFilter kHPF2.") {
+
+    }
+
+    Instrumentor::Get().EndSession();
+    */
+
 }
 
 TEST_CASE("Testing Filter HPF2 against AudioFilter kHPF2.", "[filter]") {
