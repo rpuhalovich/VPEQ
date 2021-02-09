@@ -218,7 +218,7 @@ bool PluginCore::initPluginParameters() {
     addPluginParameter(piParam);
 
     // --- masterGain --------------------------------------------------------------------------------------------------
-    piParam = new PluginParameter(controlID::masterGain, "Master Gain", "", controlVariableType::kDouble, -60.000000, 12.000000, 0.000000, taper::kLogTaper);
+    piParam = new PluginParameter(controlID::masterGain, "Master Gain", "dB", controlVariableType::kDouble, -60.000000, 12.000000, 0.000000, taper::kLogTaper);
     piParam->setParameterSmoothing(true);
     piParam->setSmoothingTimeMsec(20.000000);
     piParam->setBoundVariable(&masterGain, boundVariableType::kDouble);
