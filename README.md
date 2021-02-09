@@ -11,4 +11,5 @@ The V stands for Vegetable.
 ## TODO
 
 - Add a graphical representation of the frequency response.
+- Add AU support.
 
