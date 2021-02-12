@@ -77,11 +77,11 @@
 		</view>
 		<view back-color="~ BlackCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ BlackCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="10, 10" round-rect-radius="6" shadow-color="~ RedCColor" size="440, 30" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="left" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="   cloudyhead | VPEQ" transparent="false" uidesc-label="Title" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
 		<view back-color="~ BlackCColor" background-offset="0, 0" class="COptionMenu" control-tag="SCALE_GUI_SIZE" default-value="0.6" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="None" frame-width="1" max-value="5" menu-check-style="false" menu-popup-style="false" min-value="0" mouse-enabled="true" opacity="1" origin="460, 10" round-rect-radius="6" shadow-color="~ RedCColor" size="80, 30" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="true" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
-		<view bitmap-offset="0, 0" class="CSlider" control-tag="controlID::masterGain" default-value="0.395701" draw-back="true" draw-back-color="~ BlackCColor" draw-frame="true" draw-frame-color="~ BlackCColor" draw-value="true" draw-value-color="~ WhiteCColor" draw-value-from-center="true" draw-value-inverted="true" frame-width="1" handle-offset="0, 0" max-value="1" min-value="0" mode="use global" mouse-enabled="true" opacity="1" orientation="vertical" origin="550, 10" reverse-orientation="false" size="20, 30" transparent="false" wants-focus="true" wheel-inc-value="0.1" zoom-factor="10"/>
+		<view bitmap-offset="0, 0" class="CSlider" control-tag="controlID::masterGain" default-value="0.395701" draw-back="true" draw-back-color="~ BlackCColor" draw-frame="true" draw-frame-color="~ BlackCColor" draw-value="false" draw-value-color="~ WhiteCColor" draw-value-from-center="false" draw-value-inverted="false" frame-width="1" handle-bitmap="white_slider_20x3" handle-offset="0, 0" max-value="1" min-value="0" mode="use global" mouse-enabled="true" opacity="1" orientation="vertical" origin="550, 10" reverse-orientation="false" size="20, 30" transparent="false" wants-focus="true" wheel-inc-value="0.1" zoom-factor="10"/>
 		<view back-color="~ BlackCColor" background-offset="0, 0" class="CTextEdit" control-tag="controlID::masterGain" default-value="0.395701" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ BlackCColor" frame-width="1" immediate-text-change="false" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="580, 10" round-rect-radius="6" secure-style="false" shadow-color="~ RedCColor" size="50, 30" style-3D-in="false" style-3D-out="false" style-doubleclick="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="0.00 dB" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
 	</template>
 	<custom>
-		<attributes Path="C:\dev\VPEQ\project_source\resources\PluginGUI.uidesc" name="ASPiKEditor"/>
+		<attributes Path="/Users/rpuhalovich/dev/VPEQ/project_source/resources/PluginGUI.uidesc" name="ASPiKEditor"/>
 		<attributes name="FocusDrawing"/>
 		<attributes KnobAction="2" name="Settings"/>
 		<attributes Grids="1x 1,5x 5,10x 10,12x 12,15x 15" Size="10, 10" name="UIGridController"/>
@@ -93,7 +93,7 @@
 		<attributes default-blurb-color="~ WhiteCColor"/>
 		<attributes RAFXShowGrid="false"/>
 		<attributes SelectedRow="26" name="UIViewCreatorDataSource"/>
-		<attributes SelectedRow="9" name="UIBitmapsDataSource"/>
+		<attributes SelectedRow="11" name="UIBitmapsDataSource"/>
 		<attributes SelectedRow="11" name="UITagsDataSource"/>
 		<attributes SelectedRow="-1" name="UIFontsDataSource"/>
 	</custom>
@@ -15158,6 +15158,20 @@
 				iVBORw0KGgoAAAANSUhEUgAAACgAAAAFCAYAAAA3zK6FAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQ
 				UAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAdSURBVDhPY/wPBAyDGDBB6UELRh1IKRjkDmRgAACRCAQGtOi/
 				mwAAAABJRU5ErkJggg==
+			</data>
+		</bitmap>
+		<bitmap name="white_slider_20x3" path="/Users/rpuhalovich/dev/VPEQ/project_source/resources/my_resources/knob/renders/white_slider_20x3.png">
+			<data encoding="base64">
+				iVBORw0KGgoAAAANSUhEUgAAABQAAAADCAYAAACTWi8uAAABkmlDQ1BJQ0MgUHJvZmlsZQAAKJF9kL9LQl
+				EUx78+CyMUhxoaGi5kTRpmS2NpIIKBmEFWQ8/n0yfo8/F8UkFj0NIgNPRj6dfQ0lyrQ2sQFEUQbf0D/VpC
+				Xuf6XmhFHricD997zrnnfgFhS9S0YlcQKKmGnoyG2Xx6gbmeIcAND7wIilJFm0ok4qD4zj/j4w4Onm8CfN
+				bf+47hycoVCXAw4klJ0w3iZeKhFUPjvEHcr9NSxLuc8xafcc5YXG/WpJIR4ltiJililviN2C8pegkQ+Hxf
+				tpQlXZi2WOWscM609ebbuFSsSvae/IduWZ2b5fV0BhFFDDNIgCGDKgoowkCAskpKBUm6DxvyqsGbI2VtTS
+				/kFYNNkUMyi6nSqJ+FgqExgPv928eWVj4EJt4BZ62lZXaAi01g4KGl+Q4AL3l1fqmJutiUnHSEXA54OSWb
+				00DfNdC7WMmNh6wfucNA95Npvg4Drm2gUTPNzyPTbBxT8yNQVy3v7Fk4uQdS60D8CtjbB0by9ObSPx71ND
+				2yfehYY/v4BWQNd9EhSt2oAAAAOGVYSWZNTQAqAAAACAABh2kABAAAAAEAAAAaAAAAAAACoAIABAAAAAEA
+				AAAUoAMABAAAAAEAAAADAAAAAEPVmVUAAAAXSURBVAgdY/wPBAxUBExUNAtsFNUNBADCNwQCxDxlogAAAA
+				BJRU5ErkJggg==
 			</data>
 		</bitmap>
 		<bitmap name="white_slider_60x5" path="C:\dev\VPEQ\project_source\resources\my_resources\knob\renders\white_slider_60x5.png">
