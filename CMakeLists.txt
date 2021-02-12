@@ -399,10 +399,39 @@ message(STATUS "")
 set(AAX_PLUGIN_FOLDER AAX)
 set(AU_PLUGIN_FOLDER AU)
 
-# --- add_subdirectories -------------------------------------------------------
-# added a dedicated sources subdir for clenliness
-add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
+# --- sources for the following add_subdirectory(s) (cus repeat code is uncool)
+# used in:
+# - project_source/cmake/aax_cmake
+# - project_source/cmake/au_cmake
+# - project_source/cmake/vst_cmake
+# - project_source/cmake/unit_tests
 
+# must duplicate dirs as the PARENT_SCOPE flag removes the variable from the current scope
+set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects") 
+set(plugin_object_sources
+    ${OBJECTS_SOURCE_ROOT}/fxobjects.h
+    ${OBJECTS_SOURCE_ROOT}/filters.h
+    ${OBJECTS_SOURCE_ROOT}/fxobjects.cpp
+    ${OBJECTS_SOURCE_ROOT}/Filter.hpp
+    ${OBJECTS_SOURCE_ROOT}/Filter.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
+    ${OBJECTS_SOURCE_ROOT}/pch.hpp
+    ${OBJECTS_SOURCE_ROOT}/utils.hpp
+    ${OBJECTS_SOURCE_ROOT}/FrequencyResponseView.hpp
+)
+
+# used in project_source/cmake/unit_tests
+set(TESTS_DIR "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests")
+set(TESTS_SRC
+    ${TESTS_DIR}/catch_main.cpp
+    ${TESTS_DIR}/test_Filter.cpp
+    ${TESTS_DIR}/test_SimpleBiquad.cpp
+)
+
+set(PCH "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp")
+
+# --- add_subdirectories -------------------------------------------------------
 # add each project:
 if(AAX_SDK_BUILD)
 	add_subdirectory(${AAX_CMAKE_FOLDER})
@@ -420,5 +449,5 @@ endif()
 set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
 add_subdirectory(${UNIT_TESTS_DIR})
 
-# --- set the startup project to be the VST project in Visual Studio
+# --- set the startup project to be the VST project in Visual Studio ----------
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
