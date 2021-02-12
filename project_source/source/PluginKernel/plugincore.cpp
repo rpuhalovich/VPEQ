@@ -57,8 +57,6 @@ bool PluginCore::initPluginParameters() {
     if (pluginParameterMap.size() > 0) return false;
     PluginParameter* piParam = nullptr;
 
-    //TODO: There's gotta be a better way of doing this...custom views maybe?
-    
     // --- filterFC ----------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::filterFC_Hz0, "FC 0", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 90.000000, taper::kVoltOctaveTaper);
     piParam->setParameterSmoothing(true);
@@ -473,6 +471,12 @@ bool PluginCore::processMessage(MessageInfo& messageInfo) {
 
     // --- update view; this will only be called if the GUI is actually open
     case PLUGINGUI_TIMERPING: {
+        if (FreqResponseView) {
+            // TODO: finish draw updates for FreqResponseView
+            
+            return true;
+        }
+        
         return false;
     }
 
@@ -496,7 +500,7 @@ bool PluginCore::processMessage(MessageInfo& messageInfo) {
         break;
     }
 
-    return false; /// not handled
+    return false; // not handled
 }
 
 
@@ -633,3 +637,8 @@ void PluginCore::updateParameters() {
         filters[i].setParameters(filterParams);
     }
 }
+
+Filter* PluginCore::getFilters() {
+    return filters;
+}
+

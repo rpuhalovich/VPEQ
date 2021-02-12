@@ -17,11 +17,19 @@ void FreqResponseView::draw(VSTGUI::CDrawContext *pContext) {
     // --- below is example code ---------------
     // setup the background rectangle
     pContext->setLineWidth(1);
-    pContext->setFillColor(VSTGUI::CColor (255, 255, 255, 255)); // white background
-    pContext->setFrameColor(VSTGUI::CColor (0, 0, 0, 255)); // black borders
+    pContext->setFillColor(VSTGUI::CColor(255, 255, 255, 255)); // white background
+    pContext->setFrameColor(VSTGUI::CColor(0, 0, 0, 255)); // black borders
  
+    // VSTGUI::CRect viewSize = getViewSize(); // this gets the size of the view (i think?)
+    
     // draw the rect filled (with white) and stroked (line around rectangle)
     pContext->drawRect(getViewSize(), VSTGUI::kDrawFilledAndStroked);
+    
+    // draw a line for the frequency selector
+    pContext->drawLine(getViewSize().getTopCenter(), getViewSize().getBottomCenter());
+    
+    // draw a line for the frequency response
+    pContext->drawLine(getViewSize().getLeftCenter(), getViewSize().getRightCenter());
  
     setDirty(false);
 }

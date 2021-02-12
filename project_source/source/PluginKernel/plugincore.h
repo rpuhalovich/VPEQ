@@ -20,8 +20,6 @@
 #include "pch.hpp"
 #include "Filter.hpp"
 
-#define NUM_FILTERS 7
-
 // this is mostly for the initPlugingParameters() function for binding variables.
 enum controlID {
     filterFC_Hz0,
@@ -133,6 +131,11 @@ public:
 
     /** create the presets */
     bool initPluginPresets();
+    
+    // --- my members --------------------------------------------------------------------------------------------------
+    Filter* getFilters();
+    
+    ICustomView* FreqResponseView = nullptr;
 
 private:
     double filterFC_Hz[NUM_FILTERS];

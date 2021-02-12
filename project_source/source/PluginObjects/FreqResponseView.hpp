@@ -20,7 +20,12 @@ public:
     
     // VSTGUI
     void draw(VSTGUI::CDrawContext *pContext) override;
+    
+    // member functions
+    void setFreqs();
 private:
+    double filterFreqs[NUM_FILTERS];
+    
     // lock-free queue for incoming data, sized to DATA_QUEUE_LEN in length
     moodycamel::ReaderWriterQueue<double, VSTGUI::DATA_QUEUE_LEN>* dataQueue = nullptr;
 };
