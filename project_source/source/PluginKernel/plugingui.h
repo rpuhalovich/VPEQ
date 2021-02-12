@@ -63,6 +63,9 @@
 #include <locale>
 #include <map>
 
+// --- my headers:
+#include "FreqResponseView.hpp"
+
 // --- const for host choice knob mode
 const uint32_t kHostChoice = 3;
 

@@ -1628,30 +1628,21 @@ Operation:\n
 \param tag the control ID value
 */
 CView* PluginGUI::createUserCustomView(std::string viewname, const CRect rect, IControlListener* listener, int32_t tag) {
-    if (viewname.compare("CustomWaveView") == 0) {
-        // --- create our custom view
-        return new WaveView(rect, listener, tag);
-    }
+    if (viewname.compare("FreqResponseView") == 0) { return new FreqResponseView(rect, listener, tag); }
+    
+    if (viewname.compare("CustomWaveView") == 0) { return new WaveView(rect, listener, tag); }
 
-    if (viewname.find("ASPiK_DynamicMenu") != std::string::npos) {
-        // --- create our custom view
-        return new CustomOptionMenu(rect, listener, tag);
-    }
+    if (viewname.find("ASPiK_DynamicMenu") != std::string::npos) { return new CustomOptionMenu(rect, listener, tag); }
 
-    if (viewname.find("ASPiK_DynamicLabel") != std::string::npos) {
-        // --- create our custom view
-        return new CustomTextLabel(rect);
-    }
+    if (viewname.find("ASPiK_DynamicLabel") != std::string::npos) {return new CustomTextLabel(rect);}
 
     if (viewname.compare("CustomSpectrumView") == 0) {
 #ifdef HAVE_FFTW
-        // --- create our custom view
         return new SpectrumView(rect, listener, tag);
 #else
         return new WaveView(rect, listener, tag);
 #endif
     }
-
     return nullptr;
 }
 

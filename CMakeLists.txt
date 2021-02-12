@@ -418,7 +418,8 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
     ${OBJECTS_SOURCE_ROOT}/pch.hpp
     ${OBJECTS_SOURCE_ROOT}/utils.hpp
-    ${OBJECTS_SOURCE_ROOT}/FrequencyResponseView.hpp
+    ${OBJECTS_SOURCE_ROOT}/FreqResponseView.hpp
+    ${OBJECTS_SOURCE_ROOT}/FreqResponseView.cpp
 )
 
 # used in project_source/cmake/unit_tests
