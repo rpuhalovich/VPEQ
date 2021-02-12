@@ -189,31 +189,31 @@ bool PluginCore::initPluginParameters() {
     addPluginParameter(piParam);
 
     // --- Filter Type -------------------------------------------------------------------------------------------------
-    piParam = new PluginParameter(controlID::filterType0, "Filter Type 0", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Low Shelf");
+    piParam = new PluginParameter(controlID::filterType0, "Filter Type 0", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Low Shelf");
     piParam->setBoundVariable(&filterType[0], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType1, "Filter Type 1", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType1, "Filter Type 1", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[1], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType2, "Filter Type 2", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType2, "Filter Type 2", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[2], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType3, "Filter Type 3", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType3, "Filter Type 3", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[3], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType4, "Filter Type 4", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType4, "Filter Type 4", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[4], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType5, "Filter Type 5", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType5, "Filter Type 5", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[5], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "High Shelf");
+    piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "High Shelf");
     piParam->setBoundVariable(&filterType[6], boundVariableType::kInt);
     addPluginParameter(piParam);
 
