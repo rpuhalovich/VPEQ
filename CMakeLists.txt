@@ -23,7 +23,7 @@ cmake_minimum_required (VERSION 3.4.3)
 # SDK check
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/project_source/source/vendor/sdk/VST_SDK OR 
 	NOT EXISTS ${CMAKE_SOURCE_DIR}/project_source/source/vendor/sdk/AU_SDK)
-	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in project_source/source/vendor/sdk")
+	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in: project_source/source/vendor/sdk")
 endif()
 
 
