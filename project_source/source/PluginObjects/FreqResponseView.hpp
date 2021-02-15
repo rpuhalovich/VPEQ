@@ -8,6 +8,7 @@
 #include <pluginstructures.h>
 #include <customviews.h>
 #include <vstgui/vstgui.h>
+#include "Filter.hpp"
 
 class FreqResponseView : public VSTGUI::CView, public ICustomView {
 public:
@@ -22,7 +23,7 @@ public:
     void draw(VSTGUI::CDrawContext *pContext) override;
     
     // member functions
-    void setFreqs();
+    void setFreqs(Filter* filters);
 private:
     double filterFreqs[NUM_FILTERS];
     

@@ -134,7 +134,6 @@ public:
     
     // --- my members --------------------------------------------------------------------------------------------------
     Filter* getFilters();
-    
     ICustomView* FreqResponseView = nullptr;
 
 private:
