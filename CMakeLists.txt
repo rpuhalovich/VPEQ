@@ -399,7 +399,7 @@ message(STATUS "")
 set(AAX_PLUGIN_FOLDER AAX)
 set(AU_PLUGIN_FOLDER AU)
 
-# --- sources for the following add_subdirectory(s) (cus repeat code is uncool)
+# --- sources for the following add_subdirectory(s) ----------------------------
 # used in:
 # - project_source/cmake/aax_cmake
 # - project_source/cmake/au_cmake
@@ -452,3 +452,8 @@ add_subdirectory(${UNIT_TESTS_DIR})
 
 # --- set the startup project to be the VST project in Visual Studio ----------
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
+
+# --- folders ------------------------------------------------------------------
+set_target_properties(pluginterfaces PROPERTIES FOLDER SDK)
+set_target_properties(sdk_common PROPERTIES FOLDER SDK)
+set_target_properties(sdk_hosting PROPERTIES FOLDER SDK)
