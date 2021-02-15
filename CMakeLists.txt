@@ -19,7 +19,14 @@ cmake_minimum_required (VERSION 3.4.3)
 # --- UNIVERSAL SDK FOLDER NAMES
 #
 # ---------------------------------------------------------------------------------
-#
+
+# SDK check
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/project_source/source/vendor/sdk/VST_SDK OR 
+	NOT EXISTS ${CMAKE_SOURCE_DIR}/project_source/source/vendor/sdk/AU_SDK)
+	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in project_source/source/vendor/sdk")
+endif()
+
+
 # --- Here you can set the names of your UNIVERSAL SDK sub-USE_FOLDERS
 #     NOTE: this is not needed when you export individual API projects
 set(UNI_AAX_SDK_FOLDER 		AAX_SDK)
