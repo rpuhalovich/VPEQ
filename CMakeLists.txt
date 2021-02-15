@@ -406,7 +406,6 @@ set(AU_PLUGIN_FOLDER AU)
 # - project_source/cmake/vst_cmake
 # - project_source/cmake/unit_tests
 
-# must duplicate dirs as the PARENT_SCOPE flag removes the variable from the current scope
 set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects") 
 set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/fxobjects.h
@@ -454,6 +453,6 @@ add_subdirectory(${UNIT_TESTS_DIR})
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
 
 # --- folders ------------------------------------------------------------------
-set_target_properties(pluginterfaces PROPERTIES FOLDER SDK)
-set_target_properties(sdk_common PROPERTIES FOLDER SDK)
-set_target_properties(sdk_hosting PROPERTIES FOLDER SDK)
+set_target_properties(pluginterfaces PROPERTIES FOLDER Libraries)
+set_target_properties(sdk_common PROPERTIES FOLDER Libraries)
+set_target_properties(sdk_hosting PROPERTIES FOLDER Libraries)
