@@ -431,7 +431,6 @@ set(plugin_object_sources
 # used in project_source/cmake/unit_tests
 set(TESTS_DIR "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests")
 set(TESTS_SRC
-    ${TESTS_DIR}/catch_main.cpp
     ${TESTS_DIR}/test_Filter.cpp
     ${TESTS_DIR}/test_SimpleBiquad.cpp
 )

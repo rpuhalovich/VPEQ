@@ -10,6 +10,20 @@
 #include <vstgui/vstgui.h>
 #include "Filter.hpp"
 
+struct FreqResponseViewMessage {
+    FreqResponseViewMessage() {}
+    FreqResponseViewMessage(const FreqResponseViewMessage& message) {
+        fc = message.fc;
+    }
+    
+    FreqResponseViewMessage& operator=(const FreqResponseViewMessage& message) {
+        fc = message.fc;
+        return *this;
+    }
+    
+    double fc = 100.0f;
+};
+
 class FreqResponseView : public VSTGUI::CView, public ICustomView {
 public:
     FreqResponseView(const VSTGUI::CRect& size, VSTGUI::IControlListener* listener, int32_t tag);

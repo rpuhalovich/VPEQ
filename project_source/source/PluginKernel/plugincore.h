@@ -19,6 +19,7 @@
 // my headers
 #include "pch.hpp"
 #include "Filter.hpp"
+#include "FreqResponseView.hpp" // For the message struct only!!
 
 // this is mostly for the initPlugingParameters() function for binding variables.
 enum controlID {
