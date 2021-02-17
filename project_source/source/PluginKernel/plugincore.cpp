@@ -482,6 +482,51 @@ bool PluginCore::processMessage(MessageInfo& messageInfo) {
 
     // --- register the custom view, grab the ICustomView interface
     case PLUGINGUI_REGISTER_CUSTOMVIEW: {
+        /*
+        if (messageInfo.inMessageString.compare("CustomKnobView") == 0) {
+            // --- (1) get the custom view interface via incoming message data*
+            if (knobView != static_cast<ICustomView*>(messageInfo.inMessageData))
+                knobView = static_cast<ICustomView*>(messageInfo.inMessageData);
+
+            if (!knobView) return false;
+
+            // --- send the view a message
+            VSTGUI::CustomViewMessage knobMessage;
+            knobMessage.message = VSTGUI::MESSAGE_QUERY_CONTROL;
+            knobMessage.queryString.assign("Hello There!");
+
+            // --- send the message
+            knobView->sendMessage(&knobMessage);
+
+            // --- check the reply string; the messgageData variable contains a pointer to the object (DANGEROUS)
+            const char* reply = knobMessage.replyString.c_str();
+            printf("%s", reply);
+
+            // --- DO NOT DO THIS!!! (but it is possible)
+            //CAnimKnob* customKnob = static_cast<CAnimKnob*>(knobMessage.messageData);
+
+            // --- registered!
+            return true;
+        }
+        */
+
+        /*
+        if (messageInfo.inMessageString.compare("FreqResponseView") == 0) {
+            if (FreqResponseView != static_cast<ICustomView*>(messageInfo.inMessageData))
+                FreqResponseView = static_cast<ICustomView*>(messageInfo.inMessageData);
+
+            if (!FreqResponseView) return false;
+
+            // send a message to the view
+            FreqResponseViewMessage message;
+            message.fc = filters[0].getParameters().fc;
+
+            FreqResponseView->sendMessage(&message);
+            FreqResponseView->updateView();
+
+            return true;
+        }
+        */
 
         return false;
     }
@@ -637,8 +682,3 @@ void PluginCore::updateParameters() {
         filters[i].setParameters(filterParams);
     }
 }
-
-Filter* PluginCore::getFilters() {
-    return filters;
-}
-

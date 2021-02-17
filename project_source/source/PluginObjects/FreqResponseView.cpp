@@ -3,15 +3,11 @@
 #include "FreqResponseView.hpp"
 
 FreqResponseView::FreqResponseView(const VSTGUI::CRect &size, VSTGUI::IControlListener *listener, int32_t tag)
-    : CView(size) {
-        
-}
+    : CView(size) {}
 
 FreqResponseView::~FreqResponseView() {}
 
-void FreqResponseView::updateView() {
-
-}
+void FreqResponseView::updateView() {}
 
 void FreqResponseView::pushDataValue(double data) {}
 
