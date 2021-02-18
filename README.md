@@ -6,7 +6,7 @@ A basic parametric equalizer made using the ASPiK Framework as a personal exerci
 
 ASPiK: https://www.aspikplugins.com/
 
-The V stands for Vegetable.
+The V stands for Veggie.
 
 ## TODO
 
