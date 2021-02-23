@@ -5,3 +5,4 @@ project_source/source/vendor/sdk/*
 !project_source/source/vendor/sdk/download_sdk.sh
 
 .DS_Store
+project_source/source/PluginKernel/plugindescription.h

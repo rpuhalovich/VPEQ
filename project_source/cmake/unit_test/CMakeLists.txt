@@ -16,6 +16,10 @@ add_executable(unit_tests
     ${kernel_sources}
 )
 
+target_link_libraries(unit_tests STATIC
+    gtest_main
+)
+
 # include directories to main exe
 target_include_directories(unit_tests PRIVATE 
     "${OBJECTS_SOURCE_ROOT}"

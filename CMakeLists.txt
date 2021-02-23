@@ -453,6 +453,8 @@ endif()
 
 # add unit testing:
 set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
+set(VENDOR_DIR ${CMAKE_SOURCE_DIR}/project_source/source/vendor)
+add_subdirectory(${VENDOR_DIR}/googletest)
 add_subdirectory(${UNIT_TESTS_DIR})
 
 # --- set the startup project to be the VST project in Visual Studio ----------
