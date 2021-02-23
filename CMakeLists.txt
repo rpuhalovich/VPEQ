@@ -461,6 +461,14 @@ add_subdirectory(${UNIT_TESTS_DIR})
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
 
 # --- folders ------------------------------------------------------------------
-set_target_properties(pluginterfaces PROPERTIES FOLDER Libraries)
-set_target_properties(sdk_common PROPERTIES FOLDER Libraries)
-set_target_properties(sdk_hosting PROPERTIES FOLDER Libraries)
+set_target_properties(
+	pluginterfaces 
+	sdk_hosting 
+	sdk_common
+	gtest 
+	gtest_main 
+	gmock 
+	gmock_main 
+	validator 
+	uidesccompressor
+	PROPERTIES FOLDER "Libraries")
