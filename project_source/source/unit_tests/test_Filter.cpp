@@ -5,7 +5,6 @@
 #include <Catch2/catch.hpp>
 #include <fxobjects.h>
 #include <guiconstants.h>
-#include <Instrumentor/Instrumentor.h>
 
 #include "pch.hpp"
 #include "Filter.hpp"

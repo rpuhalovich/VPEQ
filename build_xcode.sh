@@ -1,3 +1,1 @@
-mkdir mac_build
-cd mac_build
-cmake -GXcode ../
+cmake -S . -B mac_build -GXcode

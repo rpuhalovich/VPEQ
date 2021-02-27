@@ -6,3 +6,4 @@ project_source/source/vendor/sdk/*
 
 .DS_Store
 project_source/source/PluginKernel/plugindescription.h
+dev.lnk
