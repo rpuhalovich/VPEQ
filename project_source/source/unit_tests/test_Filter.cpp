@@ -1,6 +1,7 @@
 // created by Ryan Puhalovich - http://github.com/rpuhalovich
 // testing Filter against the provided AudioFilter in fxobjects.h
 
+#include <gtest/gtest.h>
 #include <Catch2/catch.hpp>
 #include <fxobjects.h>
 #include <guiconstants.h>
@@ -8,7 +9,6 @@
 
 #include "pch.hpp"
 #include "Filter.hpp"
-
 
 AudioFilter afilter;
 AudioFilterParameters afilterParams;
@@ -70,19 +70,8 @@ void process(Filter filter, AudioFilter afilter) {
 // --- test cases ------------------------------------------------------------------------------------------------------
 
 TEST_CASE("Testing default Filter against default AudioFilter (LPF vs kLPF2).", "[filter]") {
-    // Instrumentor::Get().BeginSession("Filter Timing");
-    
     set_defaults();
     process(filter, afilter);
-
-    /*
-    SECTION("Testing Filter HPF2 against AudioFilter kHPF2.") {
-
-    }
-
-    Instrumentor::Get().EndSession();
-    */
-
 }
 
 TEST_CASE("Testing Filter HPF2 against AudioFilter kHPF2.", "[filter]") {
@@ -119,4 +108,9 @@ TEST_CASE("Testing Filter PEQ against AudioFilter kResonA.", "[filter]") {
     filterParams.type = FilterType::PEQ;
     afilterParams.algorithm = filterAlgorithm::kResonA;
     process(filter, afilter);
+}
+
+TEST(test, macros) {
+    EXPECT_EQ(true, true);
+    EXPECT_EQ(true, false);
 }

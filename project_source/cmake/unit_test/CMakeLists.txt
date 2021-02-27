@@ -10,9 +10,14 @@ set(kernel_sources ${KERNEL_SOURCE_ROOT}/guiconstants.h)
 
 # plugin_object_sources and TESTS_SRC found in root CMakeLists.txt
 add_executable(unit_tests
+    ${TESTS_DIR}/catch_main.cpp
     ${TESTS_SRC} 
     ${plugin_object_sources} 
     ${kernel_sources}
+)
+
+target_link_libraries(unit_tests STATIC
+    gtest_main
 )
 
 # include directories to main exe
@@ -23,5 +28,4 @@ target_include_directories(unit_tests PRIVATE
 )
 
 source_group(Tests FILES ${TESTS_SRC})
-
-# target_precompile_headers(unit_tests PRIVATE ${PCH})
+source_group(src FILES ${plugin_object_sources} ${kernel_sources} ${TESTS_DIR}/catch_main.cpp)

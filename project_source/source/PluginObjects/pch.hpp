@@ -12,3 +12,6 @@
 #include <unordered_set>
 
 #include "utils.hpp"
+
+// there's gotta be a better place to put this...
+#define NUM_FILTERS 7

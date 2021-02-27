@@ -57,8 +57,6 @@ bool PluginCore::initPluginParameters() {
     if (pluginParameterMap.size() > 0) return false;
     PluginParameter* piParam = nullptr;
 
-    //TODO: There's gotta be a better way of doing this...custom views maybe?
-    
     // --- filterFC ----------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::filterFC_Hz0, "FC 0", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 90.000000, taper::kVoltOctaveTaper);
     piParam->setParameterSmoothing(true);
@@ -189,31 +187,31 @@ bool PluginCore::initPluginParameters() {
     addPluginParameter(piParam);
 
     // --- Filter Type -------------------------------------------------------------------------------------------------
-    piParam = new PluginParameter(controlID::filterType0, "Filter Type 0", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Low Shelf");
+    piParam = new PluginParameter(controlID::filterType0, "Filter Type 0", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Low Shelf");
     piParam->setBoundVariable(&filterType[0], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType1, "Filter Type 1", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType1, "Filter Type 1", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[1], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType2, "Filter Type 2", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType2, "Filter Type 2", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[2], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType3, "Filter Type 3", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType3, "Filter Type 3", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[3], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType4, "Filter Type 4", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType4, "Filter Type 4", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[4], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType5, "Filter Type 5", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "Peaking");
+    piParam = new PluginParameter(controlID::filterType5, "Filter Type 5", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
     piParam->setBoundVariable(&filterType[5], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking,Off", "High Shelf");
+    piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "High Shelf");
     piParam->setBoundVariable(&filterType[6], boundVariableType::kInt);
     addPluginParameter(piParam);
 
@@ -473,11 +471,62 @@ bool PluginCore::processMessage(MessageInfo& messageInfo) {
 
     // --- update view; this will only be called if the GUI is actually open
     case PLUGINGUI_TIMERPING: {
+        if (FreqResponseView) {
+            // TODO: finish draw updates for FreqResponseView
+            
+            return true;
+        }
+        
         return false;
     }
 
     // --- register the custom view, grab the ICustomView interface
     case PLUGINGUI_REGISTER_CUSTOMVIEW: {
+        /*
+        if (messageInfo.inMessageString.compare("CustomKnobView") == 0) {
+            // --- (1) get the custom view interface via incoming message data*
+            if (knobView != static_cast<ICustomView*>(messageInfo.inMessageData))
+                knobView = static_cast<ICustomView*>(messageInfo.inMessageData);
+
+            if (!knobView) return false;
+
+            // --- send the view a message
+            VSTGUI::CustomViewMessage knobMessage;
+            knobMessage.message = VSTGUI::MESSAGE_QUERY_CONTROL;
+            knobMessage.queryString.assign("Hello There!");
+
+            // --- send the message
+            knobView->sendMessage(&knobMessage);
+
+            // --- check the reply string; the messgageData variable contains a pointer to the object (DANGEROUS)
+            const char* reply = knobMessage.replyString.c_str();
+            printf("%s", reply);
+
+            // --- DO NOT DO THIS!!! (but it is possible)
+            //CAnimKnob* customKnob = static_cast<CAnimKnob*>(knobMessage.messageData);
+
+            // --- registered!
+            return true;
+        }
+        */
+
+        /*
+        if (messageInfo.inMessageString.compare("FreqResponseView") == 0) {
+            if (FreqResponseView != static_cast<ICustomView*>(messageInfo.inMessageData))
+                FreqResponseView = static_cast<ICustomView*>(messageInfo.inMessageData);
+
+            if (!FreqResponseView) return false;
+
+            // send a message to the view
+            FreqResponseViewMessage message;
+            message.fc = filters[0].getParameters().fc;
+
+            FreqResponseView->sendMessage(&message);
+            FreqResponseView->updateView();
+
+            return true;
+        }
+        */
 
         return false;
     }
@@ -496,7 +545,7 @@ bool PluginCore::processMessage(MessageInfo& messageInfo) {
         break;
     }
 
-    return false; /// not handled
+    return false; // not handled
 }
 
 

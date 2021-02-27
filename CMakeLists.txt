@@ -19,7 +19,14 @@ cmake_minimum_required (VERSION 3.4.3)
 # --- UNIVERSAL SDK FOLDER NAMES
 #
 # ---------------------------------------------------------------------------------
-#
+
+# SDK check
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/project_source/source/vendor/sdk/VST_SDK OR 
+	NOT EXISTS ${CMAKE_SOURCE_DIR}/project_source/source/vendor/sdk/AU_SDK)
+	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in: project_source/source/vendor/sdk")
+endif()
+
+
 # --- Here you can set the names of your UNIVERSAL SDK sub-USE_FOLDERS
 #     NOTE: this is not needed when you export individual API projects
 set(UNI_AAX_SDK_FOLDER 		AAX_SDK)
@@ -69,7 +76,7 @@ set(VENDOR_EMAIL "")		# <-- OPTIONAL (ok if blank)
 
 # --- 4-Character Codes (for AAX and VST3)
 set(4CHAR_CODE "VPEQ")				# MUST be unique for each plugin your company creates/sells
-set(4CHAR_MANUFACTURER_ID "RYAN")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
+set(4CHAR_MANUFACTURER_ID "CLHE")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
 set(4CHAR_AAX_PRODUCT_ID "VPEQ")			# MUST be unique for each plugin your company creates/sells
 
 # --- Plugin Options ---
@@ -399,10 +406,38 @@ message(STATUS "")
 set(AAX_PLUGIN_FOLDER AAX)
 set(AU_PLUGIN_FOLDER AU)
 
-# --- add_subdirectories -------------------------------------------------------
-# added a dedicated sources subdir for clenliness
-add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
+# --- sources for the following add_subdirectory(s) ----------------------------
+# used in:
+# - project_source/cmake/aax_cmake
+# - project_source/cmake/au_cmake
+# - project_source/cmake/vst_cmake
+# - project_source/cmake/unit_tests
 
+set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects") 
+set(plugin_object_sources
+    ${OBJECTS_SOURCE_ROOT}/fxobjects.h
+    ${OBJECTS_SOURCE_ROOT}/filters.h
+    ${OBJECTS_SOURCE_ROOT}/fxobjects.cpp
+    ${OBJECTS_SOURCE_ROOT}/Filter.hpp
+    ${OBJECTS_SOURCE_ROOT}/Filter.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
+    ${OBJECTS_SOURCE_ROOT}/pch.hpp
+    ${OBJECTS_SOURCE_ROOT}/utils.hpp
+    ${OBJECTS_SOURCE_ROOT}/FreqResponseView.hpp
+    ${OBJECTS_SOURCE_ROOT}/FreqResponseView.cpp
+)
+
+# used in project_source/cmake/unit_tests
+set(TESTS_DIR "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests")
+set(TESTS_SRC
+    ${TESTS_DIR}/test_Filter.cpp
+    ${TESTS_DIR}/test_SimpleBiquad.cpp
+)
+
+set(PCH "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp")
+
+# --- add_subdirectories -------------------------------------------------------
 # add each project:
 if(AAX_SDK_BUILD)
 	add_subdirectory(${AAX_CMAKE_FOLDER})
@@ -418,7 +453,22 @@ endif()
 
 # add unit testing:
 set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
+set(VENDOR_DIR ${CMAKE_SOURCE_DIR}/project_source/source/vendor)
+add_subdirectory(${VENDOR_DIR}/googletest)
 add_subdirectory(${UNIT_TESTS_DIR})
 
-# --- set the startup project to be the VST project in Visual Studio
+# --- set the startup project to be the VST project in Visual Studio ----------
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
+
+# --- folders ------------------------------------------------------------------
+set_target_properties(
+	pluginterfaces 
+	sdk_hosting 
+	sdk_common
+	gtest 
+	gtest_main 
+	gmock 
+	gmock_main 
+	validator 
+	uidesccompressor
+	PROPERTIES FOLDER "Libraries")
