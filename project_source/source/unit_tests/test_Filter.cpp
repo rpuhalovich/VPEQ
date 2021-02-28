@@ -1,7 +1,6 @@
 // created by Ryan Puhalovich - http://github.com/rpuhalovich
 // testing Filter against the provided AudioFilter in fxobjects.h
 
-// #include <Catch2/catch.hpp>
 #include "pch.hpp"
 #include <fxobjects.h>
 #include <guiconstants.h>
@@ -32,78 +31,51 @@ static void set_defaults() {
     afilter.setParameters(afilterParams);
 }
 
-// note that passing classes is okay as performance isn't critical
-static void process_nyquist(Filter filter, AudioFilter afilter) {
-    for (int i = 0; i < PATTERN_LEN; i++) {
-        afilter.processAudioSample(utils::nyquist_pattern[i]);
-        filter.processAudioSample(utils::nyquist_pattern[i]);
-    }
-}
-
-static void process_quater_nyquist(Filter filter, AudioFilter afilter) {
-    for (int i = 0; i < PATTERN_LEN; i++) {
-        afilter.processAudioSample(utils::quater_nyquist_pattern[i]);
-        filter.processAudioSample(utils::quater_nyquist_pattern[i]);
-    }
-}
-
-static void process_dc(Filter filter, AudioFilter afilter) {
-    for (int i = 0; i < PATTERN_LEN; i++) {
-        afilter.processAudioSample(utils::dc_pattern[i]);
-        filter.processAudioSample(utils::dc_pattern[i]);
-    }
-}
-
-static void process(Filter filter, AudioFilter afilter) {
-    process_nyquist(filter, afilter);
-    REQUIRE(afilter.processAudioSample(utils::nyquist_pattern[0]) == filter.processAudioSample(utils::nyquist_pattern[0]));
-    
-    process_quater_nyquist(filter, afilter);
-    REQUIRE(afilter.processAudioSample(utils::quater_nyquist_pattern[0]) == filter.processAudioSample(utils::quater_nyquist_pattern[0]));
-    
-    process_dc(filter, afilter);
-    REQUIRE(afilter.processAudioSample(utils::dc_pattern[0]) == filter.processAudioSample(utils::dc_pattern[0]));
-}
-
 // --- test cases ------------------------------------------------------------------------------------------------------
 
-TEST_CASE("Testing default Filter against default AudioFilter (LPF vs kLPF2).", "[filter]") {
-    set_defaults();
-    process(filter, afilter);
+TEST(test_macros, macros) {
+    EXPECT_EQ(true, true);
+    EXPECT_EQ(true, false);
 }
 
-TEST_CASE("Testing Filter HPF2 against AudioFilter kHPF2.", "[filter]") {
+TEST(default_filter_vs_afilter, filter) {
+    set_defaults();
+    utils::process_gtest(filter, afilter);
+}
+
+TEST(HPF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::HPF2;
     afilterParams.algorithm = filterAlgorithm::kHPF2;
-    process(filter, afilter);
+    utils::process_gtest(filter, afilter);
 }
 
-TEST_CASE("Testing Filter BPF against AudioFilter kBPF2.", "[filter]") {
+TEST(BPF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::BPF;
     afilterParams.algorithm = filterAlgorithm::kBPF2;
-    process(filter, afilter);
+    utils::process_gtest(filter, afilter);
 }
 
-TEST_CASE("Testing Filter BSF against AudioFilter kBSF2.", "[filter]") {
+TEST(BSF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::BSF;
     afilterParams.algorithm = filterAlgorithm::kBSF2;
-    process(filter, afilter);
+    utils::process_gtest(filter, afilter);
 }
 
-TEST_CASE("Testing Filter LSF against AudioFilter kLowShelf.", "[filter]") {
+TEST(LSF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::LSF;
     afilterParams.algorithm = filterAlgorithm::kLowShelf;
-    process(filter, afilter);
+    utils::process_gtest(filter, afilter);
 }
 
-TEST_CASE("Testing Filter HSF against AudioFilter kHiShelf.", "[filter]") {
+TEST(HSF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::HSF;
     afilterParams.algorithm = filterAlgorithm::kHiShelf;
-    process(filter, afilter);
+    utils::process_gtest(filter, afilter);
 }
 
-TEST_CASE("Testing Filter PEQ against AudioFilter kResonA.", "[filter]") {
+TEST(PEQ_filter_vs_afilter, filter) {
     filterParams.type = FilterType::PEQ;
     afilterParams.algorithm = filterAlgorithm::kResonA;
-    process(filter, afilter);
+    utils::process_gtest(filter, afilter);
 }
+

@@ -27,5 +27,4 @@ source_group(Tests FILES ${unit_tests_sources})
 source_group(src FILES 
     ${plugin_object_sources} 
     ${kernel_sources} 
-    ${UNIT_TESTS_SOURCE_ROOT}/catch_main.cpp
 )

@@ -16,7 +16,6 @@ set(plugin_object_sources
 )
     
 set(unit_tests_sources
-    ${UNIT_TESTS_SOURCE_ROOT}/catch_main.cpp
     ${UNIT_TESTS_SOURCE_ROOT}/test_Filter.cpp
     ${UNIT_TESTS_SOURCE_ROOT}/test_SimpleBiquad.cpp
     PARENT_SCOPE

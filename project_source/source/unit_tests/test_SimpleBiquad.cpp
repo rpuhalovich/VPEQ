@@ -7,17 +7,15 @@
 
 Biquad bi;
 BiquadParameters biparams;
-
-
 SimpleBiquad simpbi;
 
-// --- helper functions ------------------------------------------------------------------------------------------------
-
-void set_defaults() {
-    biparams.biquadCalcType = biquadAlgorithm::kDirect;
-}
-
-TEST(SimpleBiquad_vs_Biquad, biquad) {
-    set_defaults();
-    utils::process_gtest(simpbi, bi);
-}
+/*
+ void set_defaults() {
+ biparams.biquadCalcType = biquadAlgorithm::kDirect;
+ }
+ 
+ TEST(SimpleBiquad_vs_Biquad, biquad) {
+ set_defaults();
+ utils::process_gtest(simpbi, bi);
+ }
+*/
