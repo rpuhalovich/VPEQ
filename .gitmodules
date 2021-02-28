@@ -1,3 +1,0 @@
-[submodule "project_source/source/vendor/googletest"]
-	path = project_source/source/vendor/googletest
-	url = https://github.com/google/googletest.git
