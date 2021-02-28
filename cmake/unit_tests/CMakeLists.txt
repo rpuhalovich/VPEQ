@@ -23,7 +23,7 @@ target_include_directories(${this} PRIVATE
     "${EXTERN_SOURCE_ROOT}"
 )
 
-source_group(Tests FILES ${unit_tests_sources})
+source_group(unit_tests FILES ${unit_tests_sources})
 source_group(src FILES 
     ${plugin_object_sources} 
     ${kernel_sources} 

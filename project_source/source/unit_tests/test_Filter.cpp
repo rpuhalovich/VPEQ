@@ -2,6 +2,8 @@
 // testing Filter against the provided AudioFilter in fxobjects.h
 
 #include "pch.hpp"
+#include "unit_tests_utils.hpp"
+#include <gtest/gtest.h>
 #include <fxobjects.h>
 #include <guiconstants.h>
 
@@ -33,49 +35,51 @@ static void set_defaults() {
 
 // --- test cases ------------------------------------------------------------------------------------------------------
 
-TEST(test_macros, macros) {
-    EXPECT_EQ(true, true);
-    EXPECT_EQ(true, false);
-}
+/*
+ TEST(test_macros, macros) {
+ EXPECT_EQ(true, true);
+ EXPECT_EQ(true, false);
+ }
+*/
 
 TEST(default_filter_vs_afilter, filter) {
     set_defaults();
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 
 TEST(HPF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::HPF2;
     afilterParams.algorithm = filterAlgorithm::kHPF2;
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 
 TEST(BPF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::BPF;
     afilterParams.algorithm = filterAlgorithm::kBPF2;
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 
 TEST(BSF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::BSF;
     afilterParams.algorithm = filterAlgorithm::kBSF2;
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 
 TEST(LSF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::LSF;
     afilterParams.algorithm = filterAlgorithm::kLowShelf;
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 
 TEST(HSF_filter_vs_afilter, filter) {
     filterParams.type = FilterType::HSF;
     afilterParams.algorithm = filterAlgorithm::kHiShelf;
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 
 TEST(PEQ_filter_vs_afilter, filter) {
     filterParams.type = FilterType::PEQ;
     afilterParams.algorithm = filterAlgorithm::kResonA;
-    utils::process_gtest(filter, afilter);
+    unit_tests_utils::process_gtest(filter, afilter);
 }
 

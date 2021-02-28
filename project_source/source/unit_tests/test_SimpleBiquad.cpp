@@ -3,6 +3,7 @@
 
 #include <fxobjects.h>
 #include "pch.hpp"
+#include "unit_tests_utils.hpp"
 #include "SimpleBiquad.hpp"
 
 Biquad bi;

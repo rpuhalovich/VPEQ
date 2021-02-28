@@ -14,12 +14,6 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/FreqResponseView.cpp
     PARENT_SCOPE
 )
-    
-set(unit_tests_sources
-    ${UNIT_TESTS_SOURCE_ROOT}/test_Filter.cpp
-    ${UNIT_TESTS_SOURCE_ROOT}/test_SimpleBiquad.cpp
-    PARENT_SCOPE
-)
 
 set(custom_controls_sources
     ${CUSTOM_CONTROLS_SOURCE_ROOT}/atomicops.h
@@ -28,6 +22,13 @@ set(custom_controls_sources
     ${CUSTOM_CONTROLS_SOURCE_ROOT}/customviews.cpp
     ${CUSTOM_CONTROLS_SOURCE_ROOT}/customviews.h
     ${CUSTOM_CONTROLS_SOURCE_ROOT}/readerwriterqueue.h
+    PARENT_SCOPE
+)
+
+set(unit_tests_sources
+    ${UNIT_TESTS_SOURCE_ROOT}/test_Filter.cpp
+    ${UNIT_TESTS_SOURCE_ROOT}/test_SimpleBiquad.cpp
+    ${UNIT_TESTS_SOURCE_ROOT}/unit_tests_utils.hpp
     PARENT_SCOPE
 )
 
