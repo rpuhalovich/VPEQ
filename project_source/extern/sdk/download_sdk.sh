@@ -1,6 +1,6 @@
 curl -O "https://aspikplugins.com/downloads/AU_SDK.zip"
 unzip AU_SDK.zip
-mv AU_SDK/AU_SDK AU
+mv AU_SDK/AU_SDK AU_SDK
 rm -rf __MACOSX
 rm AU_SDK.zip
 
