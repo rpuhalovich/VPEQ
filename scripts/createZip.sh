@@ -1,4 +1,12 @@
+if [ -z "$1" ]
+  then
+    echo "Usage: ./createZip.sh <version number>"
+    exit 9999
+fi
+
 plugin_name="VPEQ"
+ver_num="$1"
+
 dir_win="../win_build/VST3/Release"
 dir_mac="../mac_build/VST3/Release"
 
@@ -16,7 +24,7 @@ create_zip_contents() {
     cp -r $dir_win/${plugin_name}_VST.vst3 $plugin_name/$plugin_name.vst3
 
     echo -e "$text" > $plugin_name/$readme
-    zip -rqm VPEQ.zip VPEQ/
+    zip -rqm VPEQ_${ver_num}.zip VPEQ/
     echo "Created ${plugin_name}.zip with $1/${plugin_name}_VST.vst3"
 }
 
