@@ -14,3 +14,7 @@ The V stands for Veggie.
 - Add AU support.
 - Add and try different biquad structures.
 - Add and try different filter coefficient algorithms.
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev

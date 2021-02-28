@@ -1,13 +1,5 @@
-# --- sources for the following add_subdirectory(s) (cus repeat code is uncool)
-# used in:
-# - project_source/cmake/aax_cmake
-# - project_source/cmake/au_cmake
-# - project_source/cmake/vst_cmake
-# - project_source/cmake/unit_tests
+# created by Ryan Puhalovich - https://github.com/rpuhalovich/
 
-# must duplicate dirs as the PARENT_SCOPE flag removes the variable from the current scope
-set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects" PARENT_SCOPE)
-set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects") 
 set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/fxobjects.h
     ${OBJECTS_SOURCE_ROOT}/filters.h
@@ -18,18 +10,26 @@ set(plugin_object_sources
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
     ${OBJECTS_SOURCE_ROOT}/pch.hpp
     ${OBJECTS_SOURCE_ROOT}/utils.hpp
-    ${OBJECTS_SOURCE_ROOT}/controlView.hpp
+    ${OBJECTS_SOURCE_ROOT}/FreqResponseView.hpp
+    ${OBJECTS_SOURCE_ROOT}/FreqResponseView.cpp
     PARENT_SCOPE
 )
 
-# used in project_source/cmake/unit_tests
-set(TESTS_DIR "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests" PARENT_SCOPE)
-set(TESTS_DIR "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests")
-set(TESTS_SRC
-    ${TESTS_DIR}/catch_main.cpp
-    ${TESTS_DIR}/test_Filter.cpp
-    ${TESTS_DIR}/test_SimpleBiquad.cpp
+set(custom_controls_sources
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/atomicops.h
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customcontrols.cpp
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customcontrols.h
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customviews.cpp
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customviews.h
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/readerwriterqueue.h
     PARENT_SCOPE
 )
 
-set(PCH "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp" PARENT_SCOPE)
+set(unit_tests_sources
+    ${UNIT_TESTS_SOURCE_ROOT}/test_Filter.cpp
+    ${UNIT_TESTS_SOURCE_ROOT}/test_SimpleBiquad.cpp
+    ${UNIT_TESTS_SOURCE_ROOT}/unit_tests_utils.hpp
+    PARENT_SCOPE
+)
+
+set(PCH ${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp PARENT_SCOPE)

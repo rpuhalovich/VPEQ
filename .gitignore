@@ -1,7 +1,10 @@
 .vscode/
 win_build/
 mac_build/
+project_source/extern/sdk/*
+!project_source/extern/sdk/download_sdk.sh
 
 project_source/extern/
 
 .DS_Store
+dev.lnk

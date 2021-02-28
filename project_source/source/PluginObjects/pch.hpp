@@ -5,10 +5,12 @@
 
 #include <iostream>
 #include <memory>
-
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
 #include "utils.hpp"
+
+// there's gotta be a better place to put this...
+#define NUM_FILTERS 7

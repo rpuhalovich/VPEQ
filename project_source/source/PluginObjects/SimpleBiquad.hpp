@@ -36,7 +36,7 @@ struct StateReg {
     double y_z2 = 0.0f;
 };
 
-class SimpleBiquad : IAudioSignalProcessor {
+class SimpleBiquad : public IAudioSignalProcessor {
 public:
     virtual bool reset(double _sampleRate);
     virtual double processAudioSample(double xn);

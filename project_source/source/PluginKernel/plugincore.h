@@ -19,8 +19,7 @@
 // my headers
 #include "pch.hpp"
 #include "Filter.hpp"
-
-#define NUM_FILTERS 7
+#include "FreqResponseView.hpp" // For the FreqResponseViewMessage struct only!!
 
 // this is mostly for the initPlugingParameters() function for binding variables.
 enum controlID {
@@ -65,7 +64,6 @@ enum controlID {
 \brief
 The PluginCore object is the default PluginBase derived object for ASPiK projects.
 Note that you are fre to change the name of this object (as long as you change it in the compiler settings, etc...)
-
 
 PluginCore Operations:
 - overrides the main processing functions from the base class
@@ -133,6 +131,9 @@ public:
 
     /** create the presets */
     bool initPluginPresets();
+    
+    // --- my members --------------------------------------------------------------------------------------------------
+    ICustomView* FreqResponseView = nullptr;
 
 private:
     double filterFC_Hz[NUM_FILTERS];

@@ -1,4 +1,4 @@
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- CMakeLists.txt
 # --- ASPiK(TM) Plugin Development Framework
@@ -7,31 +7,45 @@
 # --- Author: Will Pirkle
 # --- Date: 16 Sept 2018
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.4.3)
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # --- BEGIN USER INPUT
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------------
+# --- Directories and Sources --------------------------------------------------
+set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects") 
+set(KERNEL_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginKernel") 
+set(CUSTOM_CONTROLS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/CustomControls") 
+set(UNIT_TESTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests")
+set(EXTERN_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/extern")
+add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
+
+# SDK check
+set(SDK_DIR "${EXTERN_SOURCE_ROOT}/sdk")
+if(NOT EXISTS "${SDK_DIR}/VST_SDK" OR NOT EXISTS "${SDK_DIR}/AU_SDK")
+	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in: project_source/source/vendor/sdk")
+endif()
+
+# ------------------------------------------------------------------------------
 #
 # --- UNIVERSAL SDK FOLDER NAMES
 #
-# ---------------------------------------------------------------------------------
-#
+# ------------------------------------------------------------------------------
+
 # --- Here you can set the names of your UNIVERSAL SDK sub-USE_FOLDERS
 #     NOTE: this is not needed when you export individual API projects
 set(UNI_AAX_SDK_FOLDER 		AAX_SDK)
 set(UNI_AU_SDK_FOLDER 		AU_SDK)
 set(UNI_VST3_SDK_FOLDER 	VST_SDK/VST3_SDK)
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- BUILD FLAGS - set these to build individual projects or a universal version
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # --- Universal Build Flag - when using combined SDKs; can still build independently
 #                            with individual flags below
@@ -39,14 +53,14 @@ set(UNIVERSAL_SDK_BUILD TRUE) 	# <-- set TRUE or FALSE
 
 # --- Individual project builds
 set(AAX_SDK_BUILD FALSE)# <-- set TRUE or FALSE
-set(AU_SDK_BUILD TRUE)# <-- set TRUE or FALSE
+set(AU_SDK_BUILD FALSE)# <-- set TRUE or FALSE
 set(VST_SDK_BUILD TRUE)# <-- set TRUE or FALSE
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- PROJECT NAMES/FLAGS/CODES
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # --- the name of the project must be valid CMAKE name: must not contain spaces or numbers
 set(PLUGIN_PROJECT_NAME VPEQ)	# <-- set PROJECT NAME with or without quotes
 
@@ -69,7 +83,7 @@ set(VENDOR_EMAIL "")		# <-- OPTIONAL (ok if blank)
 
 # --- 4-Character Codes (for AAX and VST3)
 set(4CHAR_CODE "VPEQ")				# MUST be unique for each plugin your company creates/sells
-set(4CHAR_MANUFACTURER_ID "RYAN")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
+set(4CHAR_MANUFACTURER_ID "CLHE")			# your company CODE (does NOT need to be unique for each plugin; can be re-used)
 set(4CHAR_AAX_PRODUCT_ID "VPEQ")			# MUST be unique for each plugin your company creates/sells
 
 # --- Plugin Options ---
@@ -87,12 +101,12 @@ set(VST3_SAMPLE_ACCURATE_GRANULARITY 1)
 # --- AAX Only ---
 set(AAX_CATEGORY 2)
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- OPTIONAL SUB-PROJECT NAMES
 #     - change only if you need to; does NOT need to be changed with each project
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # --- this creates sub-project names for universal projects
 if(UNIVERSAL_SDK_BUILD)
 	# --- names of sub-projects for universal builds; you can change them here:
@@ -108,11 +122,11 @@ else()
 	set(EXP_SUBPROJECT_NAME_VST ${PLUGIN_PROJECT_NAME})
 endif()
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- SDK ROOTS (OPTIONAL - only change these if you know what you are doing!)
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # --- PARENT: this is the UNIVERSAL project folder
 get_filename_component(PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 
@@ -122,7 +136,7 @@ get_filename_component(GRANDPARENT_DIR ${PARENT_DIR} DIRECTORY)
 # --- GR_GRANDPARENT: this is the outer "ALL_SDK" folder, or whatever the user calls it
 get_filename_component(GR_GRANDPARENT_DIR ${GRANDPARENT_DIR} DIRECTORY)
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 #	  NOTE: the SDK path defaults to the location included in the "readme.txt" file
 #			in the Project folder. However, you can customize it here
@@ -134,10 +148,8 @@ get_filename_component(GR_GRANDPARENT_DIR ${GRANDPARENT_DIR} DIRECTORY)
 #			Windows:
 #				set(ROOT "C:/AU_SDK")
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # I added this to have the sdk within the project source
-set(SDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/project_source/source/vendor/sdk)
-
 if(UNIVERSAL_SDK_BUILD)
 	# --- AAX:
 	set(AAX_SDK_ROOT ${SDK_DIR}/${UNI_AAX_SDK_FOLDER})
@@ -163,9 +175,9 @@ endif()
 set(public_sdk_SOURCE_DIR ${SDK_ROOT}/public.sdk)
 set(pluginterfaces_SOURCE_DIR ${SDK_ROOT}/pluginterfaces)
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # --- END USER INPUT (you don't need to modify anything past this point!)
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 set(WINBUILD_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/win_build)
 set(MACBUILD_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/mac_build)
 
@@ -174,11 +186,11 @@ set(MACBUILD_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/mac_build)
 #		       		 with VST3 SDK whatsoever. You do NOT need to customize this path!
 set(VSTGUI_ROOT ${SDK_ROOT})
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # ---  Basic Setup
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR OR EXISTS "${CMAKE_BINARY_DIR}/CMakeLists.txt")
 	message(SEND_ERROR "In-source builds are not allowed. Please create a separate build directory and run 'cmake /path/to/folder [options]' there.")
 	message(FATAL_ERROR "You can remove the file \"CMakeCache.txt\" and directory \"CMakeFiles\" in ${CMAKE_SOURCE_DIR}.")
@@ -196,11 +208,11 @@ elseif(UNIX)
 	set(LINUX TRUE)
 endif()
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- Setup Compiler Project
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 project(${EXP_PROJECT_NAME})
 
 if(UNIX)
@@ -233,11 +245,11 @@ set(AAX_CMAKE_FOLDER cmake/aax_cmake)
 set(AU_CMAKE_FOLDER cmake/au_cmake)
 set(VST_CMAKE_FOLDER cmake/vst_cmake)
 
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # --- BUNDLE IDs and other variables for <plugindescription.h>
 #
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 string(REPLACE "_" "" CLEAN_PROJECT_NAME ${PLUGIN_PROJECT_NAME})
 string(TOLOWER ${CLEAN_PROJECT_NAME} CLEAN_PROJECT_NAME_LC)
 
@@ -399,10 +411,10 @@ message(STATUS "")
 set(AAX_PLUGIN_FOLDER AAX)
 set(AU_PLUGIN_FOLDER AU)
 
-# --- add_subdirectories -------------------------------------------------------
-# added a dedicated sources subdir for clenliness
-add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
+# --- add libraries ------------------------------------------------------------
+add_subdirectory(${EXTERN_SOURCE_ROOT}/googletest)
 
+# --- add_subdirectories -------------------------------------------------------
 # add each project:
 if(AAX_SDK_BUILD)
 	add_subdirectory(${AAX_CMAKE_FOLDER})
@@ -417,14 +429,12 @@ if(VST_SDK_BUILD)
 endif()
 
 # add unit testing:
-set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
-add_subdirectory(${CMAKE_SOURCE_DIR}/project_source/source/vendor/googletest)
-add_subdirectory(${UNIT_TESTS_DIR})
+add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/unit_tests")
 
-# --- set the startup project to be the VST project in Visual Studio
+# --- set the startup project to be the VST project in Visual Studio -----------
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
 
-# --- folders ----------------------------------------------------------------------------------------------------------
+# --- folders ------------------------------------------------------------------
 set_target_properties(
 	pluginterfaces 
 	sdk_hosting 
