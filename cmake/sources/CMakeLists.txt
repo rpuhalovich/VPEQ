@@ -22,4 +22,14 @@ set(unit_tests_sources
     PARENT_SCOPE
 )
 
-set(PCH "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp" PARENT_SCOPE)
+set(custom_controls_sources
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/atomicops.h
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customcontrols.cpp
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customcontrols.h
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customviews.cpp
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/customviews.h
+    ${CUSTOM_CONTROLS_SOURCE_ROOT}/readerwriterqueue.h
+    PARENT_SCOPE
+)
+
+set(PCH ${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp PARENT_SCOPE)

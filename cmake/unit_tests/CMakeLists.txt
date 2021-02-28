@@ -1,15 +1,25 @@
 # created by Ryan Puhalovich - https://github.com/rpuhalovich/
 
-add_executable(unit_tests ${unit_tests_sources})
+set(this unit_tests)
+add_executable(${this} 
+    ${unit_tests_sources}
+    ${OBJECTS_SOURCE_ROOT}/fxobjects.h # <-- must include only files to be tested
+    ${OBJECTS_SOURCE_ROOT}/fxobjects.cpp
+    ${OBJECTS_SOURCE_ROOT}/Filter.hpp
+    ${OBJECTS_SOURCE_ROOT}/Filter.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.cpp
+    ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
+)
 
-target_link_libraries(unit_tests STATIC
+target_link_libraries(${this} PUBLIC # <-- MUST BE PUBLIC
     gtest_main
     gmock_main
 )
 
-target_include_directories(unit_tests PRIVATE 
+target_include_directories(${this} PRIVATE 
     "${OBJECTS_SOURCE_ROOT}"
     "${KERNEL_SOURCE_ROOT}"
+    "${CUSTOM_CONTROLS_SOURCE_ROOT}"
     "${EXTERN_SOURCE_ROOT}"
 )
 

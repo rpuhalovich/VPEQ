@@ -1,12 +1,11 @@
 // created by Ryan Puhalovich - http://github.com/rpuhalovich
 // testing Filter against the provided AudioFilter in fxobjects.h
 
-#include <gtest/gtest.h>
-#include <Catch2/catch.hpp>
+// #include <Catch2/catch.hpp>
+#include "pch.hpp"
 #include <fxobjects.h>
 #include <guiconstants.h>
 
-#include "pch.hpp"
 #include "Filter.hpp"
 
 AudioFilter afilter;
@@ -17,7 +16,7 @@ FilterParameters filterParams;
 
 // --- helper functions ------------------------------------------------------------------------------------------------
 
-void set_defaults() {
+static void set_defaults() {
     filterParams.Q = 0.707f;
     filterParams.fc = 100.0f;
     filterParams.boost = 0.0f;
@@ -34,34 +33,34 @@ void set_defaults() {
 }
 
 // note that passing classes is okay as performance isn't critical
-void process_nyquist(Filter filter, AudioFilter afilter) {
+static void process_nyquist(Filter filter, AudioFilter afilter) {
     for (int i = 0; i < PATTERN_LEN; i++) {
         afilter.processAudioSample(utils::nyquist_pattern[i]);
         filter.processAudioSample(utils::nyquist_pattern[i]);
     }
 }
 
-void process_quater_nyquist(Filter filter, AudioFilter afilter) {
+static void process_quater_nyquist(Filter filter, AudioFilter afilter) {
     for (int i = 0; i < PATTERN_LEN; i++) {
         afilter.processAudioSample(utils::quater_nyquist_pattern[i]);
         filter.processAudioSample(utils::quater_nyquist_pattern[i]);
     }
 }
 
-void process_dc(Filter filter, AudioFilter afilter) {
+static void process_dc(Filter filter, AudioFilter afilter) {
     for (int i = 0; i < PATTERN_LEN; i++) {
         afilter.processAudioSample(utils::dc_pattern[i]);
         filter.processAudioSample(utils::dc_pattern[i]);
     }
 }
 
-void process(Filter filter, AudioFilter afilter) {
+static void process(Filter filter, AudioFilter afilter) {
     process_nyquist(filter, afilter);
     REQUIRE(afilter.processAudioSample(utils::nyquist_pattern[0]) == filter.processAudioSample(utils::nyquist_pattern[0]));
     
     process_quater_nyquist(filter, afilter);
     REQUIRE(afilter.processAudioSample(utils::quater_nyquist_pattern[0]) == filter.processAudioSample(utils::quater_nyquist_pattern[0]));
-
+    
     process_dc(filter, afilter);
     REQUIRE(afilter.processAudioSample(utils::dc_pattern[0]) == filter.processAudioSample(utils::dc_pattern[0]));
 }
@@ -107,9 +106,4 @@ TEST_CASE("Testing Filter PEQ against AudioFilter kResonA.", "[filter]") {
     filterParams.type = FilterType::PEQ;
     afilterParams.algorithm = filterAlgorithm::kResonA;
     process(filter, afilter);
-}
-
-TEST(test, macros) {
-    EXPECT_EQ(true, true);
-    EXPECT_EQ(true, false);
 }
