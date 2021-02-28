@@ -2,7 +2,7 @@
 
 ![VPEQ_screenshot](project_source/resources/my_resources/bg/reference.png)
 
-Use ```git clone --rescursive https://github.com/rpuhalovich/VPEQ.git``` to clone.
+Use ```git clone --recursive https://github.com/rpuhalovich/VPEQ.git``` to clone.
 
 ## Intro
 
