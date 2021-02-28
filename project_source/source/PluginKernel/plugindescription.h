@@ -11,8 +11,8 @@
 #define AU_COCOA_VIEW_STRING STR(AU_COCOA_VIEW_NAME)
 
 // --- AU Plugin Cocoa View Names (flat namespace) 
-#define AU_COCOA_VIEWFACTORY_NAME AUCocoaViewFactory_999D053E6BEC3C4D9FA97BD052C613D1
-#define AU_COCOA_VIEW_NAME AUCocoaView_999D053E6BEC3C4D9FA97BD052C613D1
+#define AU_COCOA_VIEWFACTORY_NAME AUCocoaViewFactory_023735D26EED373AB27C86856F766F48
+#define AU_COCOA_VIEW_NAME AUCocoaView_023735D26EED373AB27C86856F766F48
 
 // --- BUNDLE IDs (MacOS Only) 
 const char* kAAXBundleID = "developer.aax.vpeq.bundleID";
@@ -28,7 +28,7 @@ const char* kAUBundleName = "VPEQ_AU";
 const pluginType kPluginType = pluginType::kFXPlugin;
 
 // --- VST3 UUID 
-const char* kVSTFUID = "{999d053e-6bec-3c4d-9fa9-7bd052c613d1}";
+const char* kVSTFUID = "{023735d2-6eed-373a-b27c-86856f766f48}";
 
 // --- 4-char codes 
 const int32_t kFourCharCode = 'VPEQ';

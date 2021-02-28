@@ -11,6 +11,9 @@ add_executable(${this}
     ${OBJECTS_SOURCE_ROOT}/SimpleBiquad.hpp
 )
 
+# note the full requirements for this change at the bottom of: https://cmake.org/cmake/help/latest/prop_tgt/MSVC_RUNTIME_LIBRARY.html
+set_property(TARGET ${this} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreadedDebugDLL")
+
 target_link_libraries(${this} PUBLIC # <-- MUST BE PUBLIC
     gtest_main
     gmock_main
