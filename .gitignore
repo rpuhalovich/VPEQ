@@ -2,4 +2,6 @@
 win_build/
 mac_build/
 
+project_source/extern/
+
 .DS_Store
