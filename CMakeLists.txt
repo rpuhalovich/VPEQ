@@ -418,7 +418,21 @@ endif()
 
 # add unit testing:
 set(UNIT_TESTS_DIR ${CMAKE_SOURCE_DIR}/project_source/cmake/unit_test)
+add_subdirectory(${CMAKE_SOURCE_DIR}/project_source/source/vendor/googletest)
 add_subdirectory(${UNIT_TESTS_DIR})
 
 # --- set the startup project to be the VST project in Visual Studio
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${EXP_SUBPROJECT_NAME_VST})
+
+# --- folders ----------------------------------------------------------------------------------------------------------
+set_target_properties(
+	pluginterfaces 
+	sdk_hosting 
+	sdk_common
+	gtest 
+	gtest_main 
+	gmock 
+	gmock_main 
+	validator 
+	uidesccompressor
+	PROPERTIES FOLDER "Libraries")

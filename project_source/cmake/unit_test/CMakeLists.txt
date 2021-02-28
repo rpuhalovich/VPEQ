@@ -22,6 +22,15 @@ target_include_directories(unit_tests PRIVATE
     "${VENDOR_SOURCE_ROOT}"
 )
 
+target_link_libraries(unit_tests STATIC
+    gtest_main
+    gmock_main
+)
+
 source_group(Tests FILES ${TESTS_SRC})
+source_group(src FILES 
+    ${plugin_object_sources} 
+    ${kernel_sources}
+)
 
 # target_precompile_headers(unit_tests PRIVATE ${PCH})
