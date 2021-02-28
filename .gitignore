@@ -1,9 +1,8 @@
 .vscode/
 win_build/
 mac_build/
-project_source/source/vendor/sdk/*
-!project_source/source/vendor/sdk/download_sdk.sh
+project_source/extern/sdk/*
+!project_source/extern/sdk/download_sdk.sh
 
 .DS_Store
-project_source/source/PluginKernel/plugindescription.h
 dev.lnk

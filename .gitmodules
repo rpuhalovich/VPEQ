@@ -1,3 +1,3 @@
-[submodule "project_source/source/vendor/googletest"]
-	path = project_source/source/vendor/googletest
+[submodule "project_source/extern/googletest"]
+	path = project_source/extern/googletest
 	url = https://github.com/google/googletest.git

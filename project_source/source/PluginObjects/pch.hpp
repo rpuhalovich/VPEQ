@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <gtest/gtest.h>
+
 #include "utils.hpp"
 
 // there's gotta be a better place to put this...
