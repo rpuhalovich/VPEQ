@@ -25,7 +25,7 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
 # SDK check
 set(SDK_DIR "${EXTERN_SOURCE_ROOT}/sdk")
 if(NOT EXISTS "${SDK_DIR}/VST_SDK" OR NOT EXISTS "${SDK_DIR}/AU_SDK")
-	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in: project_source/source/vendor/sdk")
+	message(FATAL_ERROR "The SDKs cannot be found. Use the download script found in: project_source/extern/sdk")
 endif()
 
 # ------------------------------------------------------------------------------
