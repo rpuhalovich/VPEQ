@@ -4,5 +4,7 @@ mac_build/
 project_source/extern/sdk/*
 !project_source/extern/sdk/download_sdk.sh
 
+scripts/VPEQ.zip
+
 .DS_Store
 dev.lnk

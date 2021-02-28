@@ -12,30 +12,20 @@ Installation (Mac):
     Copy the .vst3 plugin file to Library/Audio/Plug-ins/VST3"
 
 create_zip_contents() {
-    echo "Creating .zip with $dir_win/${plugin_name}_VST.vst3"
     mkdir $plugin_name
     cp -r $dir_win/${plugin_name}_VST.vst3 $plugin_name/$plugin_name.vst3
 
     echo -e "$text" > $plugin_name/$readme
-    zip -r VPEQ.zip VPEQ/
+    zip -rqm VPEQ.zip VPEQ/
+    echo "Created ${plugin_name}.zip with $1/${plugin_name}_VST.vst3"
 }
 
 if [ -d $dir_win ] 
 then
-    echo "Creating .zip with $dir_win/${plugin_name}_VST.vst3"
-    mkdir $plugin_name
-    cp -r $dir_win/${plugin_name}_VST.vst3 $plugin_name/$plugin_name.vst3
-
-    echo -e "$text" > $plugin_name/$readme
-    zip -r VPEQ.zip VPEQ/
+    create_zip_contents $dir_win
 elif [ -d $dir_mac ]
 then
-    echo "Creating .zip with $dir_mac/${plugin_name}_VST.vst3"
-    mkdir $plugin_name
-    cp -r $dir_mac/${plugin_name}_VST.vst3 $plugin_name/$plugin_name.vst3
-
-    echo -e "$text" > $plugin_name/$readme
-    zip -r VPEQ.zip VPEQ/
+    create_zip_contents $dir_win
 else
     echo "Directories $dir_mac and $dir_win do not exist." 
     exit 9999
