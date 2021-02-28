@@ -22,7 +22,7 @@ dir_mac="../mac_build/VST3/Release"
 
 create_zip_contents() {
     mkdir $plugin_name
-    cp -r $dir_win/${plugin_name}_VST.vst3 $plugin_name/$plugin_name.vst3
+    cp -r $1/${plugin_name}_VST.vst3 $plugin_name/$plugin_name.vst3
 
     echo -e "$readme_text" > $plugin_name/$readme
     zip -rqm VPEQ_${ver_num}.zip VPEQ/
