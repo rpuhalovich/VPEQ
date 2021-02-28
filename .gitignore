@@ -5,6 +5,7 @@ project_source/extern/sdk/*
 !project_source/extern/sdk/download_sdk.sh
 
 scripts/VPEQ.zip
+scripts/VPEQ
 
 .DS_Store
 dev.lnk
