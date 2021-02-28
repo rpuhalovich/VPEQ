@@ -1,12 +1,14 @@
+# created by Ryan Puhalovich - https://github.com/rpuhalovich/
+
 plugin_name="VPEQ"
 readme="README.txt"
 readme_text="Thanks for downloading my plugin!
 
 Installation (Windows):
-    Copy the .vst3 plugin file to C:\Program Files\Common Files\VST3
+    Copy the ${plugin_name}.vst3 plugin file to C:\Program Files\Common Files\VST3
 
 Installation (Mac):
-    Copy the .vst3 plugin file to Library/Audio/Plug-ins/VST3"
+    Copy the ${plugin_name}.vst3 plugin file to Library/Audio/Plug-ins/VST3"
 
 if [ -z "$1" ]
   then

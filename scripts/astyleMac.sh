@@ -1,3 +1,5 @@
+# created by Ryan Puhalovich - https://github.com/rpuhalovich/
+
 cd ../project_source/source/aax_source
 astyle --style=java --recursive "*.cpp,*.h"
 cd ../au_source

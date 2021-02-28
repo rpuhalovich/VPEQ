@@ -16,10 +16,11 @@ cmake_policy(SET CMP0091 NEW) # for googletest on windows...
 # ------------------------------------------------------------------------------
 
 # --- Directories and Sources --------------------------------------------------
-set(OBJECTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects") 
-set(KERNEL_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/PluginKernel") 
-set(CUSTOM_CONTROLS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/CustomControls") 
-set(UNIT_TESTS_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source/unit_tests")
+set(SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/source")
+set(OBJECTS_SOURCE_ROOT "${SOURCE_ROOT}/PluginObjects") 
+set(KERNEL_SOURCE_ROOT "${SOURCE_ROOT}/PluginKernel") 
+set(CUSTOM_CONTROLS_SOURCE_ROOT "${SOURCE_ROOT}/CustomControls") 
+set(UNIT_TESTS_SOURCE_ROOT "${SOURCE_ROOT}/unit_tests")
 set(EXTERN_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/project_source/extern")
 add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/sources")
 
