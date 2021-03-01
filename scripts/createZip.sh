@@ -34,7 +34,7 @@ then
     create_zip_contents $dir_win
 elif [ -d $dir_mac ]
 then
-    create_zip_contents $dir_win
+    create_zip_contents $dir_mac
 else
     echo "Directories $dir_mac and $dir_win do not exist." 
     exit 9999
