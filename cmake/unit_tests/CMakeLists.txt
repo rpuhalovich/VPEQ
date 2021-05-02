@@ -26,8 +26,8 @@ target_include_directories(${this} PRIVATE
     "${EXTERN_SOURCE_ROOT}"
 )
 
-source_group(unit_tests FILES ${unit_tests_sources})
-source_group(src FILES 
+source_group(TREE ${SOURCE_ROOT} FILES 
+    ${unit_tests_sources}
     ${plugin_object_sources} 
     ${kernel_sources} 
 )

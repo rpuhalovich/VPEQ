@@ -32,4 +32,4 @@ set(unit_tests_sources
     PARENT_SCOPE
 )
 
-set(PCH ${CMAKE_SOURCE_DIR}/project_source/source/PluginObjects/pch.hpp PARENT_SCOPE)
+set(PCH ${OBJECTS_SOURCE_ROOT}/pch.hpp PARENT_SCOPE)

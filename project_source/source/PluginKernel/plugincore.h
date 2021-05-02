@@ -143,6 +143,10 @@ private:
     int filterType[NUM_FILTERS];
     enum class filterTypeEnum { LPF2, HPF2, BPF, BSF, LSF, HSF, PEQ, OFF };
 
+    /**
+    \brief adds to piParam without overdoing the same code over and over.
+    */
+    void addToPiParam(PluginParameter* piParam, void* variable);
 public:
     /** static description: bundle folder name
 

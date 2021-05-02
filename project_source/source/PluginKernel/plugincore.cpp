@@ -49,6 +49,15 @@ PluginCore::PluginCore() {
 }
 
 /**
+\brief adds to piParam without overdoing the same code over and over.
+*/
+void PluginCore::addToPiParam(PluginParameter* piParam, void* variable) {
+    piParam->setParameterSmoothing(true);
+    piParam->setSmoothingTimeMsec(20.000000);
+    piParam->setBoundVariable(variable, boundVariableType::kDouble);
+}
+
+/**
 \brief create all of your plugin parameters here
 
 \return true if parameters were created, false if they already existed
@@ -59,167 +68,125 @@ bool PluginCore::initPluginParameters() {
 
     // --- filterFC ----------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::filterFC_Hz0, "FC 0", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 90.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[0], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[0]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::filterFC_Hz1, "FC 1", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 250.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[1], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[1]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::filterFC_Hz2, "FC 2", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 500.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[2], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[2]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::filterFC_Hz3, "FC 3", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 1500.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[3], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[3]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::filterFC_Hz4, "FC 4", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 3000.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[4], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[4]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::filterFC_Hz5, "FC 5", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 5000.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[5], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[5]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::filterFC_Hz6, "FC 6", "Hz", controlVariableType::kDouble, 20.000000, 20480.000000, 8000.000000, taper::kVoltOctaveTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterFC_Hz[6], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterFC_Hz[6]);
     addPluginParameter(piParam);
 
     // --- Q -----------------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::filterQ0, "Q 0", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[0], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[0]);
     addPluginParameter(piParam);
     
     piParam = new PluginParameter(controlID::filterQ1, "Q 1", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[1], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[1]);
     addPluginParameter(piParam);
     
     piParam = new PluginParameter(controlID::filterQ2, "Q 2", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[2], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[2]);
     addPluginParameter(piParam);
     
     piParam = new PluginParameter(controlID::filterQ3, "Q 3", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[3], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[3]);
     addPluginParameter(piParam);
     
     piParam = new PluginParameter(controlID::filterQ4, "Q 4", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[4], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[4]);
     addPluginParameter(piParam);
     
     piParam = new PluginParameter(controlID::filterQ5, "Q 5", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[5], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[5]);
     addPluginParameter(piParam);
     
     piParam = new PluginParameter(controlID::filterQ6, "Q 6", "", controlVariableType::kDouble, 0.707000, 20.000000, 0.707000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&filterQ[6], boundVariableType::kDouble);
+    addToPiParam(piParam, &filterQ[6]);
     addPluginParameter(piParam);
     
     // --- Boost/Cut ---------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::boostCut_dB0, "Boost/Cut 0", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[0], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[0]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::boostCut_dB1, "Boost/Cut 1", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[1], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[1]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::boostCut_dB2, "Boost/Cut 2", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[2], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[2]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::boostCut_dB3, "Boost/Cut 3", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[3], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[3]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::boostCut_dB4, "Boost/Cut 4", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[4], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[4]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::boostCut_dB5, "Boost/Cut 5", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[5], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[5]);
     addPluginParameter(piParam);
 
     piParam = new PluginParameter(controlID::boostCut_dB6, "Boost/Cut 6", "dB", controlVariableType::kDouble, -20.000000, 20.000000, 0.000000, taper::kLinearTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&boostCut_dB[6], boundVariableType::kDouble);
+    addToPiParam(piParam, &boostCut_dB[6]);
     addPluginParameter(piParam);
 
     // --- Filter Type -------------------------------------------------------------------------------------------------
-    piParam = new PluginParameter(controlID::filterType0, "Filter Type 0", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Low Shelf");
+    char filterNames[] = "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking";
+    
+    piParam = new PluginParameter(controlID::filterType0, "Filter Type 0", filterNames, "Low Shelf");
     piParam->setBoundVariable(&filterType[0], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType1, "Filter Type 1", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
+    piParam = new PluginParameter(controlID::filterType1, "Filter Type 1", filterNames, "Peaking");
     piParam->setBoundVariable(&filterType[1], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType2, "Filter Type 2", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
+    piParam = new PluginParameter(controlID::filterType2, "Filter Type 2", filterNames, "Peaking");
     piParam->setBoundVariable(&filterType[2], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType3, "Filter Type 3", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
+    piParam = new PluginParameter(controlID::filterType3, "Filter Type 3", filterNames, "Peaking");
     piParam->setBoundVariable(&filterType[3], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType4, "Filter Type 4", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
+    piParam = new PluginParameter(controlID::filterType4, "Filter Type 4", filterNames, "Peaking");
     piParam->setBoundVariable(&filterType[4], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType5, "Filter Type 5", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "Peaking");
+    piParam = new PluginParameter(controlID::filterType5, "Filter Type 5", filterNames, "Peaking");
     piParam->setBoundVariable(&filterType[5], boundVariableType::kInt);
     addPluginParameter(piParam);
 
-    piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", "Low Pass,High Pass,Band Pass,Band Stop,Low Shelf,High Shelf,Peaking", "High Shelf");
+    piParam = new PluginParameter(controlID::filterType6, "Filter Type 6", filterNames, "High Shelf");
     piParam->setBoundVariable(&filterType[6], boundVariableType::kInt);
     addPluginParameter(piParam);
 
     // --- masterGain --------------------------------------------------------------------------------------------------
     piParam = new PluginParameter(controlID::masterGain, "Master Gain", "dB", controlVariableType::kDouble, -60.000000, 12.000000, 0.000000, taper::kLogTaper);
-    piParam->setParameterSmoothing(true);
-    piParam->setSmoothingTimeMsec(20.000000);
-    piParam->setBoundVariable(&masterGain, boundVariableType::kDouble);
+    addToPiParam(piParam, &masterGain);
     addPluginParameter(piParam);
 
     // --- SCALE_GUI_SIZE

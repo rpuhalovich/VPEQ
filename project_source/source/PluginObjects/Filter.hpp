@@ -56,5 +56,4 @@ private:
     
     // returns true if coeffs were calculated
     bool calculateCoeffs();
-    
 };
