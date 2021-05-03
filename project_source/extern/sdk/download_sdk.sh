@@ -1,3 +1,5 @@
+cd $(dirname $0) # this makes the dir that the script is in the root dir
+
 curl -O "https://aspikplugins.com/downloads/AU_SDK.zip"
 unzip AU_SDK.zip
 mv AU_SDK/AU_SDK AU_SDK
